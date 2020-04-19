@@ -1,7 +1,6 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://src/deck/Deck.tscn" type="PackedScene" id=1]
-[ext_resource path="res://src/card/Card.tscn" type="PackedScene" id=2]
 
 [sub_resource type="GDScript" id=1]
 script/source = "extends Spatial
@@ -64,11 +63,14 @@ func _on_Player_card_added() -> void:
 ambient_light_color = Color( 0.54902, 0.54902, 0.54902, 1 )
 
 [sub_resource type="SpatialMaterial" id=3]
-albedo_color = Color( 0.321569, 0.294118, 0.278431, 1 )
+albedo_color = Color( 0, 0, 0, 1 )
+roughness = 0.88
 
-[sub_resource type="CubeMesh" id=4]
+[sub_resource type="CylinderMesh" id=4]
 material = SubResource( 3 )
-size = Vector3( 20, 1, 20 )
+top_radius = 5.0
+bottom_radius = 4.5
+height = 1.0
 
 [sub_resource type="BoxShape" id=5]
 extents = Vector3( 10, 0.5, 10 )
@@ -76,8 +78,10 @@ extents = Vector3( 10, 0.5, 10 )
 [node name="World" type="Spatial"]
 script = SubResource( 1 )
 
-[node name="Camera" type="Camera" parent="."]
-transform = Transform( 1, 0, 0, 0, 0.889966, 0.456026, 0, -0.456026, 0.889966, 0, 3.19576, 4.91029 )
+[node name="Pivot" type="Spatial" parent="."]
+
+[node name="Camera" type="Camera" parent="Pivot"]
+transform = Transform( 1, 0, 0, 0, 0.5, 0.866025, 0, -0.866025, 0.5, 0, 4.5, 4 )
 environment = SubResource( 2 )
 
 [node name="Table" type="StaticBody" parent="."]
@@ -105,7 +109,6 @@ shadow_contact = 0.14
 [node name="Decks" type="Spatial" parent="."]
 
 [node name="Main" parent="Decks" instance=ExtResource( 1 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.788708, 0, 0.910698 )
 
 [node name="Player1" parent="Decks" instance=ExtResource( 1 )]
 transform = Transform( 0.79654, 0, 0.604585, 0, 1, 0, -0.604585, 0, 0.79654, 2.14363, 0, -0.945998 )
@@ -117,24 +120,6 @@ transform = Transform( 0.931348, 0, 0.364129, 0, 1, 0, -0.364129, 0, 0.931348, 1
 transform = Transform( 0.744847, 0, -0.667235, 0, 1, 0, 0.667235, 0, 0.744847, -0.835693, 0, -1.31812 )
 
 [node name="Cards" type="Spatial" parent="."]
-
-[node name="CardTest" parent="Cards" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0710211, 0, -5.80992 )
-
-[node name="CardTest2" parent="Cards" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.23374, -0.0596828, 2.7332 )
-
-[node name="CardTest3" parent="Cards" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.98369, 0, 4.40323 )
-
-[node name="CardTest4" parent="Cards" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.86894, 0, -6.2447 )
-
-[node name="CardTest5" parent="Cards" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 6.77964, 0, -6.2447 )
-
-[node name="CardTest6" parent="Cards" instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.289088, 0, 5.78742 )
 [connection signal="card_removed" from="Decks/Main" to="." method="_on_Main_card_removed"]
 [connection signal="card_added" from="Decks/Player1" to="." method="_on_Player_card_added"]
 [connection signal="card_added" from="Decks/Player2" to="." method="_on_Player_card_added"]

@@ -27,7 +27,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Gobbit"
-run/main_scene="res://Main.tscn"
+run/main_scene="res://Table.tscn"
 config/icon="res://gobbit-icon.png"
 
 [autoload]
