@@ -1,11 +1,68 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://src/deck/Deck.gd" type="Script" id=1]
 
 [sub_resource type="BoxShape" id=1]
-extents = Vector3( 0.5, 0, 0.5 )
+extents = Vector3( 0.5, 0.05, 0.5 )
 
-[node name="Deck" type="Spatial"]
+[sub_resource type="Animation" id=2]
+resource_name = "Hover"
+length = 0.7
+step = 0.05
+tracks/0/type = "bezier"
+tracks/0/path = NodePath("Glow:light_energy")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.3101, 5.16589, 5, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.7 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath("Cards:translation:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.313248, 0.0874254, 0.214084, -0.15175, 0.11585, 0.0582422, -0.0406319, 0.205958, -0.0944467, -0.0182844, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.426584, 0.698906 )
+}
+tracks/2/type = "bezier"
+tracks/2/path = NodePath("Cards:rotation_degrees:x")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 10, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.528422 )
+}
+tracks/3/type = "bezier"
+tracks/3/path = NodePath("Cards:rotation_degrees:z")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 10, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.528422 )
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("Glow:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 0.01 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+
+[node name="Deck" type="Area"]
 script = ExtResource( 1 )
 
 [node name="Cards" type="Spatial" parent="."]
@@ -14,4 +71,20 @@ script = ExtResource( 1 )
 
 [node name="Visibility" type="CollisionShape" parent="."]
 shape = SubResource( 1 )
-disabled = true
+__meta__ = {
+"_editor_description_": "The only purpose of this node is to display the deck position in the editor"
+}
+
+[node name="Glow" type="SpotLight" parent="."]
+transform = Transform( 1, 0, 0, 0, -1.62921e-07, 1, 0, -1, -1.62921e-07, 0, 0.1, 0 )
+visible = false
+layers = 2
+light_energy = 0.0
+spot_range = 1.03628
+spot_angle = 90.0
+spot_angle_attenuation = 68.5932
+
+[node name="Animator" type="AnimationPlayer" parent="."]
+anims/Hover = SubResource( 2 )
+[connection signal="mouse_entered" from="." to="." method="_on_Deck_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_Deck_mouse_exited"]

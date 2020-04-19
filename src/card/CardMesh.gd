@@ -23,7 +23,6 @@ func load_card_texture(path: String) -> ImageTexture:
 	var texture
 	if CardFactory.card_textures.has(path):
 		texture = CardFactory.card_textures[path]
-		print("cache hit : ", path)
 	else:
 		texture = load(path)
 		CardFactory.card_textures[path] = texture

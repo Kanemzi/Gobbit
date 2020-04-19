@@ -1,5 +1,5 @@
 # Represents a deck of cards
-extends Spatial
+extends Area
 class_name Deck
 
 # These signals are triggered when an add/remove animation is done
@@ -10,21 +10,19 @@ signal deck_merged # Triggered when a deck is successfully merged into this deck
 onready var cards := $Cards
 
 var height : float # The current height
-#var top_position : Vector3 # The position of the top of the deck
+
 export var face_down : bool # If the cards are hidden in the deck
 
 func _ready() -> void:
-	add_to_group("deck")
 	height = 0.0
-#	face_down = true
-#	top_position = Vector3()
+
 
 # Initialize the deck with a list of cards.
 # Cards are added like a stack (first cards of the list will be on the bottom)
 func init(card_list: Array) -> void:
 	for card in card_list:
 		cards.add_child(card)
-		card.translation = Vector3.UP * height
+		card.transform.origin = Vector3.UP * height
 		height += Globals.CARD_MESH_HEIGHT
 
 
@@ -33,23 +31,24 @@ func init(card_list: Array) -> void:
 # When the animation is finished, a card_added signal is triggered
 # The card should not be already in a deck
 func add_card_on_top(card: Card) -> void:
+	if card.deck != null: # We stop the function if the card is already in a deck
+		return
+		
 	# Save the current position of the card
 	var position = card.global_transform.origin
-	
-	if card.deck != null:
-		return
 	
 	# Checks if the card is already in the tree
 	if card.is_inside_tree():
 		card.get_parent().remove_child(card)
-		
+	
 	cards.add_child(card)
 	card.deck = self
 	card.global_transform.origin = position
-	
 	card.move_to(global_transform.origin + Vector3.UP * height)
-	card.connect("move_finished", self, "_on_card_move_finished", [], CONNECT_ONESHOT)
 	height += Globals.CARD_MESH_HEIGHT
+	
+	yield(card, "move_finished")
+	emit_signal("card_added", card)
 
 
 # Returns the card of the top of the deck
@@ -64,17 +63,18 @@ func get_card_on_top() -> Card:
 
 # Removes the card of the top of the deck
 # Triggers a card_removed signal when the card is removed
-func remove_card_on_top() -> void:
+# Returns the card and it's old position
+func remove_card_on_top() -> Dictionary:
 	var card : Card = get_card_on_top()
 	if card == null:
-		return
+		return {}
 		
 	var position = card.global_transform.origin
 	cards.remove_child(card)
 	card.deck = null
 	height -= Globals.CARD_MESH_HEIGHT
-	print("height: ", height)
 	emit_signal("card_removed", card, position)
+	return {card = card, position = position}
 
 
 # Adds all the cards from a deck at the bottom of this deck
@@ -89,6 +89,8 @@ func merge_deck_on_bottom(other: Deck) -> void:
 	# Reparent the other deck's cards
 	var other_cards := other.cards.get_children()
 	var i := 0
+	
+	# Reparent all the cards and move them in the deck
 	for card in other_cards:
 		var position = card.global_transform.origin # Save the old position
 		card.get_parent().remove_child(card)
@@ -98,12 +100,24 @@ func merge_deck_on_bottom(other: Deck) -> void:
 		card.move_to(global_transform.origin + Vector3.UP * Globals.CARD_MESH_HEIGHT * i)
 		i += 1
 	
-	height += other_height
+	# Wait for all the card to move in the deck
+	for card in other_cards:
+		yield(card, "move_finished")
 
+	height += other_height
 	# Remove the other deck
 	other.queue_free()
+	
+	emit_signal("deck_merged")
 
 
-func _on_card_move_finished(card: Card) -> void:
-	emit_signal("card_added", card)
-	print("ADDED")
+#func _on_Deck_mouse_entered() -> void:
+#	print("entered ", name)
+#	$Animator.play("Hover")
+#	pass # Replace with function body.
+#
+#
+#func _on_Deck_mouse_exited() -> void:
+#	$Animator.play_backwards("Hover")
+#	print("exited ", name)
+#	pass # Replace with function body.

@@ -8,7 +8,7 @@ onready var move_tween : Tween = $MoveTween
 var colors: Array
 var front_type: int
 var back_type: int
-var deck = null# Can't static type the variable because of cyclic dependency
+var deck = null # Can't static type the variable because of cyclic dependency
 
 func _physics_process(delta: float) -> void:
 	pass
