@@ -1,0 +1,57 @@
+{
+	"cards": [
+		{"colors": [0], "type": 0, "back": 5},
+		{"colors": [0], "type": 0, "back": 0},
+		{"colors": [0], "type": 1, "back": 0},
+		{"colors": [0], "type": 1, "back": 1},
+		{"colors": [0], "type": 1, "back": 2},
+		{"colors": [0], "type": 1, "back": 3},
+		{"colors": [0], "type": 1, "back": 4},
+		{"colors": [0], "type": 1, "back": 5},
+		{"colors": [0], "type": 2, "back": 2},
+		{"colors": [0], "type": 2, "back": 3},
+		{"colors": [0], "type": 2, "back": 4},
+		{"colors": [0], "type": 2, "back": 5},
+		{"colors": [0], "type": 3, "back": 1},
+
+		{"colors": [1], "type": 0, "back": 1},
+		{"colors": [1], "type": 0, "back": 2},
+		{"colors": [1], "type": 1, "back": 0},
+		{"colors": [1], "type": 1, "back": 1},
+		{"colors": [1], "type": 1, "back": 2},
+		{"colors": [1], "type": 1, "back": 3},
+		{"colors": [1], "type": 1, "back": 4},
+		{"colors": [1], "type": 1, "back": 5},
+		{"colors": [1], "type": 2, "back": 5},
+		{"colors": [1], "type": 2, "back": 0},
+		{"colors": [1], "type": 2, "back": 1},
+		{"colors": [1], "type": 2, "back": 2},
+		{"colors": [1], "type": 3, "back": 3},
+		
+		{"colors": [2], "type": 0, "back": 3},
+		{"colors": [2], "type": 0, "back": 4},
+		{"colors": [2], "type": 1, "back": 0},
+		{"colors": [2], "type": 1, "back": 1},
+		{"colors": [2], "type": 1, "back": 2},
+		{"colors": [2], "type": 1, "back": 3},
+		{"colors": [2], "type": 1, "back": 4},
+		{"colors": [2], "type": 1, "back": 5},
+		{"colors": [2], "type": 2, "back": 0},
+		{"colors": [2], "type": 2, "back": 1},
+		{"colors": [2], "type": 2, "back": 3},
+		{"colors": [2], "type": 2, "back": 4},
+		{"colors": [2], "type": 3, "back": 0},
+
+		{"colors": [0, 1], "type": 0, "back": 0},
+		{"colors": [0, 1], "type": 0, "back": 4},
+		{"colors": [0, 1], "type": 0, "back": 5},
+
+		{"colors": [1, 2], "type": 0, "back": 1},
+		{"colors": [1, 2], "type": 0, "back": 2},
+		{"colors": [1, 2], "type": 0, "back": 5},
+		
+		{"colors": [2, 0], "type": 0, "back": 2},
+		{"colors": [2, 0], "type": 0, "back": 3},
+		{"colors": [2, 0], "type": 0, "back": 4}
+	]
+}

@@ -1,0 +1,46 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=4
+
+_global_script_classes=[ {
+"base": "Spatial",
+"class": "Card",
+"language": "GDScript",
+"path": "res://src/card/Card.gd"
+}, {
+"base": "Spatial",
+"class": "Deck",
+"language": "GDScript",
+"path": "res://src/deck/Deck.gd"
+} ]
+_global_script_class_icons={
+"Card": "",
+"Deck": ""
+}
+
+[application]
+
+config/name="Gobbit"
+run/main_scene="res://Main.tscn"
+config/icon="res://gobbit-icon.png"
+
+[autoload]
+
+CardFactory="*res://src/card/CardFactory.gd"
+Globals="*res://src/Globals.gd"
+
+[display]
+
+window/size/always_on_top=true
+
+[rendering]
+
+quality/filters/use_nearest_mipmap_filter=true
+quality/filters/msaa=3
+environment/default_environment="res://default_env.tres"

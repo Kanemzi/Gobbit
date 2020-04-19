@@ -1,0 +1,143 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://src/deck/Deck.tscn" type="PackedScene" id=1]
+[ext_resource path="res://src/card/Card.tscn" type="PackedScene" id=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Spatial
+
+var xx = -4
+var yy = -3
+var a = 0
+
+onready var deck := $Decks/Main
+onready var decks : Array = [$\"Decks/Player1\", $\"Decks/Player2\"]
+onready var defausse := $Decks/Defausse
+var i = 0
+
+func _ready() -> void:
+	var card_list = CardFactory.generate_official_deck()
+	deck.init(card_list)
+	deck.connect(\"card_removed\", self, \"_on_card_removed\")
+	decks[0].connect(\"card_removed\", self, \"_on_card_defaussed\")
+
+
+func _input(event: InputEvent) -> void:
+	if Input.is_action_just_pressed(\"ui_accept\"):
+		deck.remove_card_on_top()
+		
+	if Input.is_action_just_pressed(\"ui_up\"):
+		decks[0].remove_card_on_top()
+		
+	if Input.is_action_just_pressed(\"ui_left\"):
+		if $Cards.get_child_count() == 0:
+			return
+		var card = $Cards.get_child(randi() % $Cards.get_child_count())
+		deck.add_card_on_top(card)
+		
+	if Input.is_action_just_pressed(\"ui_right\") and decks[1]:
+		decks[0].merge_deck_on_bottom(decks[1])
+
+
+func _on_card_removed(card, position) -> void:
+	print(\"add: \", card)
+	$Cards.add_child(card)
+	card.global_transform.origin = position
+	print(card.global_transform.origin)
+	decks[i].add_card_on_top(card)
+	i = 1 - i
+
+
+func _on_Player_card_added() -> void:
+	var card = deck.get_card_on_top()
+	if card == null:
+		return
+	print(\"add: \", card)
+	print(card.global_transform.origin)
+	decks[i].add_card_on_top(card)
+	i = 1 - i
+
+func _on_card_defaussed(card, position) -> void:
+	$Cards.add_child(card)
+	card.global_transform.origin = position
+	defausse.add_card_on_top(card)
+"
+
+[sub_resource type="Environment" id=2]
+ambient_light_color = Color( 0.54902, 0.54902, 0.54902, 1 )
+
+[sub_resource type="SpatialMaterial" id=3]
+albedo_color = Color( 0.321569, 0.294118, 0.278431, 1 )
+
+[sub_resource type="CubeMesh" id=4]
+material = SubResource( 3 )
+size = Vector3( 20, 1, 20 )
+
+[sub_resource type="BoxShape" id=5]
+extents = Vector3( 10, 0.5, 10 )
+
+[node name="World" type="Spatial"]
+script = SubResource( 1 )
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 1, 0, 0, 0, 0.889966, 0.456026, 0, -0.456026, 0.889966, 0, 7.18496, 11.7472 )
+environment = SubResource( 2 )
+
+[node name="Table" type="StaticBody" parent="."]
+__meta__ = {
+"_edit_group_": true,
+"_edit_lock_": true
+}
+
+[node name="MeshInstance" type="MeshInstance" parent="Table"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0 )
+mesh = SubResource( 4 )
+material/0 = null
+
+[node name="CollisionShape" type="CollisionShape" parent="Table"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0 )
+shape = SubResource( 5 )
+
+[node name="DirectionalLight" type="DirectionalLight" parent="."]
+transform = Transform( -0.00987376, -0.327614, 0.94476, -0.0776249, 0.942206, 0.325918, -0.996934, -0.0701189, -0.0347342, 13.5591, 4.13921, -1.89672 )
+light_energy = 0.2
+shadow_enabled = true
+shadow_bias = 0.05
+shadow_contact = 0.14
+
+[node name="Decks" type="Spatial" parent="."]
+
+[node name="Main" parent="Decks" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.788708, 0, 0.910698 )
+
+[node name="Player1" parent="Decks" instance=ExtResource( 1 )]
+transform = Transform( 0.79654, 0, 0.604585, 0, 1, 0, -0.604585, 0, 0.79654, 2.14363, 0, -0.945998 )
+
+[node name="Player2" parent="Decks" instance=ExtResource( 1 )]
+transform = Transform( 0.931348, 0, 0.364129, 0, 1, 0, -0.364129, 0, 0.931348, 1.39575, 0, 2.44664 )
+
+[node name="Defausse" parent="Decks" instance=ExtResource( 1 )]
+transform = Transform( 0.744847, 0, -0.667235, 0, 1, 0, 0.667235, 0, 0.744847, -0.835693, 0, -1.31812 )
+
+[node name="Cards" type="Spatial" parent="."]
+
+[node name="CardTest" parent="Cards" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0710211, 0, -5.80992 )
+
+[node name="CardTest2" parent="Cards" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.23374, -0.0596828, 2.7332 )
+
+[node name="CardTest3" parent="Cards" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.98369, 0, 4.40323 )
+
+[node name="CardTest4" parent="Cards" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.86894, 0, -6.2447 )
+
+[node name="CardTest5" parent="Cards" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 6.77964, 0, -6.2447 )
+
+[node name="CardTest6" parent="Cards" instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.289088, 0, 5.78742 )
+[connection signal="card_removed" from="Decks/Main" to="." method="_on_Main_card_removed"]
+[connection signal="card_added" from="Decks/Player1" to="." method="_on_Player_card_added"]
+[connection signal="card_added" from="Decks/Player2" to="." method="_on_Player_card_added"]
