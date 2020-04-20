@@ -1,0 +1,408 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://assets/fonts/base_font.tres" type="DynamicFontData" id=1]
+[ext_resource path="res://assets/theme/default-theme.tres" type="Theme" id=2]
+[ext_resource path="res://src/networking/hub/Hub.gd" type="Script" id=3]
+[ext_resource path="res://src/networking/hub/PlayerCard.tscn" type="PackedScene" id=4]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0, 0, 0, 0.588235 )
+
+[sub_resource type="GDScript" id=2]
+script/source = "extends HBoxContainer
+
+func _ready():
+	pass
+
+
+func _on_EnterIPAddress_pressed() -> void:
+	$EnterIPAddress.hide()
+	$IPAddress.show()
+	$IPAddress/EditIPAddress.grab_focus()
+"
+
+[sub_resource type="DynamicFont" id=3]
+size = 14
+use_filter = true
+font_data = ExtResource( 1 )
+
+[sub_resource type="GDScript" id=4]
+script/source = "extends Label
+
+var errors = []
+
+func _has(message: String) -> bool:
+	return message in errors
+
+
+# Sets an error to be displayed or not depending on a condition
+func set(message: String, displayed := true) -> void:
+	if displayed:
+		add(message)
+	else:
+		remove(message)
+
+
+# Adds an error to the list
+func add(message: String) -> void:
+	if not _has(message):
+		errors.append(message)
+		update_message()
+
+
+# Removes an error from the list
+func remove(message: String) -> void:
+	if _has(message):
+		errors.remove(errors.find(message))
+		update_message()
+
+
+func update_message() -> void:
+	text = \"\"
+	for error in errors:
+		text += error + \"\\n\"
+"
+
+[sub_resource type="GDScript" id=7]
+script/source = "extends Label
+
+func _on_Value_value_changed(value: float) -> void:
+	text = str(value)
+"
+
+[sub_resource type="Animation" id=6]
+resource_name = "Close"
+length = 0.3
+step = 0.01
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath(".:rect_scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.3 ),
+"transitions": PoolRealArray( 3.13833, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=5]
+resource_name = "Open"
+length = 0.5
+step = 0.01
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 3.03143, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ true ]
+}
+tracks/2/type = "bezier"
+tracks/2/path = NodePath(".:rect_scale:x")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 1.05, -0.25, 0, 0.105535, -0.107797, 1, -0.0301655, 0.0434407, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.35, 0.5 )
+}
+tracks/3/type = "bezier"
+tracks/3/path = NodePath(".:rect_scale:y")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.25, 0, 1.05, -0.25, 0, 0.104514, -0.107117, 1, -0.0291441, 0.0437604, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.35, 0.5 )
+}
+
+[node name="Hub" type="MarginContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 2 )
+custom_constants/margin_right = 64
+custom_constants/margin_top = 64
+custom_constants/margin_left = 64
+custom_constants/margin_bottom = 64
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Connect" type="Panel" parent="."]
+visible = false
+margin_left = 64.0
+margin_top = 64.0
+margin_right = 960.0
+margin_bottom = 536.0
+custom_styles/panel = SubResource( 1 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Connect"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -180.0
+margin_top = -100.0
+margin_right = 180.0
+margin_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+custom_constants/separation = 20
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LabelPseudo" type="Label" parent="Connect/VBoxContainer"]
+margin_right = 360.0
+margin_bottom = 22.0
+text = "Pseudo"
+align = 1
+valign = 1
+
+[node name="EditPseudo" type="LineEdit" parent="Connect/VBoxContainer"]
+margin_top = 42.0
+margin_right = 360.0
+margin_bottom = 64.0
+align = 1
+max_length = 24
+caret_blink = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Connect/VBoxContainer"]
+margin_top = 84.0
+margin_right = 360.0
+margin_bottom = 106.0
+custom_constants/separation = 15
+script = SubResource( 2 )
+
+[node name="Host" type="Button" parent="Connect/VBoxContainer/HBoxContainer"]
+margin_right = 172.0
+margin_bottom = 22.0
+size_flags_horizontal = 3
+text = "Host"
+
+[node name="EnterIPAddress" type="Button" parent="Connect/VBoxContainer/HBoxContainer"]
+margin_left = 187.0
+margin_right = 360.0
+margin_bottom = 22.0
+size_flags_horizontal = 3
+text = "Join"
+
+[node name="IPAddress" type="HBoxContainer" parent="Connect/VBoxContainer/HBoxContainer"]
+visible = false
+margin_left = 250.0
+margin_right = 360.0
+margin_bottom = 22.0
+size_flags_horizontal = 3
+
+[node name="EditIPAddress" type="LineEdit" parent="Connect/VBoxContainer/HBoxContainer/IPAddress"]
+margin_right = 86.0
+margin_bottom = 22.0
+size_flags_horizontal = 3
+placeholder_text = "IP Address"
+placeholder_alpha = 0.5
+
+[node name="Join" type="Button" parent="Connect/VBoxContainer/HBoxContainer/IPAddress"]
+margin_left = 90.0
+margin_right = 110.0
+margin_bottom = 22.0
+text = ">"
+
+[node name="Errors" type="Label" parent="Connect/VBoxContainer"]
+margin_top = 126.0
+margin_right = 360.0
+margin_bottom = 152.0
+custom_fonts/font = SubResource( 3 )
+custom_colors/font_color = Color( 1, 0.333333, 0.133333, 1 )
+align = 1
+autowrap = true
+script = SubResource( 4 )
+
+[node name="Room" type="Panel" parent="."]
+margin_left = 64.0
+margin_top = 64.0
+margin_right = 960.0
+margin_bottom = 536.0
+custom_styles/panel = SubResource( 1 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Room"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_scale = Vector2( 1.00162, 1 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/separation = 15
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Players" type="MarginContainer" parent="Room/HBoxContainer"]
+margin_right = 440.0
+margin_bottom = 472.0
+size_flags_horizontal = 3
+custom_constants/margin_right = 64
+custom_constants/margin_top = 64
+custom_constants/margin_left = 64
+custom_constants/margin_bottom = 64
+
+[node name="ColorRect" type="ColorRect" parent="Room/HBoxContainer/Players"]
+margin_left = 64.0
+margin_top = 64.0
+margin_right = 376.0
+margin_bottom = 408.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="Scroll" type="ScrollContainer" parent="Room/HBoxContainer/Players"]
+margin_left = 64.0
+margin_top = 64.0
+margin_right = 376.0
+margin_bottom = 408.0
+scroll_horizontal_enabled = false
+
+[node name="List" type="VBoxContainer" parent="Room/HBoxContainer/Players/Scroll"]
+margin_right = 128.0
+margin_bottom = 74.0
+
+[node name="PlayerCard" parent="Room/HBoxContainer/Players/Scroll/List" instance=ExtResource( 4 )]
+anchor_right = 0.0
+margin_right = 128.0
+margin_bottom = 22.0
+
+[node name="PlayerCard5" parent="Room/HBoxContainer/Players/Scroll/List" instance=ExtResource( 4 )]
+anchor_right = 0.0
+margin_top = 26.0
+margin_right = 128.0
+margin_bottom = 48.0
+
+[node name="PlayerCard6" parent="Room/HBoxContainer/Players/Scroll/List" instance=ExtResource( 4 )]
+anchor_right = 0.0
+margin_top = 52.0
+margin_right = 128.0
+margin_bottom = 74.0
+
+[node name="Parameters" type="MarginContainer" parent="Room/HBoxContainer"]
+margin_left = 455.0
+margin_right = 896.0
+margin_bottom = 472.0
+size_flags_horizontal = 3
+custom_constants/margin_right = 64
+custom_constants/margin_top = 64
+custom_constants/margin_left = 64
+custom_constants/margin_bottom = 64
+
+[node name="ColorRect" type="ColorRect" parent="Room/HBoxContainer/Parameters"]
+margin_left = 64.0
+margin_top = 64.0
+margin_right = 377.0
+margin_bottom = 408.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Room/HBoxContainer/Parameters"]
+margin_left = 64.0
+margin_top = 64.0
+margin_right = 377.0
+margin_bottom = 408.0
+
+[node name="MaxPlayers" type="HBoxContainer" parent="Room/HBoxContainer/Parameters/VBoxContainer"]
+margin_right = 313.0
+margin_bottom = 22.0
+
+[node name="Label" type="Label" parent="Room/HBoxContainer/Parameters/VBoxContainer/MaxPlayers"]
+margin_right = 92.0
+margin_bottom = 22.0
+text = "Max players :"
+
+[node name="Value" type="HSlider" parent="Room/HBoxContainer/Parameters/VBoxContainer/MaxPlayers"]
+margin_left = 96.0
+margin_right = 293.0
+margin_bottom = 22.0
+size_flags_horizontal = 3
+min_value = 2.0
+max_value = 8.0
+value = 2.0
+rounded = true
+
+[node name="ValueLabel" type="Label" parent="Room/HBoxContainer/Parameters/VBoxContainer/MaxPlayers"]
+margin_left = 297.0
+margin_right = 313.0
+margin_bottom = 22.0
+text = "2"
+script = SubResource( 7 )
+
+[node name="Expert" type="HBoxContainer" parent="Room/HBoxContainer/Parameters/VBoxContainer"]
+margin_top = 26.0
+margin_right = 313.0
+margin_bottom = 50.0
+
+[node name="Label" type="Label" parent="Room/HBoxContainer/Parameters/VBoxContainer/Expert"]
+margin_top = 1.0
+margin_right = 92.0
+margin_bottom = 23.0
+text = "Expert rules :"
+
+[node name="Value" type="CheckBox" parent="Room/HBoxContainer/Parameters/VBoxContainer/Expert"]
+margin_left = 96.0
+margin_right = 313.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+
+[node name="Start" type="Button" parent="Room/HBoxContainer/Parameters/VBoxContainer"]
+margin_top = 54.0
+margin_right = 313.0
+margin_bottom = 76.0
+size_flags_stretch_ratio = 0.0
+text = "Start"
+
+[node name="Animator" type="AnimationPlayer" parent="."]
+anims/Close = SubResource( 6 )
+anims/Open = SubResource( 5 )
+[connection signal="focus_exited" from="Connect/VBoxContainer/EditPseudo" to="." method="_on_EditPseudo_focus_exited"]
+[connection signal="pressed" from="Connect/VBoxContainer/HBoxContainer/Host" to="." method="_on_Host_pressed"]
+[connection signal="pressed" from="Connect/VBoxContainer/HBoxContainer/EnterIPAddress" to="Connect/VBoxContainer/HBoxContainer" method="_on_EnterIPAddress_pressed"]
+[connection signal="focus_exited" from="Connect/VBoxContainer/HBoxContainer/IPAddress/EditIPAddress" to="." method="_on_EditIPAddress_focus_exited"]
+[connection signal="pressed" from="Connect/VBoxContainer/HBoxContainer/IPAddress/Join" to="." method="_on_Join_pressed"]
+[connection signal="value_changed" from="Room/HBoxContainer/Parameters/VBoxContainer/MaxPlayers/Value" to="Room/HBoxContainer/Parameters/VBoxContainer/MaxPlayers/ValueLabel" method="_on_Value_value_changed"]

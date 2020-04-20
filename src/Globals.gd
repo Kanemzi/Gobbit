@@ -11,3 +11,13 @@ const CARD_TEXTURES_PATH := "res://assets/textures/cards/"
 const CARD_TEXTURES_EXT := ".png"
 
 const CARD_MESH_HEIGHT := 0.005
+
+
+
+# strings for UI
+const HUB_ERROR_PSEUDO_EMPTY_MESSAGE := "You must specify a pseudo."
+const HUB_ERROR_IP_ADDRESS_EMPTY_MESSAGE := "You must specify an IP address."
+
+
+
+const NETWORK_PORT := 60817
