@@ -22,7 +22,7 @@ enum CardBackType {
 	REVERSE_CHAIN
 }
 
-const CARD_SCENE : PackedScene = preload("res://src/card/Card.tscn")
+const CardScene : PackedScene = preload("res://src/card/Card.tscn")
 const CARD_DECK_PATH := "res://data/deck.json"
 
 # card textures cache
@@ -47,7 +47,7 @@ func generate_official_deck() -> Array:
 
 # Creates a card
 func generate_card(colors: Array, front_type: int, back_type: int) -> Card:
-	var card : Card = CARD_SCENE.instance()
+	var card : Card = CardScene.instance()
 	card.colors = colors
 	card.front_type = front_type
 	card.back_type = back_type
@@ -57,7 +57,7 @@ func generate_card(colors: Array, front_type: int, back_type: int) -> Card:
 
 # Creates a random card
 func generate_random_card() -> Card:
-	var card : Card = CARD_SCENE.instance()
+	var card : Card = CardScene.instance()
 	card.colors = get_random_card_colors()
 	card.front_type = get_random_card_front_type()
 	card.back_type = get_random_card_back_type()

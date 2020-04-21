@@ -18,10 +18,16 @@ _global_script_classes=[ {
 "class": "Deck",
 "language": "GDScript",
 "path": "res://src/deck/Deck.gd"
+}, {
+"base": "Node",
+"class": "DecksManager",
+"language": "GDScript",
+"path": "res://src/deck/DecksManager.gd"
 } ]
 _global_script_class_icons={
 "Card": "",
-"Deck": ""
+"Deck": "",
+"DecksManager": ""
 }
 
 [application]
@@ -34,10 +40,15 @@ config/icon="res://gobbit-icon.png"
 
 CardFactory="*res://src/card/CardFactory.gd"
 Globals="*res://src/Globals.gd"
+NetworkManager="*res://src/networking/NetworkManager.gd"
 
 [display]
 
 window/size/always_on_top=true
+
+[editor_plugins]
+
+enabled=PoolStringArray( "todo" )
 
 [rendering]
 

@@ -6,6 +6,7 @@ class_name Deck
 signal card_removed(card, position) # Triggered when a card is removed from the deck
 signal card_added(card) # Triggered when one or more cards are added to the deck
 signal deck_merged # Triggered when a deck is successfully merged into this deck
+signal deck_shuffled # Triggered when the deck is successfully shuffled
 
 onready var cards := $Cards
 
@@ -111,13 +112,16 @@ func merge_deck_on_bottom(other: Deck) -> void:
 	emit_signal("deck_merged")
 
 
-#func _on_Deck_mouse_entered() -> void:
-#	print("entered ", name)
-#	$Animator.play("Hover")
-#	pass # Replace with function body.
-#
-#
-#func _on_Deck_mouse_exited() -> void:
-#	$Animator.play_backwards("Hover")
-#	print("exited ", name)
-#	pass # Replace with function body.
+# Shuffles a deck with an animation from a card order
+# When the animation is done, a deck_shuffled signal is emitted
+sync func shuffle(card_order: Array) -> void:
+	# TODO: create a shuffle animation to rearange the cards in the new order
+	emit_signal("deck_shuffled")
+
+
+# Returns a new permutation of randomly shuffled cards from the deck
+# Can be used then with the shuffle() method
+func get_shuffle_order() -> Array:
+	# TODO: only the network master should be able to shuffle it's deck
+	# TODO: implement a shuffle algorithm
+	return get_children()
