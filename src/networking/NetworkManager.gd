@@ -3,6 +3,7 @@ extends Node
 signal player_list_changed # Triggers when a players joins or quits the room
 signal connection_succeeded # Triggers when the player is connected to the server
 signal connection_failed # Triggers when the players fails to connect to the server
+signal game_started # Triggers when the game starts
 
 var pseudo := ""
 var players := {}
@@ -76,18 +77,25 @@ func unregister_player(id):
 	emit_signal("player_list_changed")
 
 
-# Initializes and starts the game
+# Starts the game
 func start_game() -> void:
 	if not get_tree().is_network_server():
 		print("You're not an admin")
 		return
 	print("Start game")
 	# TODO: Reset game scene
-	game_started = true
-	(get_tree().get_root().get_node("World/Decks") as DecksManager).create_decks(players)
 	get_tree().set_refuse_new_network_connections(true)
+	rpc("initialize_game")
 
 
+# Initializes the scene for the game to start
+sync func initialize_game() -> void:
+	emit_signal("game_started")
+	game_started = true
+	var deck_manager := get_tree().get_root().get_node("World/Decks") as DecksManager 
+	deck_manager.create_graveyard()
+	deck_manager.create_decks(players)
+	
 # Reset the room and reopen the lobby for new players
 func reset_room() -> void:
 	game_started = false

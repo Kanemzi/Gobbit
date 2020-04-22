@@ -1,4 +1,4 @@
-extends Node
+extends MarginContainer
 
 onready var errors_label := $Connect/VBoxContainer/Errors
 onready var edit_pseudo := $Connect/VBoxContainer/EditPseudo
@@ -16,7 +16,7 @@ func _ready() -> void:
 	NetworkManager.connect("connection_failed", self, "_on_connection_failed")
 	NetworkManager.connect("connection_succeeded", self, "_switch_to_room_screen")
 	NetworkManager.connect("player_list_changed", self, "_refresh_player_list")
-
+	NetworkManager.connect("game_started", self, "hide")
 
 # Triggered when the player wants to host a game
 func _on_Host_pressed() -> void:

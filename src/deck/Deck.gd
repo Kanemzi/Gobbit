@@ -10,7 +10,7 @@ signal deck_shuffled # Triggered when the deck is successfully shuffled
 
 onready var cards := $Cards
 
-var height : float # The current height
+var height : float # The current height of the deck
 
 export var face_down : bool # If the cards are hidden in the deck
 
@@ -127,7 +127,14 @@ sync func shuffle(card_order: Array) -> void:
 
 # Returns a new permutation of randomly shuffled cards from the deck
 # Can be used then with the shuffle() method
-master func get_shuffle_order() -> Array:
+func get_shuffle_order() -> Array:
 	var order = cards.get_children()
 	order.shuffle()
 	return order
+
+
+# Removes all the cards from the deck
+func clear() -> void:
+	for card in cards.get_children():
+		cards.remove_child(card)
+		height = 0

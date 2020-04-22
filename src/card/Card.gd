@@ -19,10 +19,10 @@ func _physics_process(delta: float) -> void:
 # card after the animation. Otherwise, the position will be relative to the card
 # parent (the deck in general)
 func move_to(position: Vector3, relative := false) -> void:
-	var current_position = global_transform.origin if relative else transform.origin
+	var current_position = (transform if relative else global_transform).origin
 	move_tween.interpolate_property(self, 
 			("" if relative else "global_") + "transform:origin", 
-			current_position, position, 
+			current_position, position,
 			0.3, Tween.TRANS_CUBIC, Tween.EASE_OUT)
 	move_tween.start()
 

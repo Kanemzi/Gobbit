@@ -212,6 +212,7 @@ size_flags_horizontal = 3
 margin_right = 86.0
 margin_bottom = 22.0
 size_flags_horizontal = 3
+text = "127.0.0.1"
 placeholder_text = "IP Address"
 placeholder_alpha = 0.5
 

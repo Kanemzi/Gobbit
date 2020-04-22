@@ -24,3 +24,12 @@ const HUB_CONNECTION_ERROR_MESSAGE := "Can't connect to the server"
 const NETWORK_PORT := 60817
 const DEFAULT_MAX_PLAYERS := 4
 const MAX_PLAYERS := 8
+
+
+
+# Gameplay
+
+# Placement of the cards on the table little distances means that
+# it's easier for the players to aims at the cards
+const SAFE_DECK_DISTANCE_FROM_CENTER := 3.5 # Player cards distance from the center of the table
+const PLAYED_DECK_DISTANCE_FROM_CENTER := 2 # Player played cards distance from the center of the table

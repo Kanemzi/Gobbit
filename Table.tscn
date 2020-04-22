@@ -7,18 +7,30 @@
 [sub_resource type="GDScript" id=1]
 script/source = "extends Spatial
 
+onready var decks_manager : DecksManager = $Decks
 onready var graveyard : Deck = $Decks/Graveyard
 var i = 0
 
 func _ready() -> void:
-	var card_list = CardFactory.generate_official_deck()
-	graveyard.init(card_list)
+#	var card_list = CardFactory.generate_official_deck()
+#	graveyard.init(card_list)
+	pass
 
 func _input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed(\"ui_accept\"):
-		var order := graveyard.get_shuffle_order()
-		graveyard.shuffle(order)
-		yield(graveyard, \"deck_shuffled\")
+		var result := graveyard.remove_card_on_top()
+		if not \"card\" in result:
+			return
+
+		$Cards.add_child(result.card)
+		result.card.global_transform.origin = result.position
+		decks_manager.player_decks[i].add_card_on_top(result.card)
+		i += 1
+		if i >= decks_manager.player_decks.size():
+			i = 0
+#		var order := graveyard.get_shuffle_order()
+#		graveyard.shuffle(order)
+#		yield(graveyard, \"deck_shuffled\")
 
 
 #func _input(event: InputEvent) -> void:
@@ -128,4 +140,4 @@ script = ExtResource( 3 )
 [node name="Cards" type="Spatial" parent="."]
 
 [node name="Hub" parent="." instance=ExtResource( 2 )]
-[connection signal="card_removed" from="Decks/Graveyard" to="." method="_on_Main_card_removed"]
+visible = true

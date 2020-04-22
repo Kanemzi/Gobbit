@@ -77,9 +77,8 @@ __meta__ = {
 
 [node name="Glow" type="SpotLight" parent="."]
 transform = Transform( 1, 0, 0, 0, -1.62921e-07, 1, 0, -1, -1.62921e-07, 0, 0.1, 0 )
-visible = false
 layers = 2
-light_energy = 0.0
+light_energy = 5.0
 spot_range = 1.03628
 spot_angle = 90.0
 spot_angle_attenuation = 68.5932
