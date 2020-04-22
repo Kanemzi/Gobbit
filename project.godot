@@ -42,10 +42,6 @@ CardFactory="*res://src/card/CardFactory.gd"
 Globals="*res://src/Globals.gd"
 NetworkManager="*res://src/networking/NetworkManager.gd"
 
-[display]
-
-window/size/always_on_top=true
-
 [editor_plugins]
 
 enabled=PoolStringArray( "todo" )

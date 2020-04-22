@@ -14,7 +14,13 @@ func _ready() -> void:
 	var card_list = CardFactory.generate_official_deck()
 	graveyard.init(card_list)
 
-#
+func _input(event: InputEvent) -> void:
+	if Input.is_action_just_pressed(\"ui_accept\"):
+		var order := graveyard.get_shuffle_order()
+		graveyard.shuffle(order)
+		yield(graveyard, \"deck_shuffled\")
+
+
 #func _input(event: InputEvent) -> void:
 #	if Input.is_action_just_pressed(\"ui_accept\"):
 #		var result := deck.remove_card_on_top()

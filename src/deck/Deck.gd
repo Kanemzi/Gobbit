@@ -115,13 +115,19 @@ func merge_deck_on_bottom(other: Deck) -> void:
 # Shuffles a deck with an animation from a card order
 # When the animation is done, a deck_shuffled signal is emitted
 sync func shuffle(card_order: Array) -> void:
+	var i = 0
+	for card in card_order:
+		cards.move_child(card, i)
+		card.rotate(Vector3.UP, rand_range(-0.05, 0.05))
+		card.shuffle_to(Globals.CARD_MESH_HEIGHT * i, i % 2)
+		i += 1
 	# TODO: create a shuffle animation to rearange the cards in the new order
 	emit_signal("deck_shuffled")
 
 
 # Returns a new permutation of randomly shuffled cards from the deck
 # Can be used then with the shuffle() method
-func get_shuffle_order() -> Array:
-	# TODO: only the network master should be able to shuffle it's deck
-	# TODO: implement a shuffle algorithm
-	return get_children()
+master func get_shuffle_order() -> Array:
+	var order = cards.get_children()
+	order.shuffle()
+	return order
