@@ -16,7 +16,7 @@ func _ready() -> void:
 	NetworkManager.connect("connection_failed", self, "_on_connection_failed")
 	NetworkManager.connect("connection_succeeded", self, "_switch_to_room_screen")
 	NetworkManager.connect("player_list_changed", self, "_refresh_player_list")
-	NetworkManager.connect("game_started", self, "hide")
+	NetworkManager.connect("game_started", self, "_on_game_started")
 
 # Triggered when the player wants to host a game
 func _on_Host_pressed() -> void:
@@ -60,6 +60,11 @@ func _on_connection_failed() -> void:
 	$Room.hide()
 	
 	errors_label.add(Globals.HUB_CONNECTION_ERROR_MESSAGE)
+
+
+# Triggered when the game starts
+func _on_game_started() -> void:
+	$Animator.play("Close")
 
 
 # Refreshs the lists of players in the room lobby

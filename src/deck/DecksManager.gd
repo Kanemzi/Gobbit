@@ -5,7 +5,7 @@ const DeckScene : PackedScene = preload("res://src/deck/Deck.tscn")
 
 var card_list := CardFactory.generate_official_deck()
 
-onready var graveyard := $Graveyard
+onready var graveyard : Deck = $Graveyard
 
 # Instanciates the decks for all players passed in parameter
 func create_decks(players: Dictionary) -> void:
@@ -36,6 +36,8 @@ func create_decks(players: Dictionary) -> void:
 		players[id].played_cards = weakref(played_cards)
 		deck.name = "deck_" + str(id)
 		played_cards.name = "played_cards_" + str(id)
+		deck.set_network_master(id)
+		
 		add_child(deck)
 		add_child(played_cards)
 		deck.look_at(Vector3.ZERO, Vector3.UP)

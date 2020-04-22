@@ -52,6 +52,13 @@ func generate_card(colors: Array, front_type: int, back_type: int) -> Card:
 	card.front_type = front_type
 	card.back_type = back_type
 	card.get_node("Mesh").update_texture(card.colors, card.front_type, card.back_type)
+
+	var name := ""
+	for color in colors:
+		name += Globals.CARD_COLOR_NAMES[color] + "_"
+	name += Globals.CARD_FRONT_TYPE_NAMES[front_type] + "_" + str(back_type)
+	card.name = name
+	
 	return card as Card
 
 

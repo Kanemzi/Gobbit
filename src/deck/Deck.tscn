@@ -80,8 +80,9 @@ __meta__ = {
 
 [node name="Glow" type="SpotLight" parent="."]
 transform = Transform( 1, 0, 0, 0, -1.62921e-07, 1, 0, -1, -1.62921e-07, 0, 0.1, 0 )
+visible = false
 layers = 2
-light_energy = 5.0
+light_energy = 0.0
 spot_range = 1.03628
 spot_angle = 90.0
 spot_angle_attenuation = 68.5932
@@ -94,18 +95,25 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 flip_v = true
 billboard = 1
 texture = SubResource( 3 )
+__meta__ = {
+"_editor_description_": "For debug purposes"
+}
 
 [node name="Viewport" type="Viewport" parent="."]
-size = Vector2( 100, 16 )
+size = Vector2( 200, 32 )
 transparent_bg = true
+__meta__ = {
+"_editor_description_": "For debug purposes"
+}
 
 [node name="Label" type="Label" parent="Viewport"]
 margin_right = 40.0
 margin_bottom = 14.0
-text = "Test"
+custom_colors/font_color = Color( 0, 1, 0, 1 )
 align = 1
 __meta__ = {
-"_edit_use_anchors_": false
+"_edit_use_anchors_": false,
+"_editor_description_": "For debug purposes"
 }
 [connection signal="mouse_entered" from="." to="." method="_on_Deck_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_Deck_mouse_exited"]

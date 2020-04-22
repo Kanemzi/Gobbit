@@ -3,75 +3,7 @@
 [ext_resource path="res://src/deck/Deck.tscn" type="PackedScene" id=1]
 [ext_resource path="res://src/networking/hub/Hub.tscn" type="PackedScene" id=2]
 [ext_resource path="res://src/deck/DecksManager.gd" type="Script" id=3]
-
-[sub_resource type="GDScript" id=1]
-script/source = "extends Spatial
-
-onready var decks_manager : DecksManager = $Decks
-onready var graveyard : Deck = $Decks/Graveyard
-var i = 0
-
-func _ready() -> void:
-#	var card_list = CardFactory.generate_official_deck()
-#	graveyard.init(card_list)
-	pass
-
-func _input(event: InputEvent) -> void:
-	if Input.is_action_just_pressed(\"ui_accept\"):
-		var result := graveyard.remove_card_on_top()
-		if not \"card\" in result:
-			return
-
-		$Cards.add_child(result.card)
-		result.card.global_transform.origin = result.position
-		NetworkManager.players[NetworkManager.players.keys()[i]].deck.get_ref().add_card_on_top(result.card)
-		i += 1
-		if i >= NetworkManager.players.size():
-			i = 0
-#		var order := graveyard.get_shuffle_order()
-#		graveyard.shuffle(order)
-#		yield(graveyard, \"deck_shuffled\")
-
-
-#func _input(event: InputEvent) -> void:
-#	if Input.is_action_just_pressed(\"ui_accept\"):
-#		var result := deck.remove_card_on_top()
-#		if not \"card\" in result:
-#			return
-#
-#		$Cards.add_child(result.card)
-#		result.card.global_transform.origin = result.position
-#		print(result.card.global_transform.origin)
-#		decks[i].add_card_on_top(result.card)
-#		i = 1 - i
-#
-#	if Input.is_action_just_pressed(\"ui_up\"):
-#		var result : Dictionary = decks[0].remove_card_on_top()
-#		if not result.has(\"card\"):
-#			return
-#		$Cards.add_child(result.card)
-#		result.card.global_transform.origin = result.position
-#		defausse.add_card_on_top(result.card)
-#
-#	if Input.is_action_just_pressed(\"ui_left\"):
-#		if $Cards.get_child_count() == 0:
-#			return
-#		var card = $Cards.get_child(randi() % $Cards.get_child_count())
-#		deck.add_card_on_top(card)
-#
-#	if Input.is_action_just_pressed(\"ui_right\") and decks[1]:
-#		decks[0].merge_deck_on_bottom(decks[1])
-#
-#
-#func _on_Player_card_added() -> void:
-#	var card = deck.get_card_on_top()
-#	if card == null:
-#		return
-#	print(\"add: \", card)
-#	print(card.global_transform.origin)
-#	decks[i].add_card_on_top(card)
-#	i = 1 - i
-"
+[ext_resource path="res://src/GameManager.gd" type="Script" id=4]
 
 [sub_resource type="GDScript" id=2]
 script/source = "extends Spatial
@@ -99,8 +31,8 @@ height = 1.0
 [sub_resource type="BoxShape" id=6]
 extents = Vector3( 10, 0.5, 10 )
 
-[node name="World" type="Spatial"]
-script = SubResource( 1 )
+[node name="GameManager" type="Spatial"]
+script = ExtResource( 4 )
 
 [node name="Pivot" type="Spatial" parent="."]
 script = SubResource( 2 )

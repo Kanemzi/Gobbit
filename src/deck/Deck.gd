@@ -15,7 +15,7 @@ var height : float # The current height of the deck
 export var face_down : bool # If the cards are hidden in the deck
 
 func _ready() -> void:
-	$Viewport/Label.text = name
+	$Viewport/Label.text = name # TODO: Remove when debugging done
 	height = 0.0
 
 
@@ -114,23 +114,28 @@ func merge_deck_on_bottom(other: Deck) -> void:
 
 
 # Shuffles a deck with an animation from a card order
+# card_order contains the card names in the wanted order
 # When the animation is done, a deck_shuffled signal is emitted
 sync func shuffle(card_order: Array) -> void:
 	var i = 0
-	for card in card_order:
+	for name in card_order:
+		var card = cards.get_node(name)
 		cards.move_child(card, i)
 		card.rotate(Vector3.UP, rand_range(-0.05, 0.05))
 		card.shuffle_to(Globals.CARD_MESH_HEIGHT * i, i % 2)
 		i += 1
-	# TODO: create a shuffle animation to rearange the cards in the new order
 	emit_signal("deck_shuffled")
 
 
 # Returns a new permutation of randomly shuffled cards from the deck
+# The result is an array of card names in the shuffle order
 # Can be used then with the shuffle() method
 func get_shuffle_order() -> Array:
-	var order = cards.get_children()
-	order.shuffle()
+	var shuffled := cards.get_children()
+	var order := []
+	shuffled.shuffle()
+	for card in shuffled:
+		order.append(card.name)
 	return order
 
 

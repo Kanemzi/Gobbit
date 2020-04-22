@@ -130,7 +130,6 @@ tracks/3/keys = {
 }
 
 [node name="Hub" type="MarginContainer"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 theme = ExtResource( 2 )

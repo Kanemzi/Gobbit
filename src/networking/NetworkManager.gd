@@ -9,6 +9,9 @@ var pseudo := ""
 var players := {}
 var game_started := false
 
+# Players that have instantiated the scene for the game
+var ready_players := []
+
 func _ready():
 	get_tree().connect("network_peer_connected", self, "_player_connected")
 	get_tree().connect("network_peer_disconnected", self,"_player_disconnected")
@@ -55,7 +58,8 @@ func join_room(pseudo, ip) -> void:
 # Called when the client is connected to the server
 func _connected():
 	# Add the client to it's local player list
-	players[get_tree().get_network_unique_id()] = pseudo
+	var id = get_tree().get_network_unique_id()
+	players[id] = Player.new(id, pseudo)
 	emit_signal("connection_succeeded")
 
 
@@ -93,11 +97,31 @@ func start_game() -> void:
 sync func initialize_game() -> void:
 	emit_signal("game_started")
 	game_started = true
-	var deck_manager := get_tree().get_root().get_node("World/Decks") as DecksManager 
+	var deck_manager := get_tree().get_root().get_node("GameManager/Decks") as DecksManager 
 	deck_manager.create_graveyard()
 	deck_manager.create_decks(players)
 	
+	if get_tree().is_network_server():
+		set_player_ready(1)
+	else:
+		rpc_id(1, "set_player_ready", get_tree().get_network_unique_id())
+
+
 # Reset the room and reopen the lobby for new players
 func reset_room() -> void:
 	game_started = false
 	get_tree().set_refuse_new_network_connections(false)
+
+
+# Sets a player ready
+# If all the players are ready, the game starts
+# Only the server can run this function
+remote func set_player_ready(id: int) -> void:
+	print("new ready : ", ready_players)
+	if not get_tree().is_network_server():
+		return
+	if not id in ready_players:
+		ready_players.append(id)
+	if ready_players.size() == players.size():
+		var gm = get_tree().get_root().get_node("GameManager") as GameManager
+		gm.rpc("start")
