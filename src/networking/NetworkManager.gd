@@ -40,7 +40,8 @@ func host_room(pseudo) -> void:
 	host.create_server(Globals.NETWORK_PORT, Globals.MAX_PLAYERS)
 	get_tree().set_network_peer(host)
 	# Add the server to it's local player list
-	players[get_tree().get_network_unique_id()] = pseudo
+	var id = get_tree().get_network_unique_id()
+	players[id] = Player.new(id, pseudo)
 
 
 # Join a room hosted on a certain ip address
@@ -67,7 +68,7 @@ func _connection_failed():
 # Registers a new player in the room
 remote func register_player(pseudo):
 	var id = get_tree().get_rpc_sender_id()
-	players[id] = pseudo
+	players[id] = Player.new(id, pseudo)
 	emit_signal("player_list_changed")
 
 

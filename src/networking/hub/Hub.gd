@@ -76,7 +76,7 @@ func _refresh_player_list() -> void:
 	
 	for player in players:
 		var card = preload("res://src/networking/hub/PlayerCard.tscn").instance()
-		card.get_node("Label").text = player
+		card.get_node("Label").text = player.pseudo
 		player_list.add_child(card)
 
 

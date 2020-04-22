@@ -23,11 +23,17 @@ _global_script_classes=[ {
 "class": "DecksManager",
 "language": "GDScript",
 "path": "res://src/deck/DecksManager.gd"
+}, {
+"base": "Node",
+"class": "Player",
+"language": "GDScript",
+"path": "res://src/networking/Player.gd"
 } ]
 _global_script_class_icons={
 "Card": "",
 "Deck": "",
-"DecksManager": ""
+"DecksManager": "",
+"Player": ""
 }
 
 [application]
