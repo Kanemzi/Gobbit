@@ -31,5 +31,5 @@ const MAX_PLAYERS := 8
 
 # Placement of the cards on the table little distances means that
 # it's easier for the players to aims at the cards
-const SAFE_DECK_DISTANCE_FROM_CENTER := 3.5 # Player cards distance from the center of the table
-const PLAYED_DECK_DISTANCE_FROM_CENTER := 2 # Player played cards distance from the center of the table
+const DECK_DISTANCE_FROM_CENTER := 3.5 # Player cards distance from the center of the table
+const PLAYED_CARDS_DISTANCE_FROM_CENTER := 2 # Player played cards distance from the center of the table

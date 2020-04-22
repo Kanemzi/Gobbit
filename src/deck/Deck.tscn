@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://src/deck/Deck.gd" type="Script" id=1]
 
@@ -62,6 +62,9 @@ tracks/4/keys = {
 "values": [ false, true ]
 }
 
+[sub_resource type="ViewportTexture" id=3]
+viewport_path = NodePath("Viewport")
+
 [node name="Deck" type="Area"]
 script = ExtResource( 1 )
 
@@ -85,5 +88,24 @@ spot_angle_attenuation = 68.5932
 
 [node name="Animator" type="AnimationPlayer" parent="."]
 anims/Hover = SubResource( 2 )
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
+flip_v = true
+billboard = 1
+texture = SubResource( 3 )
+
+[node name="Viewport" type="Viewport" parent="."]
+size = Vector2( 100, 16 )
+transparent_bg = true
+
+[node name="Label" type="Label" parent="Viewport"]
+margin_right = 40.0
+margin_bottom = 14.0
+text = "Test"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="mouse_entered" from="." to="." method="_on_Deck_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_Deck_mouse_exited"]

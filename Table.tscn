@@ -24,9 +24,9 @@ func _input(event: InputEvent) -> void:
 
 		$Cards.add_child(result.card)
 		result.card.global_transform.origin = result.position
-		decks_manager.player_decks[i].add_card_on_top(result.card)
+		NetworkManager.players[NetworkManager.players.keys()[i]].deck.get_ref().add_card_on_top(result.card)
 		i += 1
-		if i >= decks_manager.player_decks.size():
+		if i >= NetworkManager.players.size():
 			i = 0
 #		var order := graveyard.get_shuffle_order()
 #		graveyard.shuffle(order)

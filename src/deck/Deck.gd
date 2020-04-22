@@ -15,6 +15,7 @@ var height : float # The current height of the deck
 export var face_down : bool # If the cards are hidden in the deck
 
 func _ready() -> void:
+	$Viewport/Label.text = name
 	height = 0.0
 
 
