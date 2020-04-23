@@ -12,7 +12,8 @@ func _ready():
 	pass
 
 func _physics_process(delta: float) -> void:
-	rotate(Vector3.UP, delta * 0.1)
+#	rotate(Vector3.UP, delta * 0.1)
+	pass
 "
 
 [sub_resource type="Environment" id=3]
@@ -72,4 +73,3 @@ script = ExtResource( 3 )
 [node name="Cards" type="Spatial" parent="."]
 
 [node name="Hub" parent="." instance=ExtResource( 2 )]
-visible = true

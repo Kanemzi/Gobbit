@@ -12,6 +12,8 @@ var game_started := false
 # Players that have instantiated the scene for the game
 var ready_players := []
 
+var turn_order := []
+
 func _ready():
 	get_tree().connect("network_peer_connected", self, "_player_connected")
 	get_tree().connect("network_peer_disconnected", self,"_player_disconnected")
@@ -90,22 +92,27 @@ func start_game() -> void:
 	print("Start game")
 	# TODO: Reset game scene
 	get_tree().set_refuse_new_network_connections(true)
+	
 	rpc("initialize_game")
 
 
 # Initializes the scene for the game to start
 sync func initialize_game() -> void:
-	emit_signal("game_started")
+	
+	turn_order = players.values()
+	turn_order.sort_custom(Player, "compare")
+	
 	game_started = true
 	var deck_manager := get_tree().get_root().get_node("GameManager/Decks") as DecksManager 
 	deck_manager.create_graveyard()
-	deck_manager.create_decks(players)
+	deck_manager.create_decks()
 	
 	if get_tree().is_network_server():
 		set_player_ready(1)
 	else:
 		rpc_id(1, "set_player_ready", get_tree().get_network_unique_id())
 
+	emit_signal("game_started")
 
 # Reset the room and reopen the lobby for new players
 func reset_room() -> void:

@@ -12,3 +12,7 @@ var played_cards : WeakRef # A reference to the deck of played cards
 func _init(id: int, pseudo: String) -> void:
 	self.id = id
 	self.pseudo = pseudo
+
+
+static func compare(a: Player, b: Player) -> bool:
+	return a.id < b.id
