@@ -5,10 +5,13 @@ signal connection_succeeded # Triggers when the player is connected to the serve
 signal connection_failed # Triggers when the players fails to connect to the server
 signal game_started # Triggers when the game starts
 
+const NetworkCheckpoints := preload("res://src/networking/NetworkCheckpoints.gd")
+
 var pseudo := ""
 var players := {}
 var game_started := false
 
+var net_cp : NetworkCheckpoints
 # Players that have instantiated the scene for the game
 var ready_players := []
 
@@ -98,6 +101,12 @@ func start_game() -> void:
 
 # Initializes the scene for the game to start
 sync func initialize_game() -> void:
+	# Initialize the checkpoint manager
+	net_cp = NetworkCheckpoints.new(get_tree(), players.size())
+	add_child(net_cp)
+	if get_tree().is_network_server():
+		net_cp.create_checkpoint("scene_ready")
+		net_cp.connect("scene_ready", self, "_on_everyone_ready")
 	
 	turn_order = players.values()
 	turn_order.sort_custom(Player, "compare")
@@ -107,12 +116,24 @@ sync func initialize_game() -> void:
 	deck_manager.create_graveyard()
 	deck_manager.create_decks()
 	
-	if get_tree().is_network_server():
-		set_player_ready(1)
-	else:
-		rpc_id(1, "set_player_ready", get_tree().get_network_unique_id())
+	net_cp.validate("scene_ready")
+	
+#	if get_tree().is_network_server():
+#		set_player_ready(1)
+#	else:
+#		rpc_id(1, "set_player_ready", get_tree().get_network_unique_id())
 
 	emit_signal("game_started")
+
+
+func _on_everyone_ready() -> void:
+	if not get_tree().is_network_server():
+		return
+	print("is validated : ", net_cp.is_validated("scene_ready"))
+	print("EVERYONE IS READY")
+	var gm = get_tree().get_root().get_node("GameManager") as GameManager
+	gm.rpc("start")
+
 
 # Reset the room and reopen the lobby for new players
 func reset_room() -> void:

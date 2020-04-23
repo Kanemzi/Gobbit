@@ -9,10 +9,6 @@ onready var graveyard : Deck = $Graveyard
 
 # Instanciates the decks for all players passed in parameter
 func create_decks() -> void:
-	var n := ""
-	for p in NetworkManager.turn_order:
-		n += str(p.id) + " "
-	OS.alert(n, "order")
 	var player_count = NetworkManager.turn_order.size()
 	var player_distances = 2 * PI / player_count # Angle between players
 	

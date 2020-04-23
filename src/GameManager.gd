@@ -45,7 +45,7 @@ sync func start() -> void:
 			var id : int = NetworkManager.turn_order[index].id
 			var player_deck : Deck = NetworkManager.turn_order[index].deck.get_ref()
 			rpc("distribute_card_from_graveyard", id)
-			yield(get_tree().create_timer(0.6), "timeout")
+			yield(get_tree().create_timer(0.15), "timeout")
 		
 		yield(get_tree().create_timer(1), "timeout")
 		rpc("show_first_player")
