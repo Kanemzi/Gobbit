@@ -9,9 +9,7 @@ var colors: Array
 var front_type: int
 var back_type: int
 var deck = null # Can't static type the variable because of cyclic dependency
-
-func _physics_process(delta: float) -> void:
-	pass
+var face_down := true # The card is face down
 
 
 # Smoothely moves the card to a global position
@@ -25,6 +23,7 @@ func move_to(position: Vector3, relative := false) -> void:
 			current_position, position,
 			0.3, Tween.TRANS_CUBIC, Tween.EASE_OUT)
 	move_tween.start()
+	$Animator.play("Distribute")
 
 
 # Moves the card to a specific height with a shuffle animation
@@ -36,6 +35,7 @@ func shuffle_to(height: float, direction: int) -> void:
 	yield(get_tree().create_timer(randf() * 0.15), "timeout")
 	$Animator.play("ShuffleLeft" if direction == 0 else "ShuffleRight")
 
+
 # Smoothely moves the card up
 func move_up(distance: float) -> void:
 	move_tween.interpolate_property(self, "transform:origin:y", transform.origin.y, transform.origin.y + distance, 0.3, Tween.TRANS_CUBIC, Tween.EASE_OUT)
@@ -44,3 +44,33 @@ func move_up(distance: float) -> void:
 
 func _on_MoveTween_tween_completed(object: Object, key: NodePath) -> void:
 	emit_signal("move_finished", self)
+
+
+# Returns true if the card value is higher than the other, false otherwise
+func beats(other: Card) -> bool:
+	return front_type > other.front_type
+
+
+# Flips the card up or down with a 0.3s animation
+func flip(face_down : bool) -> void:
+	if face_down:
+		$Animator.play("FlipFaceDown")
+	else:
+		$Animator.play("FlipFaceUp")
+	self.face_down = face_down
+
+
+# Moves the card aside to reveal the next card of the deck
+func reveal_next(reverse := false) -> void:
+	if reverse:
+		$Animator.play_backwards("RevealNext")
+	else:
+		$Animator.play("RevealNext")
+
+# Puts the face of the card to the bottom or to the top
+# No animation
+# The mesh is rotated so that the orientation doesn't affect other animations
+func set_face_down(face_down := true) -> void:
+	var mesh : Spatial = $Mesh as Spatial
+	mesh.transform.basis.z.angle_to( Vector3.DOWN if face_down else Vector3.UP )
+	face_down = true

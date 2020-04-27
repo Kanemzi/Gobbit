@@ -23,7 +23,7 @@ enum CardBackType {
 }
 
 const CardScene : PackedScene = preload("res://src/card/Card.tscn")
-const CARD_DECK_PATH := "res://data/deck.json"
+const CARD_DECK_PATH := "res://data/simplified.json"
 
 # card textures cache
 var card_textures := {}
@@ -40,8 +40,9 @@ func generate_official_deck() -> Array:
 	var deck_string := deck_file.get_as_text()
 	var json := JSON.parse(deck_string)
 	
-	for card in json.result.cards:
-		cards.append(generate_card(card.colors, card.type, card.back))
+	for card_data in json.result.cards:
+		var card := generate_card(card_data.colors, card_data.type, card_data.back)
+		cards.append(card)
 	
 	return cards
 

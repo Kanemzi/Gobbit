@@ -14,10 +14,14 @@ onready var animator := $Animator
 
 var height : float # The current height of the deck
 
-export var face_down : bool # If the cards are hidden in the deck
+export var face_down := true # If the cards are hidden in the deck, true by default
 
 func _ready() -> void:
-	$Viewport/Label.text = name # TODO: Remove when debugging done
+	if NetworkManager.players.has(get_tree().get_network_unique_id()):
+		var myself : Player = NetworkManager.players[get_tree().get_network_unique_id()]
+		$Viewport/Label.text = name + " " + myself.pseudo# TODO: Remove when debugging done
+	else :
+		$Viewport/Label.text = name# TODO: Remove when debugging done
 	height = 0.0
 
 
@@ -27,6 +31,7 @@ func init(card_list: Array) -> void:
 	for card in card_list:
 		cards.add_child(card)
 		card.transform.origin = Vector3.UP * height
+		card.set_face_down(face_down)
 		height += Globals.CARD_MESH_HEIGHT
 
 
@@ -49,6 +54,10 @@ sync func add_card_on_top(card: Card) -> void:
 	card.deck = self
 	card.global_transform.origin = position
 	card.move_to(global_transform.origin + Vector3.UP * height)
+	
+	if face_down != card.face_down:
+		card.flip(face_down)
+	
 	height += Globals.CARD_MESH_HEIGHT
 	
 	yield(card, "move_finished")
@@ -62,6 +71,16 @@ func get_card_on_top() -> Card:
 		return null
 		
 	var card : Card = cards.get_child(cardsNumber - 1)
+	return card
+
+
+# Returns the card on the bottom of the deck (or the n-th card from the bottom)
+func get_card_on_bottom(offset := 0) -> Card:
+	var cardsNumber = cards.get_child_count()
+	if cardsNumber == 0 or offset >= cardsNumber:
+		return null
+	
+	var card : Card = cards.get_child(offset)
 	return card
 
 
@@ -166,3 +185,4 @@ func empty() -> bool:
 # Returns the number of cards in the deck
 func size() -> int:
 	return cards.get_child_count()
+
