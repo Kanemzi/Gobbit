@@ -30,6 +30,11 @@ _global_script_classes=[ {
 "path": "res://src/GameManager.gd"
 }, {
 "base": "Node",
+"class": "GameState",
+"language": "GDScript",
+"path": "res://src/gamestates/GameState.gd"
+}, {
+"base": "Node",
 "class": "NetworkCheckpoints",
 "language": "GDScript",
 "path": "res://src/networking/NetworkCheckpoints.gd"
@@ -44,6 +49,7 @@ _global_script_class_icons={
 "Deck": "",
 "DecksManager": "",
 "GameManager": "",
+"GameState": "",
 "NetworkCheckpoints": "",
 "Player": ""
 }

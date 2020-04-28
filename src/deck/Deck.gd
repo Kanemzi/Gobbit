@@ -17,8 +17,8 @@ var height : float # The current height of the deck
 export var face_down := true # If the cards are hidden in the deck, true by default
 
 func _ready() -> void:
-	if NetworkManager.players.has(get_tree().get_network_unique_id()):
-		var myself : Player = NetworkManager.players[get_tree().get_network_unique_id()]
+	if NetworkManager.players.has(NetworkManager.peer_id):
+		var myself : Player = NetworkManager.players[NetworkManager.peer_id]
 		$Viewport/Label.text = name + " " + myself.pseudo# TODO: Remove when debugging done
 	else :
 		$Viewport/Label.text = name# TODO: Remove when debugging done
@@ -151,9 +151,16 @@ sync func shuffle(card_order: Array) -> void:
 	emit_signal("deck_shuffled")
 
 
-# Flips the deck for 3 seconds, showing the card on the bottom to other players
+# Flips the deck, showing the card on the bottom to other players
+# After the animation finished, the deck starts a floating animation
 sync func quick_flip_back() -> void:
-	animator.play("QuickShowBack")
+	animator.play("ShowBackHigh")
+	yield(animator, "animation_finished")
+	animator.play("FloatHigh")
+
+# "Unflip" the deck avec a quick_flip_back
+sync func put_back_down() -> void:
+	animator.play("PutBackDown")
 	yield(animator, "animation_finished")
 	emit_signal("deck_flipped_back")
 

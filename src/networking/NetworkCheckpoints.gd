@@ -3,10 +3,12 @@
 extends Node
 class_name NetworkCheckpoints
 
+signal validated(name, id) # Trigerred when a player validates any checkpoint
+
 var tree : SceneTree
 var total_players : int
 var active := {}
-	
+
 func _init(tree: SceneTree, n: int) -> void:
 	self.tree = tree
 	total_players = n
@@ -29,8 +31,7 @@ func reset_checkpoint(name: String) -> void:
 
 # Called by a client when he reaches a checkpoint
 func validate(name: String) -> void:
-	print("send validation")
-	rpc_id(1, "_on_validated", name, tree.get_network_unique_id())
+	rpc_id(1, "_on_validated", name, NetworkManager.peer_id)
 
 
 func is_validated(name: String) -> bool:
@@ -40,15 +41,21 @@ func is_validated(name: String) -> bool:
 	return active[name].size() >= total_players
 
 
+func has_validated(name: String, id: int) -> bool:
+	if not tree.is_network_server() \
+			or not name in active:
+		return false
+	return id in active[name]
+
+
 mastersync func _on_validated(name: String, id: int) -> void:
-	print("on validated")
 	if not tree.is_network_server() \
 			or not name in active \
 			or id in active[name]:
 		return
 	active[name].append(id)
-	print("OK ", active[name].size())
 	
+	emit_signal("validated", name, id)
 	if is_validated(name):
 		emit_signal(name)
 

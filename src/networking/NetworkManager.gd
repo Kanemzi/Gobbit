@@ -8,6 +8,8 @@ signal game_started # Triggers when the game starts
 const NetworkCheckpoints := preload("res://src/networking/NetworkCheckpoints.gd")
 
 var pseudo := ""
+var peer_id : int
+var is_server : bool
 var players := {}
 var game_started := false
 
@@ -33,7 +35,7 @@ func _player_connected(id) -> void:
 
 func _player_disconnected(id):
 	if game_started : # Disconnection during game
-		if get_tree().is_network_server():
+		if is_server:
 			pass # TODO: Handler server disconnection
 		else:
 			pass # TODO: Handler player disconnection
@@ -48,8 +50,9 @@ func host_room(pseudo) -> void:
 	host.create_server(Globals.NETWORK_PORT, Globals.MAX_PLAYERS)
 	get_tree().set_network_peer(host)
 	# Add the server to it's local player list
-	var id = get_tree().get_network_unique_id()
-	players[id] = Player.new(id, pseudo)
+	peer_id = get_tree().get_network_unique_id()
+	players[peer_id] = Player.new(peer_id, pseudo)
+	is_server = true
 
 
 # Join a room hosted on a certain ip address
@@ -58,13 +61,14 @@ func join_room(pseudo, ip) -> void:
 	var client = NetworkedMultiplayerENet.new()
 	client.create_client(ip, Globals.NETWORK_PORT)
 	get_tree().set_network_peer(client)
+	is_server = false
 
 
 # Called when the client is connected to the server
 func _connected():
 	# Add the client to it's local player list
-	var id = get_tree().get_network_unique_id()
-	players[id] = Player.new(id, pseudo)
+	peer_id = get_tree().get_network_unique_id()
+	players[peer_id] = Player.new(peer_id, pseudo)
 	emit_signal("connection_succeeded")
 
 
@@ -89,7 +93,7 @@ func unregister_player(id):
 
 # Starts the game
 func start_game() -> void:
-	if not get_tree().is_network_server():
+	if not is_server:
 		print("You're not an admin")
 		return
 	print("Start game")
@@ -104,7 +108,7 @@ sync func initialize_game() -> void:
 	# Initialize the checkpoint manager
 	net_cp = NetworkCheckpoints.new(get_tree(), players.size())
 	add_child(net_cp)
-	if get_tree().is_network_server():
+	if is_server:
 		net_cp.create_checkpoint("scene_ready")
 		net_cp.connect("scene_ready", self, "_on_everyone_ready")
 	
@@ -117,17 +121,11 @@ sync func initialize_game() -> void:
 	deck_manager.create_decks()
 	
 	net_cp.validate("scene_ready")
-	
-#	if get_tree().is_network_server():
-#		set_player_ready(1)
-#	else:
-#		rpc_id(1, "set_player_ready", get_tree().get_network_unique_id())
-
 	emit_signal("game_started")
 
 
 func _on_everyone_ready() -> void:
-	if not get_tree().is_network_server():
+	if not is_server:
 		return
 	print("is validated : ", net_cp.is_validated("scene_ready"))
 	print("EVERYONE IS READY")
@@ -146,7 +144,7 @@ func reset_room() -> void:
 # Only the server can run this function
 remote func set_player_ready(id: int) -> void:
 	print("new ready : ", ready_players)
-	if not get_tree().is_network_server():
+	if not is_server:
 		return
 	if not id in ready_players:
 		ready_players.append(id)
