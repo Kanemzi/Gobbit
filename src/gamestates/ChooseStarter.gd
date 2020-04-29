@@ -7,6 +7,9 @@ export(float) var delay_before_start := 2.0
 
 func enter(params := {}) -> void:
 	if NetworkManager.is_server:
+		NetworkManager.net_cp.connect("validated",
+				self, "one")
+		
 		NetworkManager.net_cp.connect("ready_for_first_turn",
 				self, "_all_players_ready", [], CONNECT_ONESHOT)
 	
@@ -42,9 +45,11 @@ func enter(params := {}) -> void:
 	for deck in decks:
 		deck.put_back_down()
 	
-	for deck in decks:
-		yield(deck, "deck_flipped_back")
-	
+#	for deck in decks:
+#		yield(deck, "deck_flipped_back")
+
+	yield(Coroutines.await_all(decks, "deck_flipped_back"), "completed")
+
 	# Each player shuffles it's deck
 	# to prevent counting card for the first turn
 	var deck : Deck= NetworkManager.players[NetworkManager.peer_id].deck.get_ref()
@@ -52,13 +57,19 @@ func enter(params := {}) -> void:
 	deck.rpc("shuffle", permutation)
 	
 	# Ensure all the decks are shuffled to continue
-	for deck in decks:
-		yield(deck, "deck_shuffled")
-		print("shuf deck ", deck)
+#	for deck in decks:
+#		yield(deck, "deck_shuffled")
+#		print("shuf deck ", deck)
 	
+	yield(Coroutines.await_all(decks, "deck_shuffled"), "completed")
+	
+	print("passed the check")
 	NetworkManager.net_cp.validate("ready_for_first_turn")
 
+func one(name, id) -> void:
+	print("ONE PASSED ", name, ": ", id)
 
 func _all_players_ready() -> void:
+	print("READY ALL")
 	yield(get_tree().create_timer(delay_before_start), "timeout")
-	print("ALL THE PLAYERS ARE READY TO START")
+	gm.gamestate.rpc("transition_to", "Turn", {turn=0})

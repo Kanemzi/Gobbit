@@ -65,6 +65,7 @@ config/icon="res://gobbit-icon.png"
 CardFactory="*res://src/card/CardFactory.gd"
 Globals="*res://src/Globals.gd"
 NetworkManager="*res://src/networking/NetworkManager.gd"
+Coroutines="*res://src/utils/Coroutines.gd"
 
 [display]
 

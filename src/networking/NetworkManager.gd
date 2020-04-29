@@ -12,10 +12,10 @@ var peer_id : int
 var is_server : bool
 var players := {}
 var game_started := false
+var player_count := 0
 
 var net_cp : NetworkCheckpoints
 # Players that have instantiated the scene for the game
-var ready_players := []
 
 var turn_order := []
 
@@ -114,6 +114,8 @@ sync func initialize_game() -> void:
 	
 	turn_order = players.values()
 	turn_order.sort_custom(Player, "compare")
+
+	player_count = players.size()
 	
 	game_started = true
 	var deck_manager := get_tree().get_root().get_node("GameManager/Decks") as DecksManager 
@@ -138,16 +140,3 @@ func reset_room() -> void:
 	game_started = false
 	get_tree().set_refuse_new_network_connections(false)
 
-
-# Sets a player ready
-# If all the players are ready, the game starts
-# Only the server can run this function
-remote func set_player_ready(id: int) -> void:
-	print("new ready : ", ready_players)
-	if not is_server:
-		return
-	if not id in ready_players:
-		ready_players.append(id)
-	if ready_players.size() == players.size():
-		var gm = get_tree().get_root().get_node("GameManager") as GameManager
-		gm.rpc("start")

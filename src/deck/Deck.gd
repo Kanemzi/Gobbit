@@ -124,8 +124,9 @@ func merge_deck_on_bottom(other: Deck) -> void:
 		i += 1
 	
 	# Wait for all the card to move in the deck
-	for card in other_cards:
-		yield(card, "move_finished")
+#	for card in other_cards:
+#		yield(card, "move_finished")
+	yield(Coroutines.await_all(other_cards, "move_finished"), "completed")
 
 	height += other_height
 	# Remove the other deck
@@ -145,9 +146,13 @@ sync func shuffle(card_order: Array) -> void:
 		card.rotate(Vector3.UP, rand_range(-0.05, 0.05))
 		card.shuffle_to(Globals.CARD_MESH_HEIGHT * i, i % 2)
 		i += 1
+
 	
-	for card in cards.get_children():
-		yield(card, "move_finished")
+#	for card in cds:
+#		yield(card, "move_finished")
+	yield(Coroutines.await_all(cards.get_children(), "move_finished"), "completed")
+	
+	print("deck ", self, " finished anim")
 	emit_signal("deck_shuffled")
 
 
