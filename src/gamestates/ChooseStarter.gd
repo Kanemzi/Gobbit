@@ -52,7 +52,7 @@ func enter(params := {}) -> void:
 
 	# Each player shuffles it's deck
 	# to prevent counting card for the first turn
-	var deck : Deck= NetworkManager.players[NetworkManager.peer_id].deck.get_ref()
+	var deck : Deck = NetworkManager.players[NetworkManager.peer_id].deck.get_ref()
 	var permutation = deck.get_shuffle_order()
 	deck.rpc("shuffle", permutation)
 	

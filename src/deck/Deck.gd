@@ -147,9 +147,6 @@ sync func shuffle(card_order: Array) -> void:
 		card.shuffle_to(Globals.CARD_MESH_HEIGHT * i, i % 2)
 		i += 1
 
-	
-#	for card in cds:
-#		yield(card, "move_finished")
 	yield(Coroutines.await_all(cards.get_children(), "move_finished"), "completed")
 	
 	print("deck ", self, " finished anim")
@@ -162,6 +159,7 @@ sync func quick_flip_back() -> void:
 	animator.play("ShowBackHigh")
 	yield(animator, "animation_finished")
 	animator.play("FloatHigh")
+
 
 # "Unflip" the deck avec a quick_flip_back
 sync func put_back_down() -> void:

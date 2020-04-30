@@ -132,6 +132,10 @@ tracks/3/keys = {
 [node name="Hub" type="MarginContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_left = 0.263519
+margin_top = 0.263519
+margin_right = 0.26355
+margin_bottom = 0.26355
 theme = ExtResource( 2 )
 custom_constants/margin_right = 64
 custom_constants/margin_top = 64
