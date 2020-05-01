@@ -50,20 +50,29 @@ func unhandled_input(event: InputEvent) -> void:
 	
 	var collider = mouse_ray.get_collider()
 	if event.pressed:
-		if is_turn_deck(collider):
+		if _is_turn_deck(collider):
 			rpc("start_dragging")
 	elif dragging:
 		print("dragging release from ", player_turn)
-		if is_turn_played_cards(collider):
+		if _is_turn_played_cards(collider):
 			rpc("finalize_dragging")
 			next_turn()
 		else:
 			rpc("cancel_dragging")
 
 
+func next_turn() -> void:
+	print("turn ", turn, " ended")
+	gm.gamestate.rpc("transition_to", "Turn", {turn=(turn+1)})
+
+
+func exit() -> void:
+	mouse_ray.enabled = false
+
+
 # Initiates the dragging of the top card of the deck
 sync func start_dragging() -> void:
-	var deck := get_turn_deck()
+	var deck := _get_turn_deck()
 	if deck.empty():
 		return
 	var card_transform := deck.get_card_on_top().global_transform
@@ -79,50 +88,43 @@ sync func start_dragging() -> void:
 
 # Cancels a dragging action by putting back the card on the top of the deck
 sync func cancel_dragging() -> void:
-	get_turn_deck().add_card_on_top(dragged_card.get_ref())
+	# FIXME: Don't reset the card position before replacing it
+	_get_turn_deck().add_card_on_top(dragged_card.get_ref())
 	dragged_card = null
 	dragging = false
 
 
 # Finishes the dragging of the card to the played card stack
 sync func finalize_dragging() -> void:
-	var played_cards = get_turn_played_cards()
+	var played_cards = _get_turn_played_cards()
 	played_cards.add_card_on_top(dragged_card.get_ref())
 	dragging = false
 	dragged_card = null
 
 
-# Returns the deck of the player whose turn it is.
-func get_turn_deck() -> Deck:
-	return NetworkManager.players[player_turn].deck.get_ref()
-
-
-# Returns the played cards of the player whose turn it is.
-func get_turn_played_cards() -> Deck:
-	return NetworkManager.players[player_turn].played_cards.get_ref()
-
-
-# Returns true if the deck is that of the player whose turn it is.
-func is_turn_deck(deck : Deck) -> bool:
-	return deck == NetworkManager.players[player_turn].deck.get_ref()
-
-
-# Returns true if the played cards deck is that of the player whose turn it is.
-func is_turn_played_cards(deck : Deck) -> bool:
-	return deck == NetworkManager.players[player_turn].played_cards.get_ref()
-
-
-func next_turn() -> void:
-	print("turn ", turn, " ended")
-	gm.gamestate.rpc("transition_to", "Turn", {turn=(turn+1)})
-
-
-func exit() -> void:
-	mouse_ray.enabled = false
-
-
+# Updates the position of the dragged card for all clients
 sync func move_dragged_card(position: Vector3) -> void:
 	if dragged_card == null:
 		return
 	var card : Card = dragged_card.get_ref()
 	card.move_to(position)
+
+
+# Returns the deck of the player whose turn it is.
+func _get_turn_deck() -> Deck:
+	return NetworkManager.players[player_turn].deck.get_ref()
+
+
+# Returns the played cards of the player whose turn it is.
+func _get_turn_played_cards() -> Deck:
+	return NetworkManager.players[player_turn].played_cards.get_ref()
+
+
+# Returns true if the deck is that of the player whose turn it is.
+func _is_turn_deck(deck : Deck) -> bool:
+	return deck == NetworkManager.players[player_turn].deck.get_ref()
+
+
+# Returns true if the played cards deck is that of the player whose turn it is.
+func _is_turn_played_cards(deck : Deck) -> bool:
+	return deck == NetworkManager.players[player_turn].played_cards.get_ref()
