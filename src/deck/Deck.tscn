@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://src/deck/Deck.gd" type="Script" id=1]
 [ext_resource path="res://assets/meshes/card-outline.tres" type="ArrayMesh" id=2]
@@ -174,6 +174,9 @@ tracks/2/keys = {
 "times": PoolRealArray( 0, 0.3, 0.5 )
 }
 
+[sub_resource type="ViewportTexture" id=6]
+viewport_path = NodePath("Viewport")
+
 [node name="Deck" type="Area"]
 collision_layer = 2
 collision_mask = 0
@@ -203,6 +206,32 @@ anims/FloatHigh = SubResource( 2 )
 anims/Hover = SubResource( 3 )
 anims/PutBackDown = SubResource( 4 )
 anims/ShowBackHigh = SubResource( 5 )
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
+flip_v = true
+billboard = 1
+texture = SubResource( 6 )
+__meta__ = {
+"_editor_description_": "For debug purposes"
+}
+
+[node name="Viewport" type="Viewport" parent="."]
+size = Vector2( 200, 32 )
+transparent_bg = true
+__meta__ = {
+"_editor_description_": "For debug purposes"
+}
+
+[node name="Label" type="Label" parent="Viewport"]
+margin_right = 40.0
+margin_bottom = 14.0
+custom_colors/font_color = Color( 0, 1, 0, 1 )
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": "For debug purposes"
+}
 
 [node name="Outline" type="MeshInstance" parent="."]
 mesh = ExtResource( 2 )

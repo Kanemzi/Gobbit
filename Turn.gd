@@ -2,6 +2,8 @@ extends GameState
 # The state when a player can put a card on the top of his deck
 # to play
 
+var turn_offset := 0 # Defines which player starts the game
+
 var turn : int
 var player_turn : int
 
@@ -10,14 +12,20 @@ var dragged_card : WeakRef
 
 onready var mouse_ray : RayCast = $MouseRay
 
+# BUG: When 5 or more player, mouse tracking seems to be broken
+
 func enter(params := {}) -> void:
 	assert("turn" in params)
+	
+	if "starter" in params: # Only for the first turn
+		turn_offset = NetworkManager.turn_order.find(params.starter)
+	
 	turn = params.turn
 	dragging = false
 	dragged_card = null
 	print("TURN: ", turn)
 	
-	var player_index : int = turn % NetworkManager.player_count
+	var player_index : int = (turn + turn_offset) % NetworkManager.player_count
 	player_turn = NetworkManager.turn_order[player_index].id
 	print("player : ", player_turn)
 	
@@ -26,6 +34,7 @@ func enter(params := {}) -> void:
 		mouse_ray.global_transform.origin = (gm.get_node("Pivot/Camera") as Camera).global_transform.origin
 	else:
 		mouse_ray.enabled = false
+
 
 func physics_process(delta: float) -> void:
 	# TODO: Move the dragged card smoothly
