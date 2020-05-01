@@ -73,4 +73,5 @@ func get_starter_player(deck: Deck) -> Player:
 func _all_players_ready() -> void:
 	print("READY ALL")
 	yield(get_tree().create_timer(delay_before_start), "timeout")
-	gm.gamestate.rpc("transition_to", "Turn", {turn=0, starter=starter})
+	var turn_offset = NetworkManager.turn_order.find(starter)
+	gm.gamestate.rpc("transition_to", "Turn", {turn=turn_offset, starter=starter})

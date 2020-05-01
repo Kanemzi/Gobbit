@@ -4,7 +4,7 @@ extends GameState
 
 var turn_offset := 0 # Defines which player starts the game
 
-var turn : int
+var turn : int = 0
 var player_turn : int
 
 var dragging := false # true if the player started to drag his card
@@ -17,15 +17,22 @@ onready var mouse_ray : RayCast = $MouseRay
 func enter(params := {}) -> void:
 	assert("turn" in params)
 	
-	if "starter" in params: # Only for the first turn
-		turn_offset = NetworkManager.turn_order.find(params.starter)
+	# TODO: find a cleaner way to handle turn offset
+#
+#	if "starter" in params: # Only for the first turn
+#		print("starter: ", params.starter)
+#
+#		turn += turn_offset
+#
+#	print("turn offset: ", turn_offset)
+#
 	
 	turn = params.turn
 	dragging = false
 	dragged_card = null
 	print("TURN: ", turn)
 	
-	var player_index : int = (turn + turn_offset) % NetworkManager.player_count
+	var player_index : int = (turn) % NetworkManager.player_count
 	player_turn = NetworkManager.turn_order[player_index].id
 	print("player : ", player_turn)
 	
