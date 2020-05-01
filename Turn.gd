@@ -6,50 +6,123 @@ var turn : int
 var player_turn : int
 
 var dragging := false # true if the player started to drag his card
+var dragged_card : WeakRef
 
 onready var mouse_ray : RayCast = $MouseRay
 
 func enter(params := {}) -> void:
-	print("try turn")
 	assert("turn" in params)
 	turn = params.turn
+	dragging = false
+	dragged_card = null
 	print("TURN: ", turn)
-	var player_index : int = turn % NetworkManager.player_count
-#	var index : int = i % NetworkManager.turn_order.size()
-#	var id : int = NetworkManager.turn_order[index].id
-	player_turn = NetworkManager.turn_order[player_index].id
 	
-	mouse_ray.enabled = true
-	mouse_ray.global_transform.origin = (gm.get_node("Pivot/Camera") as Camera).translation
-
+	var player_index : int = turn % NetworkManager.player_count
+	player_turn = NetworkManager.turn_order[player_index].id
+	print("player : ", player_turn)
+	
+	if NetworkManager.peer_id == player_turn:
+		mouse_ray.enabled = true
+		mouse_ray.global_transform.origin = (gm.get_node("Pivot/Camera") as Camera).global_transform.origin
+	else:
+		mouse_ray.enabled = false
 
 func physics_process(delta: float) -> void:
+	# TODO: Move the dragged card smoothly
+	if NetworkManager.peer_id != player_turn:
+		return
+	 
 	var position2D = get_viewport().get_mouse_position()
 	var p3 = (gm.get_node("Pivot/Camera") as Camera).project_ray_normal(position2D)
 	mouse_ray.cast_to = p3 * 100
+	
+	if dragging and dragged_card != null:
+		var mouse_pos = mouse_ray.get_collision_point() + Vector3.UP * 0.5
+		rpc("move_dragged_card", mouse_pos)
 
 
 func unhandled_input(event: InputEvent) -> void:
 	if not event is InputEventMouseButton or event.button_index != BUTTON_LEFT:
 		return
-		
+	
+	if NetworkManager.peer_id != player_turn:
+		return # TODO: also check for card steals at this point
+	
+	var collider = mouse_ray.get_collider()
 	if event.pressed:
-		rpc("printAll")
-		if NetworkManager.peer_id == player_turn:
-			pass
-#			rpc("next_turn")
-	else:
-		pass
+		if is_turn_deck(collider):
+			rpc("start_dragging")
+	elif dragging:
+		print("dragging release from ", player_turn)
+		if is_turn_played_cards(collider):
+			rpc("finalize_dragging")
+			next_turn()
+		else:
+			rpc("cancel_dragging")
 
 
-sync func printAll() -> void:
-	print("one clicked")
+# Initiates the dragging of the top card of the deck
+sync func start_dragging() -> void:
+	var deck := get_turn_deck()
+	if deck.empty():
+		return
+	var card_transform := deck.get_card_on_top().global_transform
+	var result := deck.remove_card_on_top()
+	if not "card" in result:
+		return
+
+	dragging = true
+	dragged_card = weakref(result.card)
+	gm.card_pool.add_child(result.card)
+	result.card.global_transform = card_transform
 
 
-sync func next_turn() -> void:
+# Cancels a dragging action by putting back the card on the top of the deck
+sync func cancel_dragging() -> void:
+	get_turn_deck().add_card_on_top(dragged_card.get_ref())
+	dragged_card = null
+	dragging = false
+
+
+# Finishes the dragging of the card to the played card stack
+sync func finalize_dragging() -> void:
+	var played_cards = get_turn_played_cards()
+	played_cards.add_card_on_top(dragged_card.get_ref())
+	dragging = false
+	dragged_card = null
+
+
+# Returns the deck of the player whose turn it is.
+func get_turn_deck() -> Deck:
+	return NetworkManager.players[player_turn].deck.get_ref()
+
+
+# Returns the played cards of the player whose turn it is.
+func get_turn_played_cards() -> Deck:
+	return NetworkManager.players[player_turn].played_cards.get_ref()
+
+
+# Returns true if the deck is that of the player whose turn it is.
+func is_turn_deck(deck : Deck) -> bool:
+	return deck == NetworkManager.players[player_turn].deck.get_ref()
+
+
+# Returns true if the played cards deck is that of the player whose turn it is.
+func is_turn_played_cards(deck : Deck) -> bool:
+	return deck == NetworkManager.players[player_turn].played_cards.get_ref()
+
+
+func next_turn() -> void:
 	print("turn ", turn, " ended")
 	gm.gamestate.rpc("transition_to", "Turn", {turn=(turn+1)})
 
 
 func exit() -> void:
 	mouse_ray.enabled = false
+
+
+sync func move_dragged_card(position: Vector3) -> void:
+	if dragged_card == null:
+		return
+	var card : Card = dragged_card.get_ref()
+	card.move_to(position)

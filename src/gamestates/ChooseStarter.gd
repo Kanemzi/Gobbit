@@ -7,9 +7,6 @@ export(float) var delay_before_start := 2.0
 
 func enter(params := {}) -> void:
 	if NetworkManager.is_server:
-		NetworkManager.net_cp.connect("validated",
-				self, "one")
-		
 		NetworkManager.net_cp.connect("ready_for_first_turn",
 				self, "_all_players_ready", [], CONNECT_ONESHOT)
 	
@@ -22,20 +19,15 @@ func enter(params := {}) -> void:
 		decks.append(deck)
 	
 	var starter = gm.decks_manager.starter_from_the_decks(decks)
-	print(starter)
-	print("start: ", starter.starter.name)
 
 	# If there is no winner only from bottom cards
 	if starter.draws > 0:
 		yield(get_tree().create_timer(delay_before_next_rounds), "timeout")
 	
-		print("DRAW SITUATION")
 		var delay : float = 0.8 / starter.draws
 		for i in range(starter.draws):
-			print("i: ", i)
 			for d in decks:
 				if starter.draw_count[d] > i:
-					print("should anim ", d.name)
 					(d as Deck).get_card_on_bottom(i).reveal_next()
 			yield(get_tree().create_timer(delay), "timeout")
 	
@@ -62,12 +54,9 @@ func enter(params := {}) -> void:
 #		print("shuf deck ", deck)
 	
 	yield(Coroutines.await_all(decks, "deck_shuffled"), "completed")
-	
-	print("passed the check")
+
 	NetworkManager.net_cp.validate("ready_for_first_turn")
 
-func one(name, id) -> void:
-	print("ONE PASSED ", name, ": ", id)
 
 func _all_players_ready() -> void:
 	print("READY ALL")

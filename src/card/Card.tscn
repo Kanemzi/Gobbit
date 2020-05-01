@@ -1,8 +1,10 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=13 format=2]
 
+[ext_resource path="res://assets/meshes/card-outline.tres" type="ArrayMesh" id=1]
 [ext_resource path="res://src/card/Card.gd" type="Script" id=2]
 [ext_resource path="res://src/card/CardMesh.gd" type="Script" id=3]
 [ext_resource path="res://assets/meshes/card.tscn" type="PackedScene" id=4]
+[ext_resource path="res://assets/materials/card-outline.tres" type="Material" id=5]
 
 [sub_resource type="BoxShape" id=1]
 extents = Vector3( 0.5, 0.004, 0.5 )
@@ -187,6 +189,10 @@ script = ExtResource( 3 )
 
 [node name="card" parent="Mesh" index="0"]
 transform = Transform( 1, 0, 0, 0, -1, 3.25841e-07, 0, -3.25841e-07, -1, 0, 0, 0 )
+
+[node name="outline" parent="Mesh/card" index="0"]
+mesh = ExtResource( 1 )
+material/0 = ExtResource( 5 )
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
 visible = false

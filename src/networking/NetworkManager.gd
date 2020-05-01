@@ -129,8 +129,6 @@ sync func initialize_game() -> void:
 func _on_everyone_ready() -> void:
 	if not is_server:
 		return
-	print("is validated : ", net_cp.is_validated("scene_ready"))
-	print("EVERYONE IS READY")
 	var gm = get_tree().get_root().get_node("GameManager") as GameManager
 	gm.rpc("start")
 

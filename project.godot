@@ -57,7 +57,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Gobbit"
-run/main_scene="res://Table.tscn"
+run/main_scene="res://Main.tscn"
 config/icon="res://gobbit-icon.png"
 
 [autoload]
@@ -66,10 +66,6 @@ CardFactory="*res://src/card/CardFactory.gd"
 Globals="*res://src/Globals.gd"
 NetworkManager="*res://src/networking/NetworkManager.gd"
 Coroutines="*res://src/utils/Coroutines.gd"
-
-[display]
-
-window/size/always_on_top=true
 
 [editor_plugins]
 

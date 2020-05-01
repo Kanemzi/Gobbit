@@ -1,11 +1,13 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://src/deck/Deck.gd" type="Script" id=1]
+[ext_resource path="res://assets/meshes/card-outline.tres" type="ArrayMesh" id=2]
+[ext_resource path="res://assets/materials/card-outline.tres" type="Material" id=3]
 
 [sub_resource type="BoxShape" id=1]
 extents = Vector3( 0.5, 0.05, 0.5 )
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=2]
 resource_name = "FloatHigh"
 length = 3.0
 loop = true
@@ -43,8 +45,7 @@ tracks/2/keys = {
 "times": PoolRealArray( 0, 1, 2, 3 )
 }
 
-[sub_resource type="Animation" id=2]
-resource_name = "Hover"
+[sub_resource type="Animation" id=3]
 length = 0.7
 step = 0.05
 tracks/0/type = "bezier"
@@ -100,7 +101,7 @@ tracks/4/keys = {
 "values": [ false, true ]
 }
 
-[sub_resource type="Animation" id=6]
+[sub_resource type="Animation" id=4]
 resource_name = "PutBackDown"
 length = 0.2
 step = 0.05
@@ -137,8 +138,7 @@ tracks/2/keys = {
 "times": PoolRealArray( 0, 0.1, 0.2 )
 }
 
-[sub_resource type="Animation" id=3]
-resource_name = "ShowBackHigh"
+[sub_resource type="Animation" id=5]
 length = 0.5
 step = 0.05
 tracks/0/type = "value"
@@ -174,9 +174,6 @@ tracks/2/keys = {
 "times": PoolRealArray( 0, 0.3, 0.5 )
 }
 
-[sub_resource type="ViewportTexture" id=4]
-viewport_path = NodePath("Viewport")
-
 [node name="Deck" type="Area"]
 collision_layer = 2
 collision_mask = 0
@@ -194,6 +191,7 @@ __meta__ = {
 
 [node name="Glow" type="SpotLight" parent="."]
 transform = Transform( 1, 0, 0, 0, -1.62921e-07, 1, 0, -1, -1.62921e-07, 0, 0.1, 0 )
+visible = false
 layers = 2
 light_energy = 2.90109
 spot_range = 1.03628
@@ -201,35 +199,11 @@ spot_angle = 90.0
 spot_angle_attenuation = 68.5932
 
 [node name="Animator" type="AnimationPlayer" parent="."]
-anims/FloatHigh = SubResource( 5 )
-anims/Hover = SubResource( 2 )
-anims/PutBackDown = SubResource( 6 )
-anims/ShowBackHigh = SubResource( 3 )
+anims/FloatHigh = SubResource( 2 )
+anims/Hover = SubResource( 3 )
+anims/PutBackDown = SubResource( 4 )
+anims/ShowBackHigh = SubResource( 5 )
 
-[node name="Sprite3D" type="Sprite3D" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
-flip_v = true
-billboard = 1
-texture = SubResource( 4 )
-__meta__ = {
-"_editor_description_": "For debug purposes"
-}
-
-[node name="Viewport" type="Viewport" parent="."]
-size = Vector2( 200, 32 )
-transparent_bg = true
-__meta__ = {
-"_editor_description_": "For debug purposes"
-}
-
-[node name="Label" type="Label" parent="Viewport"]
-margin_right = 40.0
-margin_bottom = 14.0
-custom_colors/font_color = Color( 0, 1, 0, 1 )
-align = 1
-__meta__ = {
-"_edit_use_anchors_": false,
-"_editor_description_": "For debug purposes"
-}
-[connection signal="mouse_entered" from="." to="." method="_on_Deck_mouse_entered"]
-[connection signal="mouse_exited" from="." to="." method="_on_Deck_mouse_exited"]
+[node name="Outline" type="MeshInstance" parent="."]
+mesh = ExtResource( 2 )
+material/0 = ExtResource( 3 )

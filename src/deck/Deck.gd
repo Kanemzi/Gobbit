@@ -13,15 +13,16 @@ onready var cards := $Cards
 onready var animator := $Animator
 
 var height : float # The current height of the deck
+var neatness := 0.05 # The quality of alignment in the cards of the deck
 
 export var face_down := true # If the cards are hidden in the deck, true by default
 
 func _ready() -> void:
-	if NetworkManager.players.has(NetworkManager.peer_id):
-		var myself : Player = NetworkManager.players[NetworkManager.peer_id]
-		$Viewport/Label.text = name + " " + myself.pseudo# TODO: Remove when debugging done
-	else :
-		$Viewport/Label.text = name# TODO: Remove when debugging done
+#	if NetworkManager.players.has(NetworkManager.peer_id):
+#		var myself : Player = NetworkManager.players[NetworkManager.peer_id]
+#		$Viewport/Label.text = name + " " + myself.pseudo# TODO: Remove when debugging done
+#	else :
+#		$Viewport/Label.text = name# TODO: Remove when debugging done
 	height = 0.0
 
 
@@ -53,7 +54,10 @@ sync func add_card_on_top(card: Card) -> void:
 	cards.add_child(card)
 	card.deck = self
 	card.global_transform.origin = position
-	card.move_to(global_transform.origin + Vector3.UP * height)
+	card.distribute_to(global_transform.origin + Vector3.UP * height)
+	card.rotate_to(rand_range(-neatness, neatness))
+	
+	# TODO: new random rotation
 	
 	if face_down != card.face_down:
 		card.flip(face_down)
@@ -143,13 +147,10 @@ sync func shuffle(card_order: Array) -> void:
 	for name in card_order:
 		var card = cards.get_node(name)
 		cards.move_child(card, i)
-		card.rotate(Vector3.UP, rand_range(-0.05, 0.05))
 		card.shuffle_to(Globals.CARD_MESH_HEIGHT * i, i % 2)
 		i += 1
 
 	yield(Coroutines.await_all(cards.get_children(), "move_finished"), "completed")
-	
-	print("deck ", self, " finished anim")
 	emit_signal("deck_shuffled")
 
 

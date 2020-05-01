@@ -23,6 +23,11 @@ func move_to(position: Vector3, relative := false) -> void:
 			current_position, position,
 			0.3, Tween.TRANS_CUBIC, Tween.EASE_OUT)
 	move_tween.start()
+
+
+# Smoothely moves the card to a position with a distributing animation
+func distribute_to(position: Vector3) -> void:
+	move_to(position)
 	$Animator.play("Distribute")
 
 
@@ -58,6 +63,12 @@ func flip(face_down : bool) -> void:
 	else:
 		$Animator.play("FlipFaceUp")
 	self.face_down = face_down
+
+
+# Smooth rotation to an angle following the up axis
+# The angle is in radians
+func rotate_to(angle: float) -> void:
+	move_tween.interpolate_property(self, "rotation:y", rotation.y, angle, 0.4, Tween.TRANS_CUBIC, Tween.EASE_OUT)
 
 
 # Moves the card aside to reveal the next card of the deck

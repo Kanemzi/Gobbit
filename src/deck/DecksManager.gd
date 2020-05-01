@@ -16,7 +16,7 @@ func create_decks() -> void:
 		var id : int = NetworkManager.turn_order[i].id
 		var deck : Deck = DeckScene.instance()
 		var played_cards : Deck = DeckScene.instance()
-		var angle : float = i * player_distances
+		var angle : float = i * player_distances + PI
 		
 		deck.transform.origin = Vector3(
 				cos(angle) * Globals.DECK_DISTANCE_FROM_CENTER,
@@ -28,7 +28,8 @@ func create_decks() -> void:
 				cos(angle) * Globals.PLAYED_CARDS_DISTANCE_FROM_CENTER,
 				0,
 				sin(angle) * Globals.PLAYED_CARDS_DISTANCE_FROM_CENTER)
-		played_cards.face_down = true
+		played_cards.face_down = false
+		played_cards.neatness = PI
 		
 		NetworkManager.players[id].deck = weakref(deck)
 		NetworkManager.players[id].played_cards = weakref(played_cards)

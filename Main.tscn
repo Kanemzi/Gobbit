@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://src/deck/Deck.tscn" type="PackedScene" id=1]
 [ext_resource path="res://src/networking/hub/Hub.tscn" type="PackedScene" id=2]
@@ -9,23 +9,12 @@
 [ext_resource path="res://src/gamestates/GameStates.gd" type="Script" id=7]
 [ext_resource path="res://src/gamestates/ChooseStarter.gd" type="Script" id=8]
 [ext_resource path="res://Turn.gd" type="Script" id=9]
+[ext_resource path="res://src/Table.tscn" type="PackedScene" id=10]
 
 [sub_resource type="Environment" id=1]
 ambient_light_color = Color( 0.54902, 0.54902, 0.54902, 1 )
-
-[sub_resource type="SpatialMaterial" id=2]
-albedo_color = Color( 0, 0, 0, 1 )
-roughness = 0.88
-
-[sub_resource type="CylinderMesh" id=3]
-material = SubResource( 2 )
-top_radius = 5.0
-bottom_radius = 4.5
-height = 1.0
-
-[sub_resource type="CylinderShape" id=4]
-radius = 5.0
-height = 0.1
+fog_depth_begin = 113.9
+fog_depth_end = 48.1
 
 [node name="GameManager" type="Spatial"]
 script = ExtResource( 4 )
@@ -65,20 +54,7 @@ transform = Transform( -1.62921e-07, -0.866025, 0.5, 0, 0.5, 0.866025, -1, 1.410
 [node name="CameraLobby" type="Spatial" parent="Pivot"]
 transform = Transform( -1.62921e-07, 1, -1.62921e-07, 0, -1.62921e-07, -1, -1, -1.62921e-07, 2.65431e-14, 0, 10, 0 )
 
-[node name="Table" type="StaticBody" parent="."]
-__meta__ = {
-"_edit_group_": true,
-"_edit_lock_": true
-}
-
-[node name="MeshInstance" type="MeshInstance" parent="Table"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0 )
-mesh = SubResource( 3 )
-material/0 = null
-
-[node name="CollisionShape" type="CollisionShape" parent="Table"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0 )
-shape = SubResource( 4 )
+[node name="Table" parent="." instance=ExtResource( 10 )]
 
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
 transform = Transform( 0.0126213, -0.582162, 0.812975, -0.0772258, 0.810044, 0.581262, -0.996934, -0.0701189, -0.0347341, 13.5591, 4.13921, -1.89672 )
