@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://src/deck/Deck.tscn" type="PackedScene" id=1]
 [ext_resource path="res://src/networking/hub/Hub.tscn" type="PackedScene" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://src/gamestates/ChooseStarter.gd" type="Script" id=8]
 [ext_resource path="res://Turn.gd" type="Script" id=9]
 [ext_resource path="res://src/Table.tscn" type="PackedScene" id=10]
+[ext_resource path="res://src/gamestates/action-handlers/PlaceHandler.gd" type="Script" id=11]
 
 [sub_resource type="Environment" id=1]
 ambient_light_color = Color( 0.54902, 0.54902, 0.54902, 1 )
@@ -31,6 +32,15 @@ script = ExtResource( 8 )
 
 [node name="Turn" type="Node" parent="GameStates"]
 script = ExtResource( 9 )
+
+[node name="PlaceHandler" type="Node" parent="GameStates/Turn"]
+script = ExtResource( 11 )
+
+[node name="AttackHandler" type="Node" parent="GameStates/Turn"]
+
+[node name="DefenseHandler" type="Node" parent="GameStates/Turn"]
+
+[node name="GobbitHandler" type="Node" parent="GameStates/Turn"]
 
 [node name="MouseRay" type="RayCast" parent="GameStates/Turn"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5948, 3.30367 )

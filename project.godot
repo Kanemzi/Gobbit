@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Node",
+"class": "ActionHandler",
+"language": "GDScript",
+"path": "res://src/gamestates/action-handlers/ActionHandler.gd"
+}, {
 "base": "Spatial",
 "class": "Card",
 "language": "GDScript",
@@ -43,15 +48,22 @@ _global_script_classes=[ {
 "class": "Player",
 "language": "GDScript",
 "path": "res://src/networking/Player.gd"
+}, {
+"base": "GameState",
+"class": "TurnGameState",
+"language": "GDScript",
+"path": "res://Turn.gd"
 } ]
 _global_script_class_icons={
+"ActionHandler": "",
 "Card": "",
 "Deck": "",
 "DecksManager": "",
 "GameManager": "",
 "GameState": "",
 "NetworkCheckpoints": "",
-"Player": ""
+"Player": "",
+"TurnGameState": ""
 }
 
 [application]
