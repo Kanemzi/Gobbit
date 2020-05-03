@@ -78,10 +78,19 @@ CardFactory="*res://src/card/CardFactory.gd"
 Globals="*res://src/Globals.gd"
 NetworkManager="*res://src/networking/NetworkManager.gd"
 Coroutines="*res://src/utils/Coroutines.gd"
+Debug="*res://src/utils/debug/Debug.gd"
 
 [editor_plugins]
 
 enabled=PoolStringArray( "todo" )
+
+[input]
+
+toggle_console={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":39,"unicode":0,"echo":false,"script":null)
+ ]
+}
 
 [rendering]
 

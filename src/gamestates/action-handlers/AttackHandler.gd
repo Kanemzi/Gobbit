@@ -11,4 +11,4 @@ func handle_attack(target: Deck) -> void:
 	var deck : Deck = NetworkManager.me().played_cards.get_ref()
 	if target.empty() or deck.empty():
 		return
-	print("ATTACK OK : ", check_attack_valid(deck, target))
+	Debug.println("ATTACK OK : " + str(check_attack_valid(deck, target)))
