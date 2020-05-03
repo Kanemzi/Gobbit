@@ -26,8 +26,7 @@ func init_network_checkpoints() -> void:
 # Start the game
 sync func start() -> void:
 #	Engine.time_scale = 3 # TODO: remove when debugging finished 
-	var myself : Player = NetworkManager.players[NetworkManager.peer_id]
-	$Pivot.move_to_player_pov(myself.deck.get_ref())
+	$Pivot.move_to_player_pov(NetworkManager.me().deck.get_ref())
 
 	if NetworkManager.is_server:
 		init_network_checkpoints()

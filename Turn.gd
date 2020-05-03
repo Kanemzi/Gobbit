@@ -15,7 +15,9 @@ var turn_count : int = 0
 var player_turn : int
 
 onready var mouse_ray : RayCast = $MouseRay
+
 onready var place_handler := $PlaceHandler
+onready var attack_handler := $AttackHandler
 
 # BUG: When 5 or more player, mouse tracking seems to be broken
 
@@ -55,12 +57,25 @@ func physics_process(delta: float) -> void:
 # what player did the action and what deck he interacted with
 func unhandled_input(event: InputEvent) -> void:
 	if not event is InputEventMouseButton or event.button_index != BUTTON_LEFT:
+		# Only interact with left button
 		return
+	
+	var collider := mouse_ray.get_collider()
+	
+	# TODO: detect clics on graveyard for Gobbit! rule
+	
+	if gm.decks_manager.is_played_cards(collider) and event.pressed:
+		var played_cards := collider as Deck
+		if NetworkManager.me().played_cards.get_ref() == played_cards: # Defensive action
+			pass
+		else: # Offensive action
+			attack_handler.handle_attack(played_cards)
+			pass
 	
 	if NetworkManager.peer_id != player_turn:
 		return # TODO: also check for card steals at this point
 	
-	var collider = mouse_ray.get_collider()
+	# Placing action
 	if event.pressed:
 		if is_turn_deck(collider):
 			place_handler.rpc("start_dragging")

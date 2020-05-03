@@ -138,3 +138,7 @@ func reset_room() -> void:
 	game_started = false
 	get_tree().set_refuse_new_network_connections(false)
 
+
+# Returns the current player
+func me() -> Player:
+	return players[peer_id]

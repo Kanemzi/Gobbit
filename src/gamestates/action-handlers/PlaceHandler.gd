@@ -14,7 +14,7 @@ func update() -> void:
 		
 	if dragging and dragged_card != null:
 		var mouse_pos = turn.mouse_ray.get_collision_point() + Vector3.UP * 0.5
-		rpc("move_dragged_card", mouse_pos)
+		rpc_unreliable("move_dragged_card", mouse_pos)
 
 
 # Initiates the dragging of the top card of the deck
@@ -22,6 +22,7 @@ sync func start_dragging() -> void:
 	var deck : Deck = turn.get_turn_deck()
 	if deck.empty():
 		return
+	
 	var card_transform := deck.get_card_on_top().global_transform
 	var result := deck.remove_card_on_top()
 	if not "card" in result:

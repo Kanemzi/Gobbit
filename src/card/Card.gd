@@ -56,6 +56,17 @@ func beats(other: Card) -> bool:
 	return front_type > other.front_type
 
 
+# Returns true if the card can eat the other card, false otherwise
+# Always returns true for a gorilla (even if the cards are destroyed)
+# TODO: Implementing expert rule with adapter pattern (Strategy Pattern is preferred)
+func eats(other: Card) -> bool:
+	if front_type == CardFactory.CardFrontType.GORILLA:
+		return true
+	if front_type - other.front_type != 1 or \
+			front_type == CardFactory.CardFrontType.FLY: # Flies cant eat
+		return false
+	return colors[0] in other.colors
+
 # Flips the card up or down with a 0.3s animation
 func flip(face_down : bool) -> void:
 	if face_down:

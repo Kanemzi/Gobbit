@@ -7,5 +7,12 @@ func _ready():
 	yield(get_parent(), "ready")
 	turn = get_parent() as TurnGameState
 
-func handle() -> void:
+
+func init() -> void:
 	pass
+
+
+func update() -> void:
+	pass
+
+

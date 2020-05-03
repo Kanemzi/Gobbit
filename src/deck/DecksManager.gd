@@ -23,13 +23,15 @@ func create_decks() -> void:
 				0,
 				sin(angle) * Globals.DECK_DISTANCE_FROM_CENTER)
 		deck.face_down = true
+		deck.add_to_group("deck_playerdeck")
 		
 		played_cards.transform.origin = Vector3(
 				cos(angle) * Globals.PLAYED_CARDS_DISTANCE_FROM_CENTER,
 				0,
 				sin(angle) * Globals.PLAYED_CARDS_DISTANCE_FROM_CENTER)
 		played_cards.face_down = false
-		played_cards.neatness = PI
+		played_cards.neatness = PI * 0.25
+		played_cards.add_to_group("deck_playedcard")
 		
 		NetworkManager.players[id].deck = weakref(deck)
 		NetworkManager.players[id].played_cards = weakref(played_cards)
@@ -104,3 +106,23 @@ func starter_from_the_decks(decks : Array) -> Dictionary:
 			max_draws += 1
 	
 	return {starter=starter, draw_count=draw_count, draws=max_draws}
+
+
+# Returns true if the body is a deck, false otherwise.
+func is_deck(body : Object) -> bool:
+	return body is Deck
+
+
+# Returns true if the body is a deck, false otherwise.
+func is_graveyard(body : Object) -> bool:
+	return body == graveyard
+
+
+# Returns true if the body represents played cards, false otherwise.
+func is_played_cards(body : Object) -> bool:
+	return body is Deck and (body as Deck).is_in_group("deck_playedcard")
+
+
+# Returns true if the body represents a player deck, false otherwise.
+func is_player_deck(body : Object) -> bool:
+	return body is Deck and (body as Deck).is_in_group("deck_playerdeck")
