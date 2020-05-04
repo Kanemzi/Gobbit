@@ -36,5 +36,5 @@ sync func attack_fault(attacker_id: int) -> void:
 	if attacker.played_cards.get_ref() == null:
 		return
 	var cards : Deck = attacker.played_cards.get_ref()
-	turn.gm.decks_manager.graveyard.merge_deck_on_top(cards)
+	turn.gm.decks_manager.graveyard.merge_deck_on_bottom(cards)
 	print("FAULT FROM ", attacker_id)

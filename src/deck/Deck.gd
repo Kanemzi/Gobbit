@@ -44,12 +44,11 @@ func init(card_list: Array) -> void:
 # Adds a card on the top of the deck
 # The card moves slowly from its position to the top of the deck
 # When the animation is finished, a card_added signal is triggered
-# The card should not be already in a deck
 sync func add_card_on_top(card: Card) -> void:
 	# Save the current position of the card
 	var position = card.global_transform.origin
 	
-	if card.deck != null: # We stop the function if the card is already in a deck
+	if card.deck != null:
 		card.deck._remove_card(card)
 	
 	# Checks if the card is already in the tree
@@ -60,6 +59,37 @@ sync func add_card_on_top(card: Card) -> void:
 	card.deck = self
 	card.global_transform.origin = position
 	card.distribute_to(global_transform.origin + Vector3.UP * height)
+	card.rotate_to(rand_range(-neatness, neatness))
+	
+	if face_down != card.face_down:
+		card.flip(face_down)
+	
+	height += Globals.CARD_MESH_HEIGHT
+	
+	yield(card, "move_finished")
+	emit_signal("card_added", card)
+
+
+# Adds a card on the bottom of the deck at a certain height
+# The card moves slowly from its position to the bottom of the deck
+# The cards does not move up (you have to do it before)
+# When the animation is finished, a card_added signal is triggered
+sync func add_card_on_bottom(card: Card, h: float) -> void:
+	# Save the current position of the card
+	var position = card.global_transform.origin
+		
+	if card.deck != null:
+		card.deck._remove_card(card)
+	
+	# Checks if the card is already in the tree
+	if card.is_inside_tree():
+		card.get_parent().remove_child(card)
+	
+	cards.add_child(card)
+	cards.move_child(card, 0)
+	card.deck = self
+	card.global_transform.origin = position
+	card.distribute_to(global_transform.origin + Vector3.UP * h)
 	card.rotate_to(rand_range(-neatness, neatness))
 	
 	if face_down != card.face_down:
@@ -116,42 +146,30 @@ func _remove_card(card: Card):
 # Adds all the cards from a deck at the bottom of this deck
 # Triggers a deck_merged signal when the merge animation is done
 func merge_deck_on_bottom(other: Deck) -> void:
-	var other_height := other.height
-	# Move all the cards up
-	for card in cards.get_children():
-		card.move_up(other_height)
-	
-	# Reparent the other deck's cards
 	var other_cards := other.cards.get_children()
-	var i := 0
 	
+	for card in cards.get_children():
+		card.move_up(other.height)
+	
+	if face_down == other.face_down:
+		other_cards.invert()
+	
+	var i := len(other_cards) - 1
 	# Reparent all the cards and move them in the deck
 	for card in other_cards:
-		var position = card.global_transform.origin # Save the old position
-		card.get_parent().remove_child(card)
-		cards.add_child(card)
-		cards.move_child(card, i)
-		card.global_transform.origin = position
-		card.move_to(global_transform.origin + Vector3.UP * Globals.CARD_MESH_HEIGHT * i)
-		i += 1
+		add_card_on_bottom(card, i * Globals.CARD_MESH_HEIGHT)
+		i -= 1
 	
 	# Wait for all the card to move in the deck
-#	for card in other_cards:
-#		yield(card, "move_finished")
 	yield(Coroutines.await_all(other_cards, "move_finished"), "completed")
 
-	height += other_height
-	# Remove the other deck
-#	other.queue_free()
 	other.reset()
-	
 	emit_signal("deck_merged")
 
 
 # Adds all the cards from a deck at the top of this deck
 # Triggers a deck_merged signal when the merge animation is done
 func merge_deck_on_top(other: Deck) -> void:
-	# Reparent the other deck's cards
 	var other_cards := other.cards.get_children()
 	if face_down != other.face_down:
 		other_cards.invert()
@@ -163,7 +181,6 @@ func merge_deck_on_top(other: Deck) -> void:
 	# Wait for all the card to move in the deck
 	yield(Coroutines.await_all(other_cards, "move_finished"), "completed")
 
-	# Remove the other deck
 	other.reset()
 	emit_signal("deck_merged")
 
