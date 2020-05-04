@@ -15,18 +15,23 @@ func handle_attack(target: Deck) -> void:
 		return
 	
 	if check_attack_valid(deck, target):
-		pass
+		rpc("attack_ok_steal", NetworkManager.peer_id, )
 	else:
 		rpc("attack_fault", NetworkManager.peer_id)
 
 
 # The attacks is successfull and aims to steal the other player's cards
-sync func attack_ok_steal() -> void:
+sync func attack_ok_steal(attacker_id: int, target: Deck) -> void:
+	var attacker : Player = NetworkManager.players[attacker_id]
+	if attacker.deck.get_ref() == null:
+		return
+	
+	var cards : Deck = attacker.played_cards.get_ref()
 	pass
 
 
 # The attacks is successfull and aims to kill the other player's cards
-sync func attack_ok_kill() -> void:
+sync func attack_ok_kill(attacker_id: int) -> void:
 	pass
 
 
@@ -36,5 +41,5 @@ sync func attack_fault(attacker_id: int) -> void:
 	if attacker.played_cards.get_ref() == null:
 		return
 	var cards : Deck = attacker.played_cards.get_ref()
-	turn.gm.decks_manager.graveyard.merge_deck_on_bottom(cards)
+	turn.gm.decks_manager.graveyard.merge_deck_on_top(cards)
 	print("FAULT FROM ", attacker_id)

@@ -39,6 +39,10 @@ func create_decks() -> void:
 		played_cards.name = "played_cards_" + str(id)
 		deck.set_network_master(id)
 		
+		# Bidirectional association
+		deck.pid = id
+		played_cards.pid = id
+		
 		add_child(deck)
 		add_child(played_cards)
 		deck.look_at(Vector3.ZERO, Vector3.UP)

@@ -12,6 +12,7 @@ signal deck_flipped_back # Triggered when the deck finished to show the back car
 onready var cards := $Cards
 onready var animator := $Animator
 
+var pid = null # The id of the owner player
 var height : float # The current height of the deck
 var neatness := 0.05 # The quality of alignment in the cards of the deck
 
