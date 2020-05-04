@@ -90,7 +90,7 @@ sync func add_card_on_bottom(card: Card, h: float) -> void:
 	cards.move_child(card, 0)
 	card.deck = self
 	card.global_transform.origin = position
-	card.distribute_to(global_transform.origin + Vector3.UP * h)
+	card.move_to(global_transform.origin + Vector3.UP * h)
 	card.rotate_to(rand_range(-neatness, neatness))
 	
 	if face_down != card.face_down:

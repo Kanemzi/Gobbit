@@ -25,6 +25,7 @@ func enter(params := {}) -> void:
 	assert("turn" in params)
 	
 	# TODO: find a cleaner way to handle turn offset
+	# BUG: skip turn if the player has no cards in it's deck 
 #
 #	if "starter" in params: # Only for the first turn
 #		print("starter: ", params.starter)
