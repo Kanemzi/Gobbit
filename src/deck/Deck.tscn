@@ -234,5 +234,6 @@ __meta__ = {
 }
 
 [node name="Outline" type="MeshInstance" parent="."]
+visible = false
 mesh = ExtResource( 2 )
 material/0 = ExtResource( 3 )

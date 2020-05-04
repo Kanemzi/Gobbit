@@ -23,6 +23,10 @@ func _ready() -> void:
 		$Viewport/Label.text = name + " " + myself.pseudo# TODO: Remove when debugging done
 	else :
 		$Viewport/Label.text = name# TODO: Remove when debugging done
+	reset()
+
+
+func reset() -> void:
 	height = 0.0
 
 
@@ -33,6 +37,7 @@ func init(card_list: Array) -> void:
 		cards.add_child(card)
 		card.transform.origin = Vector3.UP * height
 		card.set_face_down(face_down)
+		card.deck = self
 		height += Globals.CARD_MESH_HEIGHT
 
 
@@ -41,11 +46,11 @@ func init(card_list: Array) -> void:
 # When the animation is finished, a card_added signal is triggered
 # The card should not be already in a deck
 sync func add_card_on_top(card: Card) -> void:
-	if card.deck != null: # We stop the function if the card is already in a deck
-		return
-		
 	# Save the current position of the card
 	var position = card.global_transform.origin
+	
+	if card.deck != null: # We stop the function if the card is already in a deck
+		card.deck._remove_card(card)
 	
 	# Checks if the card is already in the tree
 	if card.is_inside_tree():
@@ -56,8 +61,6 @@ sync func add_card_on_top(card: Card) -> void:
 	card.global_transform.origin = position
 	card.distribute_to(global_transform.origin + Vector3.UP * height)
 	card.rotate_to(rand_range(-neatness, neatness))
-	
-	# TODO: new random rotation
 	
 	if face_down != card.face_down:
 		card.flip(face_down)
@@ -95,17 +98,22 @@ sync func remove_card_on_top() -> Dictionary:
 	var card : Card = get_card_on_top()
 	if card == null:
 		return {}
-		
+	
 	var position = card.global_transform.origin
-	cards.remove_child(card)
-	card.deck = null
-	height -= Globals.CARD_MESH_HEIGHT
+	_remove_card(card)
 	emit_signal("card_removed", card, position)
 	return {card = card, position = position}
 
 
+# Removes the card from the deck
+# TODO: moves the cards down to fill the gap
+func _remove_card(card: Card):
+	cards.remove_child(card)
+	card.deck = null
+	height -= Globals.CARD_MESH_HEIGHT
+
+
 # Adds all the cards from a deck at the bottom of this deck
-# The other deck is destroyed afterwards
 # Triggers a deck_merged signal when the merge animation is done
 func merge_deck_on_bottom(other: Deck) -> void:
 	var other_height := other.height
@@ -134,7 +142,34 @@ func merge_deck_on_bottom(other: Deck) -> void:
 
 	height += other_height
 	# Remove the other deck
-	other.queue_free()
+#	other.queue_free()
+	other.reset()
+	
+	emit_signal("deck_merged")
+
+
+# Adds all the cards from a deck at the top of this deck
+# Triggers a deck_merged signal when the merge animation is done
+func merge_deck_on_top(other: Deck) -> void:
+	var other_height := other.height
+	
+	# Reparent the other deck's cards
+	var other_cards := other.cards.get_children()
+	var i := height
+	
+	# Reparent all the cards and move them in the deck
+	for card in other_cards:
+		add_card_on_top(card)
+#		card.move_to(global_transform.origin + Vector3.UP * Globals.CARD_MESH_HEIGHT * i)
+#		i += 1
+	# Wait for all the card to move in the deck
+#	for card in other_cards:
+#		yield(card, "move_finished")
+	yield(Coroutines.await_all(other_cards, "move_finished"), "completed")
+
+	# Remove the other deck
+#	other.queue_free()
+	other.reset()
 	
 	emit_signal("deck_merged")
 

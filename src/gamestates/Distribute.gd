@@ -29,12 +29,12 @@ sync func distribute_cards_from_graveyard() -> void:
 		var id : int = NetworkManager.turn_order[index].id # id of the player
 		var player_deck : Deck = NetworkManager.turn_order[index].deck.get_ref()
 		
-		var result := gm.graveyard.remove_card_on_top()
-		if not "card" in result:
-			return
-		gm.card_pool.add_child(result.card)
-		result.card.global_transform.origin = result.position
-		player_deck.add_card_on_top(result.card)
+#		var result := gm.graveyard.remove_card_on_top()
+#		if not "card" in result:
+#			return
+#		gm.card_pool.add_child(result.card)
+#		result.card.global_transform.origin = result.position
+		player_deck.add_card_on_top(gm.graveyard.get_card_on_top())
 		
 		yield(get_tree().create_timer(distribution_delay), "timeout")
 		
