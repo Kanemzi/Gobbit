@@ -15,7 +15,7 @@ onready var animator := $Animator
 var height : float # The current height of the deck
 var neatness := 0.05 # The quality of alignment in the cards of the deck
 
-export var face_down := true # If the cards are hidden in the deck, true by default
+var face_down := true # If the cards are hidden in the deck, true by default
 
 func _ready() -> void:
 	if NetworkManager.players.has(NetworkManager.peer_id):
@@ -151,26 +151,20 @@ func merge_deck_on_bottom(other: Deck) -> void:
 # Adds all the cards from a deck at the top of this deck
 # Triggers a deck_merged signal when the merge animation is done
 func merge_deck_on_top(other: Deck) -> void:
-	var other_height := other.height
-	
 	# Reparent the other deck's cards
 	var other_cards := other.cards.get_children()
-	var i := height
+	if face_down != other.face_down:
+		other_cards.invert()
 	
 	# Reparent all the cards and move them in the deck
 	for card in other_cards:
 		add_card_on_top(card)
-#		card.move_to(global_transform.origin + Vector3.UP * Globals.CARD_MESH_HEIGHT * i)
-#		i += 1
+
 	# Wait for all the card to move in the deck
-#	for card in other_cards:
-#		yield(card, "move_finished")
 	yield(Coroutines.await_all(other_cards, "move_finished"), "completed")
 
 	# Remove the other deck
-#	other.queue_free()
 	other.reset()
-	
 	emit_signal("deck_merged")
 
 

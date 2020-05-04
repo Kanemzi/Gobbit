@@ -69,6 +69,7 @@ transform = Transform( -1.62921e-07, -0.866025, 0.5, 0, 0.5, 0.866025, -1, 1.410
 transform = Transform( -1.62921e-07, 1, -1.62921e-07, 0, -1.62921e-07, -1, -1, -1.62921e-07, 2.65431e-14, 0, 10, 0 )
 
 [node name="Table" parent="." instance=ExtResource( 10 )]
+visible = false
 
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
 transform = Transform( 0.0126213, -0.582162, 0.812975, -0.0772258, 0.810044, 0.581262, -0.996934, -0.0701189, -0.0347341, 13.5591, 4.13921, -1.89672 )
