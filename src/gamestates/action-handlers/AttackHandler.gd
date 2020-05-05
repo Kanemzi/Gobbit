@@ -1,7 +1,6 @@
 extends ActionHandler
 
 # TODO: Handle spirit attacks (add a "lost" property in players)
-# NOTE: ok_kill and fault can be merged into one function maybe in Turn state
 
 # Handles an attack from the current client on the target deck
 func handle_attack(target: Deck) -> void:

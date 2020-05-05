@@ -18,6 +18,7 @@ onready var mouse_ray : RayCast = $MouseRay
 
 onready var place_handler := $PlaceHandler
 onready var attack_handler := $AttackHandler
+onready var defense_handler := $DefenseHandler
 
 # BUG: When 5 or more player, mouse tracking seems to be broken
 
@@ -26,22 +27,17 @@ func enter(params := {}) -> void:
 	
 	# TODO: find a cleaner way to handle turn offset
 	# BUG: skip turn if the player has no cards in it's deck 
-#
-#	if "starter" in params: # Only for the first turn
-#		print("starter: ", params.starter)
-#
-#		turn += turn_offset
-#
-#	print("turn offset: ", turn_offset)
-#
+
 	turn_count = params.turn
-	
-	place_handler.init()
-	
 	var player_index : int = (turn_count) % NetworkManager.player_count
 	player_turn = NetworkManager.turn_order[player_index].id
-	print("player : ", player_turn)
 	
+	if NetworkManager.peer_id == player_turn:
+		var deck : Deck = NetworkManager.players[player_turn].deck.get_ref()
+		if deck.empty():
+			next_turn()
+		
+	place_handler.init()
 	mouse_ray.enabled = true
 	mouse_ray.global_transform.origin = (gm.get_node("Pivot/Camera") as Camera).global_transform.origin
 
@@ -68,7 +64,7 @@ func unhandled_input(event: InputEvent) -> void:
 	if gm.decks_manager.is_played_cards(collider) and event.pressed:
 		var played_cards := collider as Deck
 		if NetworkManager.me().played_cards.get_ref() == played_cards: # Defensive action
-			pass
+			defense_handler.handle_defense()
 		else: # Offensive action
 			attack_handler.handle_attack(played_cards)
 			pass
@@ -93,7 +89,6 @@ func unhandled_input(event: InputEvent) -> void:
 
 
 func next_turn() -> void:
-	print("turn ", turn_count, " ended")
 	gm.gamestate.rpc("transition_to", "Turn", {turn=(turn_count + 1)})
 
 
@@ -111,6 +106,17 @@ func get_turn_played_cards() -> Deck:
 	return NetworkManager.players[player_turn].played_cards.get_ref()
 
 
+# Returns the top cards of the played cards for all players
+func get_all_top_cards() -> Dictionary:
+	var top_cards := {}
+	for player_id in NetworkManager.players:
+		var played_cards : Deck = NetworkManager.players[player_id].played_cards.get_ref()
+		if played_cards.empty():
+			top_cards[player_id] = null
+		else:
+			top_cards[player_id] = played_cards.get_card_on_top()
+	return top_cards
+
 # Returns true if the deck is that of the player whose turn it is.
 func is_turn_deck(deck : Deck) -> bool:
 	return deck == NetworkManager.players[player_turn].deck.get_ref()
@@ -120,6 +126,8 @@ func is_turn_deck(deck : Deck) -> bool:
 func is_turn_played_cards(deck : Deck) -> bool:
 	return deck == NetworkManager.players[player_turn].played_cards.get_ref()
 
+
+# TODO: Check in these functions if the move kills the target player
 
 # The played cards of "from" goes to the bottom of the "to" deck
 sync func steal_cards(from_id: int, to_id: int) -> void:
