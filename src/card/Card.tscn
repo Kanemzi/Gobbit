@@ -1,13 +1,10 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://assets/meshes/card-outline.tres" type="ArrayMesh" id=1]
 [ext_resource path="res://src/card/Card.gd" type="Script" id=2]
 [ext_resource path="res://src/card/CardMesh.gd" type="Script" id=3]
 [ext_resource path="res://assets/meshes/card.tscn" type="PackedScene" id=4]
 [ext_resource path="res://assets/materials/card-outline.tres" type="Material" id=5]
-
-[sub_resource type="BoxShape" id=1]
-extents = Vector3( 0.5, 0.004, 0.5 )
 
 [sub_resource type="Animation" id=2]
 resource_name = "Distribute"
@@ -193,14 +190,6 @@ transform = Transform( 1, 0, 0, 0, -1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0
 [node name="outline" parent="Mesh/card" index="0"]
 mesh = ExtResource( 1 )
 material/0 = ExtResource( 5 )
-
-[node name="CollisionShape" type="CollisionShape" parent="."]
-visible = false
-shape = SubResource( 1 )
-disabled = true
-__meta__ = {
-"_editor_description_": ""
-}
 
 [node name="MoveTween" type="Tween" parent="."]
 

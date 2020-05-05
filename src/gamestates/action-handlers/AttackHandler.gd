@@ -13,11 +13,13 @@ func handle_attack(target: Deck) -> void:
 			turn.rpc("lose_cards", target.pid)
 		else:
 			turn.rpc("steal_cards",target.pid, NetworkManager.peer_id)
+		turn.gm.camera.rpc("shake")
 	else:
 		turn.rpc("lose_cards", NetworkManager.peer_id)
 
 
 # Checks if an attack from deck to the target deck is valid
+# TODO: Exclude the case where there is a possible Gobbit! to play
 func check_attack_valid(deck: Deck, target: Deck) -> bool:
 	var top_card := deck.get_card_on_top()
 	var top_target := target.get_card_on_top()

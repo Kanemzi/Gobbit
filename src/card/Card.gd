@@ -1,6 +1,8 @@
 extends Spatial
 class_name Card
 
+# BUG: Mesh rotation problems when animation does not finish
+
 signal move_finished(card) # Triggered when the card just finished its move
 
 onready var move_tween : Tween = $MoveTween

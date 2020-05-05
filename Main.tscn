@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://src/deck/Deck.tscn" type="PackedScene" id=1]
 [ext_resource path="res://src/networking/hub/Hub.tscn" type="PackedScene" id=2]
@@ -13,11 +13,37 @@
 [ext_resource path="res://src/gamestates/action-handlers/PlaceHandler.gd" type="Script" id=11]
 [ext_resource path="res://src/gamestates/action-handlers/DefenseHandler.gd" type="Script" id=12]
 [ext_resource path="res://src/gamestates/action-handlers/AttackHandler.gd" type="Script" id=13]
+[ext_resource path="res://src/gamestates/action-handlers/GobbitHandler.gd" type="Script" id=14]
 
 [sub_resource type="Environment" id=1]
 ambient_light_color = Color( 0.54902, 0.54902, 0.54902, 1 )
 fog_depth_begin = 113.9
 fog_depth_end = 48.1
+
+[sub_resource type="Animation" id=2]
+resource_name = "Shake"
+length = 0.3
+step = 0.025
+tracks/0/type = "bezier"
+tracks/0/path = NodePath(".:h_offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.0366903, 0.0890125, 0.00279495, -0.0564303, -0.03821, 0.0504302, 0.0137164, 0, -0.0670166, -0.005043, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.1, 0.3 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath(".:v_offset")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.000917258, -0.0177797, -0.0148404, -0.0275272, -0.0293923, 0.0233806, 0.0568252, 0, -0.158284, -0.0207189, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.05, 0.3 )
+}
 
 [node name="GameManager" type="Spatial"]
 script = ExtResource( 4 )
@@ -45,13 +71,17 @@ script = ExtResource( 13 )
 script = ExtResource( 12 )
 
 [node name="GobbitHandler" type="Node" parent="GameStates/Turn"]
+script = ExtResource( 14 )
 
 [node name="MouseRay" type="RayCast" parent="GameStates/Turn"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5948, 3.30367 )
+visible = false
 enabled = true
 cast_to = Vector3( 0, 0, 0 )
 collision_mask = 3
 collide_with_areas = true
+
+[node name="Gobbit" type="Node" parent="GameStates"]
 
 [node name="Pivot" type="Spatial" parent="."]
 script = ExtResource( 5 )
@@ -62,14 +92,16 @@ script = ExtResource( 5 )
 transform = Transform( -1.62921e-07, -1, -1.62921e-07, 0, -1.62921e-07, 1, -1, 1.62921e-07, 2.65431e-14, 0, 10, 0 )
 environment = SubResource( 1 )
 
+[node name="Animator" type="AnimationPlayer" parent="Pivot/Camera"]
+anims/Shake = SubResource( 2 )
+
 [node name="PlayerPOV" type="Spatial" parent="Pivot"]
 transform = Transform( -1.62921e-07, -0.866025, 0.5, 0, 0.5, 0.866025, -1, 1.41093e-07, -8.14603e-08, 4, 4.5, 0 )
 
 [node name="CameraLobby" type="Spatial" parent="Pivot"]
-transform = Transform( -1.62921e-07, 1, -1.62921e-07, 0, -1.62921e-07, -1, -1, -1.62921e-07, 2.65431e-14, 0, 10, 0 )
+transform = Transform( -1.62921e-07, 1, 1.62921e-07, 0, -1.62921e-07, 1, 1, 1.62921e-07, 2.65431e-14, 0, 10, 0 )
 
 [node name="Table" parent="." instance=ExtResource( 10 )]
-visible = false
 
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
 transform = Transform( 0.0126213, -0.582162, 0.812975, -0.0772258, 0.810044, 0.581262, -0.996934, -0.0701189, -0.0347341, 13.5591, 4.13921, -1.89672 )

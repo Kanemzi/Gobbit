@@ -19,6 +19,7 @@ onready var mouse_ray : RayCast = $MouseRay
 onready var place_handler := $PlaceHandler
 onready var attack_handler := $AttackHandler
 onready var defense_handler := $DefenseHandler
+onready var gobbit_handler := $GobbitHandler
 
 # BUG: When 5 or more player, mouse tracking seems to be broken
 
@@ -35,6 +36,7 @@ func enter(params := {}) -> void:
 	if NetworkManager.peer_id == player_turn:
 		var deck : Deck = NetworkManager.players[player_turn].deck.get_ref()
 		if deck.empty():
+			#TODO: Check if game end !
 			next_turn()
 		
 	place_handler.init()
@@ -61,13 +63,16 @@ func unhandled_input(event: InputEvent) -> void:
 	
 	# TODO: detect clics on graveyard for Gobbit! rule
 	
-	if gm.decks_manager.is_played_cards(collider) and event.pressed:
-		var played_cards := collider as Deck
-		if NetworkManager.me().played_cards.get_ref() == played_cards: # Defensive action
-			defense_handler.handle_defense()
-		else: # Offensive action
-			attack_handler.handle_attack(played_cards)
-			pass
+	if event.pressed:
+		if gm.decks_manager.is_played_cards(collider):
+			var played_cards := collider as Deck
+			if NetworkManager.me().played_cards.get_ref() == played_cards: # Defensive action
+				defense_handler.handle_defense()
+			else: # Offensive action
+				attack_handler.handle_attack(played_cards)
+				pass
+		elif gm.decks_manager.is_graveyard(collider):
+			gobbit_handler.handle_gobbit()
 	
 	if NetworkManager.peer_id != player_turn:
 		return # TODO: also check for card steals at this point
@@ -83,6 +88,7 @@ func unhandled_input(event: InputEvent) -> void:
 			place_handler.rpc("finalize_dragging")
 			# Play again if the placed card is a gorilla
 			if card.front_type != CardFactory.CardFrontType.GORILLA:
+				# BUG: Crash if the gorilla is the last card of the player
 				next_turn()
 		else:
 			place_handler.rpc("cancel_dragging")
