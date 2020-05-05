@@ -80,25 +80,18 @@ func starter_from_the_decks(decks : Array) -> Dictionary:
 		return {starter=decks[0], draw_count=draw_count, draws=max_draws}
 	
 	# TODO: handle pure draw rare case (2 decks are the same)
-	# TODO: remove prints
 	while starter == null:
-#		print("rem :", remaining)
 		var best := remaining[0] as Deck
 		var draw := [best]
 		for i in range(1, remaining.size()):
 			var best_card := best.get_card_on_bottom(draw_count[best])
 			var new_card := (remaining[i] as Deck).get_card_on_bottom(draw_count[remaining[i]])
 			
-#			print("card1: ", best_card.name, "  val: ", best_card.front_type)
-#			print("card2: ", new_card.name, "  val: ", new_card.front_type)
-			
 			if new_card.beats(best_card):
-#				print("card2 beat card1")
 				best = remaining[i]
 				draw.clear()
 				draw.append(best)
 			elif not best_card.beats(new_card): # check draw
-#				print("draw")
 				draw.append(remaining[i])
 				
 		if draw.size() == 1: # If there is a winner

@@ -119,3 +119,24 @@ func is_turn_deck(deck : Deck) -> bool:
 # Returns true if the played cards deck is that of the player whose turn it is.
 func is_turn_played_cards(deck : Deck) -> bool:
 	return deck == NetworkManager.players[player_turn].played_cards.get_ref()
+
+
+# The played cards of "from" goes to the bottom of the "to" deck
+sync func steal_cards(from_id: int, to_id: int) -> void:
+	var to : Player = NetworkManager.players[to_id]
+	var from : Player = NetworkManager.players[from_id]
+	if to.deck == null or from.played_cards == null:
+		return
+	
+	var deck : Deck = to.deck.get_ref()
+	var cards : Deck = from.played_cards.get_ref()
+	deck.merge_deck_on_bottom(cards)
+
+
+# The target player loses it's played card (they go to the graveyard)
+sync func lose_cards(target_id: int) -> void:
+	var target : Player = NetworkManager.players[target_id]
+	if target.played_cards == null:
+		return
+	var cards : Deck = target.played_cards.get_ref()
+	gm.decks_manager.graveyard.merge_deck_on_top(cards)

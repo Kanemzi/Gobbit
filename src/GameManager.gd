@@ -13,7 +13,6 @@ func _input(event: InputEvent) -> void:
 
 
 func init_network_checkpoints() -> void:
-	# TODO: use cards_distributed in the sync
 	var checkpoints := [
 		"cards_distributed", # The cards are successfully distributed to players 
 		"ready_for_first_turn" # All the decks are flipped back for the first turn
