@@ -39,8 +39,8 @@ tracks/1/keys = {
 }
 
 [sub_resource type="Animation" id=3]
-length = 0.2
-step = 0.01
+length = 0.14
+step = 0.07
 tracks/0/type = "value"
 tracks/0/path = NodePath("Mesh:translation")
 tracks/0/interp = 1
@@ -48,7 +48,7 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2 ),
+"times": PoolRealArray( 0, 0.07, 0.14 ),
 "transitions": PoolRealArray( 0.4, 2.9, 1 ),
 "update": 0,
 "values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0.5, 0 ), Vector3( 0, 0, 0 ) ]
@@ -60,7 +60,7 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0, 0.2 ),
+"times": PoolRealArray( 0, 0.14 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
 "values": [ Vector3( 0, 0, 0 ), Vector3( 180, 0, 0 ) ]
@@ -68,8 +68,8 @@ tracks/1/keys = {
 
 [sub_resource type="Animation" id=4]
 resource_name = "FlipFaceUp"
-length = 0.2
-step = 0.01
+length = 0.14
+step = 0.07
 tracks/0/type = "value"
 tracks/0/path = NodePath("Mesh:translation")
 tracks/0/interp = 1
@@ -77,7 +77,7 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2 ),
+"times": PoolRealArray( 0, 0.07, 0.14 ),
 "transitions": PoolRealArray( 0.4, 2.9, 1 ),
 "update": 0,
 "values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0.5, 0 ), Vector3( 0, 0, 0 ) ]
@@ -89,7 +89,7 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0, 0.2 ),
+"times": PoolRealArray( 0, 0.14 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
 "values": [ Vector3( 180, 0, 0 ), Vector3( 0, 0, 0 ) ]

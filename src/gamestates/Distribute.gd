@@ -44,4 +44,5 @@ sync func distribute_cards_from_graveyard() -> void:
 # Executes when the distribution of the cards is done on each client
 func _distribution_done() -> void:
 	yield(get_tree().create_timer(delay_after_distribution), "timeout")
+	gm.decks_manager.graveyard.neatness = 2 * PI
 	gm.gamestate.rpc("transition_to", "ChooseStarter")

@@ -83,8 +83,11 @@ func unhandled_input(event: InputEvent) -> void:
 	elif place_handler.dragging:
 		print("dragging release from ", player_turn)
 		if is_turn_played_cards(collider):
+			var card : Card = place_handler.dragged_card.get_ref()
 			place_handler.rpc("finalize_dragging")
-			next_turn()
+			# Play again if the placed card is a gorilla
+			if card.front_type != CardFactory.CardFrontType.GORILLA:
+				next_turn()
 		else:
 			place_handler.rpc("cancel_dragging")
 
