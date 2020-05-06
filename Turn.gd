@@ -22,6 +22,9 @@ onready var defense_handler := $DefenseHandler
 onready var gobbit_handler := $GobbitHandler
 onready var spirit_handler := $SpiritHandler
 
+# The protected cards during the current turn (reset every turn)
+var protections = []
+	
 # BUG: When 5 or more player, mouse tracking seems to be broken
 
 func enter(params := {}) -> void:
@@ -29,7 +32,8 @@ func enter(params := {}) -> void:
 	
 	# TODO: find a cleaner way to handle turn offset
 	# BUG: skip turn if the player has no cards in it's deck 
-
+	
+	protections = []
 	turn_count = params.turn
 	var player_index : int = (turn_count) % NetworkManager.player_count
 	player_turn = NetworkManager.turn_order[player_index].id
@@ -92,6 +96,7 @@ func unhandled_input(event: InputEvent) -> void:
 		if is_turn_played_cards(collider):
 			var card : Card = place_handler.dragged_card.get_ref()
 			place_handler.rpc("finalize_dragging")
+			spirit_handler.rpc("reset") # Reset the protected cards
 			# Play again if the placed card is a gorilla
 			if card.front_type != CardFactory.CardFrontType.GORILLA:
 				# BUG: Crash if the gorilla is the last card of the player
@@ -143,9 +148,9 @@ func is_turn_played_cards(deck : Deck) -> bool:
 	return deck == NetworkManager.players[player_turn].played_cards.get_ref()
 
 
-# TODO: Check in these functions if the move kills the target player
 
 # The played cards of "from" goes to the bottom of the "to" deck
+# TODO: split steal & protect functions
 sync func steal_cards(from_id: int, to_id: int) -> void:
 	var to : Player = NetworkManager.players[to_id]
 	var from : Player = NetworkManager.players[from_id]
@@ -154,6 +159,11 @@ sync func steal_cards(from_id: int, to_id: int) -> void:
 	
 	var deck : Deck = to.deck.get_ref()
 	var cards : Deck = from.played_cards.get_ref()
+	
+	# If the steal is a protection
+	if from_id == to_id:
+		protections.push_back(cards.get_card_on_top())
+	
 	deck.merge_deck_on_bottom(cards)
 	yield(deck, "deck_merged")
 	
@@ -170,6 +180,8 @@ sync func lose_cards(target_id: int) -> void:
 	var cards : Deck = target.played_cards.get_ref()
 	gm.decks_manager.graveyard.merge_deck_on_top(cards)
 	yield(gm.decks_manager.graveyard, "deck_merged")
+	
+	protections.push_back(cards.get_card_on_top())
 	
 	# Check if the player loses the game
 	if target.has_just_lost():
