@@ -32,3 +32,12 @@ sync func start() -> void:
 		init_network_checkpoints()
 
 	gamestate.start("Distribute")
+
+
+# Returns the players that haven't lost yet
+func get_playing_players() -> Array:
+	var playing = []
+	for player_id in NetworkManager.players:
+		if not NetworkManager.players[player_id].lost:
+			playing.push_back(player_id)
+	return playing

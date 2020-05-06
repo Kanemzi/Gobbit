@@ -1,7 +1,5 @@
 extends ActionHandler
 
-# TODO: Handle spirit attacks (add a "lost" property in players)
-
 # Handles an attack from the current client on the target deck
 func handle_attack(target: Deck) -> void:
 	var deck : Deck = NetworkManager.me().played_cards.get_ref()

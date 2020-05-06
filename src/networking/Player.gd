@@ -8,11 +8,30 @@ var id : int # The peer id of the player
 var pseudo : String # The name of the player
 var deck : WeakRef # The deck of the player
 var played_cards : WeakRef # A reference to the deck of played cards
+var lost : bool # The player has lost the game
 
 func _init(id: int, pseudo: String) -> void:
 	self.id = id
 	self.pseudo = pseudo
-
+	self.lost = false
 
 static func compare(a: Player, b: Player) -> bool:
 	return a.id < b.id
+
+
+# Checks if the player has lost the game
+# Returns false if the player has already lost the game
+func has_just_lost() -> bool:
+	if deck == null or played_cards == null:
+		return false
+	# No recovering possibilities for the player
+	if deck.get_ref().empty() and played_cards.get_ref().empty():
+		return true
+	return false
+
+
+# The player loses the game and it's decks are deleted
+func loose() -> void:
+	lost = true
+	deck.get_ref().queue_free()
+	played_cards.get_ref().queue_free()

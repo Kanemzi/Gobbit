@@ -19,11 +19,11 @@ var neatness := 0.05 # The quality of alignment in the cards of the deck
 var face_down := true # If the cards are hidden in the deck, true by default
 
 func _ready() -> void:
-	if NetworkManager.players.has(NetworkManager.peer_id):
-		var myself : Player = NetworkManager.me()
-		$Viewport/Label.text = name + " " + myself.pseudo# TODO: Remove when debugging done
-	else :
-		$Viewport/Label.text = name# TODO: Remove when debugging done
+#	if NetworkManager.players.has(NetworkManager.peer_id):
+#		var myself : Player = NetworkManager.me()
+#		$Viewport/Label.text = name + " " + myself.pseudo# TODO: Remove when debugging done
+#	else :
+#		$Viewport/Label.text = name# TODO: Remove when debugging done
 	reset()
 
 

@@ -18,6 +18,9 @@ func handle_gobbit() -> void:
 
 # Checks if there is a Gobbit configuration on the table
 func check_gobbit_active() -> bool:
+	# HACK: to remove gobbit! in the capture/defense process
+	return false
+	
 	var deck : Deck = NetworkManager.me().played_cards.get_ref()
 	var self_card := deck.get_card_on_top()
 	var all_cards := turn.get_all_top_cards()

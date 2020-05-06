@@ -20,6 +20,7 @@ onready var place_handler := $PlaceHandler
 onready var attack_handler := $AttackHandler
 onready var defense_handler := $DefenseHandler
 onready var gobbit_handler := $GobbitHandler
+onready var spirit_handler := $SpiritHandler
 
 # BUG: When 5 or more player, mouse tracking seems to be broken
 
@@ -34,10 +35,12 @@ func enter(params := {}) -> void:
 	player_turn = NetworkManager.turn_order[player_index].id
 	
 	if NetworkManager.peer_id == player_turn:
-		var deck : Deck = NetworkManager.players[player_turn].deck.get_ref()
-		if deck.empty():
+		var player : Player = NetworkManager.players[player_turn]
+		if player.lost or \
+				(player.deck != null and player.deck.get_ref().empty()):
 			#TODO: Check if game end !
 			next_turn()
+			return
 		
 	place_handler.init()
 	mouse_ray.enabled = true
@@ -66,16 +69,19 @@ func unhandled_input(event: InputEvent) -> void:
 	if event.pressed:
 		if gm.decks_manager.is_played_cards(collider):
 			var played_cards := collider as Deck
-			if NetworkManager.me().played_cards.get_ref() == played_cards: # Defensive action
+			if NetworkManager.me().lost: # If the player is a spirit
+				spirit_handler.handle_spirit_attack(played_cards)
+			elif NetworkManager.me().played_cards.get_ref() == played_cards: # Defensive action
 				defense_handler.handle_defense()
 			else: # Offensive action
 				attack_handler.handle_attack(played_cards)
 				pass
 		elif gm.decks_manager.is_graveyard(collider):
-			gobbit_handler.handle_gobbit()
+			if not NetworkManager.me().lost:
+				gobbit_handler.handle_gobbit()
 	
-	if NetworkManager.peer_id != player_turn:
-		return # TODO: also check for card steals at this point
+	if NetworkManager.peer_id != player_turn or NetworkManager.me().lost:
+		return
 	
 	# Placing action
 	if event.pressed:
@@ -89,6 +95,9 @@ func unhandled_input(event: InputEvent) -> void:
 			# Play again if the placed card is a gorilla
 			if card.front_type != CardFactory.CardFrontType.GORILLA:
 				# BUG: Crash if the gorilla is the last card of the player
+				next_turn()
+			elif NetworkManager.me().deck.get_ref().empty():
+				rpc("lose_cards", NetworkManager.peer_id)
 				next_turn()
 		else:
 			place_handler.rpc("cancel_dragging")
@@ -115,13 +124,14 @@ func get_turn_played_cards() -> Deck:
 # Returns the top cards of the played cards for all players
 func get_all_top_cards() -> Dictionary:
 	var top_cards := {}
-	for player_id in NetworkManager.players:
+	for player_id in gm.get_playing_players():
 		var played_cards : Deck = NetworkManager.players[player_id].played_cards.get_ref()
 		if played_cards.empty():
 			top_cards[player_id] = null
 		else:
 			top_cards[player_id] = played_cards.get_card_on_top()
 	return top_cards
+
 
 # Returns true if the deck is that of the player whose turn it is.
 func is_turn_deck(deck : Deck) -> bool:
@@ -145,6 +155,11 @@ sync func steal_cards(from_id: int, to_id: int) -> void:
 	var deck : Deck = to.deck.get_ref()
 	var cards : Deck = from.played_cards.get_ref()
 	deck.merge_deck_on_bottom(cards)
+	yield(deck, "deck_merged")
+	
+	# Check if the player loses the game
+	if from.has_just_lost():
+		from.loose()
 
 
 # The target player loses it's played card (they go to the graveyard)
@@ -154,3 +169,8 @@ sync func lose_cards(target_id: int) -> void:
 		return
 	var cards : Deck = target.played_cards.get_ref()
 	gm.decks_manager.graveyard.merge_deck_on_top(cards)
+	yield(gm.decks_manager.graveyard, "deck_merged")
+	
+	# Check if the player loses the game
+	if target.has_just_lost():
+		target.loose()
