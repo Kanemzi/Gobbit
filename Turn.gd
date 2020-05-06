@@ -178,10 +178,11 @@ sync func lose_cards(target_id: int) -> void:
 	if target.played_cards == null:
 		return
 	var cards : Deck = target.played_cards.get_ref()
+	protections.push_back(cards.get_card_on_top())
+	
 	gm.decks_manager.graveyard.merge_deck_on_top(cards)
 	yield(gm.decks_manager.graveyard, "deck_merged")
 	
-	protections.push_back(cards.get_card_on_top())
 	
 	# Check if the player loses the game
 	if target.has_just_lost():
