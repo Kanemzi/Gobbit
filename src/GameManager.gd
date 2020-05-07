@@ -40,13 +40,24 @@ sync func start() -> void:
 
 
 # Returns the players that haven't lost yet
-func get_playing_players() -> Array:
+func get_remaining_players() -> Array:
 	var playing = []
 	for player_id in NetworkManager.players:
 		if not NetworkManager.players[player_id].lost:
 			playing.push_back(player_id)
 	return playing
 
+
+# Returns the number of player left
+func player_left_count() -> int:
+	var count = 0
+	for player_id in NetworkManager.players:
+		if not NetworkManager.players[player_id].lost:
+			count += 1
+	return count
+
+
+# TODO: Delegate these functionalities to PlayerPointers
 
 # Initialize player cursors
 func init_player_cursors() -> void:
@@ -56,9 +67,6 @@ func init_player_cursors() -> void:
 		pointer.set_player(NetworkManager.players[player_id])
 		pointer.name = str(player_id)
 		player_pointers.add_child(pointer)
-
-
-# TODO: Delegate these functionalities to PlayerPointers
 
 func display_cursors(displayed := true) -> void:
 	player_pointers.visible = displayed

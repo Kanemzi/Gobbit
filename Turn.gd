@@ -22,8 +22,8 @@ onready var defense_handler := $DefenseHandler
 onready var gobbit_handler := $GobbitHandler
 onready var spirit_handler := $SpiritHandler
 
-# The protected cards during the current turn (reset every turn)
-var protections = []
+# All the top cards at the start of the turn (used for last breath checks)
+var top_cards := {}
 	
 # BUG: When 5 or more player, mouse tracking seems to be broken
 
@@ -33,7 +33,6 @@ func enter(params := {}) -> void:
 	# TODO: find a cleaner way to handle turn offset
 	# BUG: skip turn if the player has no cards in it's deck 
 	
-	protections = []
 	turn_count = params.turn
 	var player_index : int = (turn_count) % NetworkManager.player_count
 	player_turn = NetworkManager.turn_order[player_index].id
@@ -51,6 +50,10 @@ func enter(params := {}) -> void:
 	mouse_ray.global_transform.origin = (gm.get_node("Pivot/Camera") as Camera).global_transform.origin
 	
 	gm.display_cursors()
+	
+	if NetworkManager.is_server:
+		top_cards = get_all_top_cards()
+		
 
 func physics_process(delta: float) -> void:
 	var position2D = get_viewport().get_mouse_position()
@@ -97,7 +100,6 @@ func unhandled_input(event: InputEvent) -> void:
 		if is_turn_played_cards(collider):
 			var card : Card = place_handler.dragged_card.get_ref()
 			place_handler.rpc("finalize_dragging")
-			spirit_handler.rpc("reset") # Reset the protected cards
 			# Play again if the placed card is a gorilla
 			if card.front_type != CardFactory.CardFrontType.GORILLA:
 				# BUG: Crash if the gorilla is the last card of the player
@@ -105,12 +107,19 @@ func unhandled_input(event: InputEvent) -> void:
 			elif NetworkManager.me().deck.get_ref().empty():
 				rpc("lose_cards", NetworkManager.peer_id)
 				next_turn()
+			else:
+				reset_turn()
 		else:
 			place_handler.rpc("cancel_dragging")
 
 
 func next_turn() -> void:
 	gm.gamestate.rpc("transition_to", "Turn", {turn=(turn_count + 1)})
+
+
+# Next turn but the same player play again
+func reset_turn() -> void:
+	gm.gamestate.rpc("transition_to", "Turn", {turn=(turn_count)})
 
 
 func exit() -> void:
@@ -130,7 +139,7 @@ func get_turn_played_cards() -> Deck:
 # Returns the top cards of the played cards for all players
 func get_all_top_cards() -> Dictionary:
 	var top_cards := {}
-	for player_id in gm.get_playing_players():
+	for player_id in gm.get_remaining_players():
 		var played_cards : Deck = NetworkManager.players[player_id].played_cards.get_ref()
 		if played_cards.empty():
 			top_cards[player_id] = null
@@ -160,10 +169,6 @@ sync func steal_cards(from_id: int, to_id: int) -> void:
 	var deck : Deck = to.deck.get_ref()
 	var cards : Deck = from.played_cards.get_ref()
 	
-	# If the steal is a protection
-	if from_id == to_id:
-		protections.push_back(cards.get_card_on_top())
-	
 	deck.merge_deck_on_bottom(cards)
 	yield(deck, "deck_merged")
 	
@@ -178,7 +183,6 @@ sync func lose_cards(target_id: int) -> void:
 	if target.played_cards == null:
 		return
 	var cards : Deck = target.played_cards.get_ref()
-	protections.push_back(cards.get_card_on_top())
 	
 	gm.decks_manager.graveyard.merge_deck_on_top(cards)
 	yield(gm.decks_manager.graveyard, "deck_merged")

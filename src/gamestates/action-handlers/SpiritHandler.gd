@@ -16,20 +16,17 @@ master func handle_spirit_attack(target_id: int) -> void:
 # Checks if an attack from deck to the target deck is valid
 func check_spirit_attack_valid(target: Deck) -> bool:
 	var top_target := target.get_card_on_top()
-	var all_cards := turn.get_all_top_cards().values()
+	var all_cards := turn.top_cards
 	
 	# If there is not spirit at the moment
-	if all_cards.size() == NetworkManager.players.size():
+	if NetworkManager.player_count == turn.gm.player_left_count():
 		return false
 	
-	all_cards += turn.protections
-	
-	for card in all_cards:
+	for pid in all_cards:
+		var card : Card = all_cards[pid]
 		if card == top_target or card == null:
 			continue
-		Debug.println(card.name + " == " + top_target.name)
 		if card.colors == top_target.colors and \
 				card.front_type == top_target.front_type:
-			Debug.println("OK")
 			return true
 	return false
