@@ -2,22 +2,20 @@
 
 importer="texture"
 type="StreamTexture"
-path.s3tc="res://.import/back-all-eat-flies.png-44269f032cdf3e5283b60d3eb8fe26dc.s3tc.stex"
-path.etc2="res://.import/back-all-eat-flies.png-44269f032cdf3e5283b60d3eb8fe26dc.etc2.stex"
+path="res://.import/back-all-eat-flies.png-44269f032cdf3e5283b60d3eb8fe26dc.stex"
 metadata={
-"imported_formats": [ "s3tc", "etc2" ],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://assets/textures/cards/back-all-eat-flies.png"
-dest_files=[ "res://.import/back-all-eat-flies.png-44269f032cdf3e5283b60d3eb8fe26dc.s3tc.stex", "res://.import/back-all-eat-flies.png-44269f032cdf3e5283b60d3eb8fe26dc.etc2.stex" ]
+dest_files=[ "res://.import/back-all-eat-flies.png-44269f032cdf3e5283b60d3eb8fe26dc.stex" ]
 
 [params]
 
-compress/mode=2
-compress/lossy_quality=0.0
+compress/mode=1
+compress/lossy_quality=0.5
 compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0

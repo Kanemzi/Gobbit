@@ -14,8 +14,8 @@ dest_files=[ "res://.import/chameleon-yellow.png-a496d791255c8b918138a858d26f887
 
 [params]
 
-compress/mode=0
-compress/lossy_quality=0.0
+compress/mode=1
+compress/lossy_quality=0.5
 compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0

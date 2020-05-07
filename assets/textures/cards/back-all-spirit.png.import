@@ -2,22 +2,20 @@
 
 importer="texture"
 type="StreamTexture"
-path.s3tc="res://.import/back-all-spirit.png-59595a0fb798a6afac6fa8d9512a808f.s3tc.stex"
-path.etc2="res://.import/back-all-spirit.png-59595a0fb798a6afac6fa8d9512a808f.etc2.stex"
+path="res://.import/back-all-spirit.png-59595a0fb798a6afac6fa8d9512a808f.stex"
 metadata={
-"imported_formats": [ "s3tc", "etc2" ],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://assets/textures/cards/back-all-spirit.png"
-dest_files=[ "res://.import/back-all-spirit.png-59595a0fb798a6afac6fa8d9512a808f.s3tc.stex", "res://.import/back-all-spirit.png-59595a0fb798a6afac6fa8d9512a808f.etc2.stex" ]
+dest_files=[ "res://.import/back-all-spirit.png-59595a0fb798a6afac6fa8d9512a808f.stex" ]
 
 [params]
 
-compress/mode=2
-compress/lossy_quality=0.0
+compress/mode=1
+compress/lossy_quality=0.5
 compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0

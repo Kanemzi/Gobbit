@@ -14,8 +14,8 @@ dest_files=[ "res://.import/fly-red.png-2cf2b65b9c90c9419b86aa8056dba9e6.stex" ]
 
 [params]
 
-compress/mode=0
-compress/lossy_quality=0.0
+compress/mode=1
+compress/lossy_quality=0.5
 compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0

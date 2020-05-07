@@ -2,22 +2,20 @@
 
 importer="texture"
 type="StreamTexture"
-path.s3tc="res://.import/back-reverse-chain.png-636edf146b61e70157d519f173affb17.s3tc.stex"
-path.etc2="res://.import/back-reverse-chain.png-636edf146b61e70157d519f173affb17.etc2.stex"
+path="res://.import/back-reverse-chain.png-636edf146b61e70157d519f173affb17.stex"
 metadata={
-"imported_formats": [ "s3tc", "etc2" ],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://assets/textures/cards/back-reverse-chain.png"
-dest_files=[ "res://.import/back-reverse-chain.png-636edf146b61e70157d519f173affb17.s3tc.stex", "res://.import/back-reverse-chain.png-636edf146b61e70157d519f173affb17.etc2.stex" ]
+dest_files=[ "res://.import/back-reverse-chain.png-636edf146b61e70157d519f173affb17.stex" ]
 
 [params]
 
-compress/mode=2
-compress/lossy_quality=0.0
+compress/mode=1
+compress/lossy_quality=0.5
 compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0

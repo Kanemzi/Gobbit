@@ -2,22 +2,20 @@
 
 importer="texture"
 type="StreamTexture"
-path.s3tc="res://.import/chameleon-red.png-543aca4ea69dd1c0afc601ca56d34479.s3tc.stex"
-path.etc2="res://.import/chameleon-red.png-543aca4ea69dd1c0afc601ca56d34479.etc2.stex"
+path="res://.import/chameleon-red.png-543aca4ea69dd1c0afc601ca56d34479.stex"
 metadata={
-"imported_formats": [ "s3tc", "etc2" ],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://assets/textures/cards/chameleon-red.png"
-dest_files=[ "res://.import/chameleon-red.png-543aca4ea69dd1c0afc601ca56d34479.s3tc.stex", "res://.import/chameleon-red.png-543aca4ea69dd1c0afc601ca56d34479.etc2.stex" ]
+dest_files=[ "res://.import/chameleon-red.png-543aca4ea69dd1c0afc601ca56d34479.stex" ]
 
 [params]
 
-compress/mode=2
-compress/lossy_quality=0.0
+compress/mode=1
+compress/lossy_quality=0.5
 compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0

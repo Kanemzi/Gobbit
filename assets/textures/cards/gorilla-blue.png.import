@@ -2,22 +2,20 @@
 
 importer="texture"
 type="StreamTexture"
-path.s3tc="res://.import/gorilla-blue.png-b18d665507055afee9315a3ca9dc2a3f.s3tc.stex"
-path.etc2="res://.import/gorilla-blue.png-b18d665507055afee9315a3ca9dc2a3f.etc2.stex"
+path="res://.import/gorilla-blue.png-b18d665507055afee9315a3ca9dc2a3f.stex"
 metadata={
-"imported_formats": [ "s3tc", "etc2" ],
-"vram_texture": true
+"vram_texture": false
 }
 
 [deps]
 
 source_file="res://assets/textures/cards/gorilla-blue.png"
-dest_files=[ "res://.import/gorilla-blue.png-b18d665507055afee9315a3ca9dc2a3f.s3tc.stex", "res://.import/gorilla-blue.png-b18d665507055afee9315a3ca9dc2a3f.etc2.stex" ]
+dest_files=[ "res://.import/gorilla-blue.png-b18d665507055afee9315a3ca9dc2a3f.stex" ]
 
 [params]
 
-compress/mode=2
-compress/lossy_quality=0.0
+compress/mode=1
+compress/lossy_quality=0.5
 compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
