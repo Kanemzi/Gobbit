@@ -73,13 +73,13 @@ func unhandled_input(event: InputEvent) -> void:
 	if event.pressed:
 		if gm.decks_manager.is_played_cards(collider):
 			var played_cards := collider as Deck
+			var target_id : int = played_cards.pid
 			if NetworkManager.me().lost: # If the player is a spirit
-				spirit_handler.handle_spirit_attack(played_cards)
+				spirit_handler.rpc("handle_spirit_attack", target_id)
 			elif NetworkManager.me().played_cards.get_ref() == played_cards: # Defensive action
-				defense_handler.handle_defense()
+				defense_handler.rpc("handle_defense", NetworkManager.peer_id)
 			else: # Offensive action
-				attack_handler.handle_attack(played_cards)
-				pass
+				attack_handler.rpc("handle_attack", NetworkManager.peer_id, target_id)
 		elif gm.decks_manager.is_graveyard(collider):
 			if not NetworkManager.me().lost:
 				gobbit_handler.handle_gobbit()
@@ -146,7 +146,6 @@ func is_turn_deck(deck : Deck) -> bool:
 # Returns true if the played cards deck is that of the player whose turn it is.
 func is_turn_played_cards(deck : Deck) -> bool:
 	return deck == NetworkManager.players[player_turn].played_cards.get_ref()
-
 
 
 # The played cards of "from" goes to the bottom of the "to" deck

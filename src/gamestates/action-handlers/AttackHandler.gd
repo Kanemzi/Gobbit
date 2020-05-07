@@ -1,22 +1,22 @@
 extends ActionHandler
 
-# Handles an attack from the current client on the target deck
-func handle_attack(target: Deck) -> void:
-	var deck : Deck = NetworkManager.me().played_cards.get_ref()
+# Handles an attack from a client on a target
+master func handle_attack(attacker_id : int, target_id: int) -> void:
+	var deck : Deck = NetworkManager.players[attacker_id].played_cards.get_ref()
+	var target : Deck = NetworkManager.players[target_id].played_cards.get_ref()
 	# No attacks when a Gobbit is active
 	if target.empty() or deck.empty() or \
 			turn.gobbit_handler.check_gobbit_active():
 		return
-
 	
 	if check_attack_valid(deck, target):
 		if is_killing_attack(deck, target):
-			turn.rpc("lose_cards", target.pid)
+			turn.rpc("lose_cards", target_id)
 		else:
-			turn.rpc("steal_cards",target.pid, NetworkManager.peer_id)
+			turn.rpc("steal_cards",target_id, attacker_id)
 		turn.gm.camera.rpc("shake")
 	else:
-		turn.rpc("lose_cards", NetworkManager.peer_id)
+		turn.rpc("lose_cards", attacker_id)
 
 
 # Checks if an attack from deck to the target deck is valid
