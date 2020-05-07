@@ -33,8 +33,10 @@ func create_decks() -> void:
 		played_cards.neatness = PI * 0.25
 		played_cards.add_to_group("deck_playedcard")
 		
-		NetworkManager.players[id].deck = weakref(deck)
-		NetworkManager.players[id].played_cards = weakref(played_cards)
+		var player : Player = NetworkManager.players[id]
+		
+		player.deck = weakref(deck)
+		player.played_cards = weakref(played_cards)
 		deck.name = "deck_" + str(id)
 		played_cards.name = "played_cards_" + str(id)
 		deck.set_network_master(id)
@@ -42,6 +44,8 @@ func create_decks() -> void:
 		# Bidirectional association
 		deck.pid = id
 		played_cards.pid = id
+		deck.set_color(player.color)
+		played_cards.set_color(player.color)
 		
 		add_child(deck)
 		add_child(played_cards)

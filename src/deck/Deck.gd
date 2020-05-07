@@ -244,3 +244,7 @@ func empty() -> bool:
 func size() -> int:
 	return cards.get_child_count()
 
+
+# Sets the color of the glowing effect
+func set_color(color: Color) -> void:
+	($Glow.material_override as ShaderMaterial).set_shader_param("Color", color)
