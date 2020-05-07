@@ -7,8 +7,10 @@ signal game_started # Triggers when the game starts
 
 const NetworkCheckpoints := preload("res://src/networking/NetworkCheckpoints.gd")
 
-const player_colors = [Color.red,  Color.azure, Color.green, Color.yellow,
-		Color.fuchsia, Color.yellowgreen, Color.violet, Color.skyblue]
+const player_colors = [Color.red,  Color.yellow, 
+		Color.dodgerblue, Color.blueviolet,
+		Color.lawngreen, Color.darkorange, 
+		Color.cyan, Color.deeppink]
 
 var pseudo := ""
 var peer_id : int
