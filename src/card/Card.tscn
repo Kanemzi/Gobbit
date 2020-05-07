@@ -6,7 +6,7 @@
 [ext_resource path="res://assets/meshes/card.tscn" type="PackedScene" id=4]
 [ext_resource path="res://assets/materials/card-outline.tres" type="Material" id=5]
 
-[sub_resource type="Animation" id=2]
+[sub_resource type="Animation" id=1]
 resource_name = "Distribute"
 length = 0.3
 step = 0.025
@@ -35,7 +35,7 @@ tracks/1/keys = {
 "values": [ Vector3( 0, 0, 0 ), Vector3( -20, 0, 0 ), Vector3( 0, 0, 0 ) ]
 }
 
-[sub_resource type="Animation" id=3]
+[sub_resource type="Animation" id=2]
 length = 0.14
 step = 0.07
 tracks/0/type = "value"
@@ -63,7 +63,7 @@ tracks/1/keys = {
 "values": [ Vector3( 0, 0, 0 ), Vector3( 180, 0, 0 ) ]
 }
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id=3]
 resource_name = "FlipFaceUp"
 length = 0.14
 step = 0.07
@@ -92,7 +92,7 @@ tracks/1/keys = {
 "values": [ Vector3( 180, 0, 0 ), Vector3( 0, 0, 0 ) ]
 }
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=4]
 resource_name = "RevealNext"
 length = 0.3
 step = 0.025
@@ -121,7 +121,7 @@ tracks/1/keys = {
 "values": [ Vector3( 0, 0, 0 ), Vector3( 0, 30, 25 ) ]
 }
 
-[sub_resource type="Animation" id=6]
+[sub_resource type="Animation" id=5]
 length = 0.9
 step = 0.025
 tracks/0/type = "value"
@@ -149,7 +149,7 @@ tracks/1/keys = {
 "values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0, -10 ), Vector3( 0, 0, 0 ), Vector3( 0, 0, -10 ), Vector3( 0, 0, 0 ), Vector3( 0, 0, -10 ), Vector3( 0, 0, 0 ) ]
 }
 
-[sub_resource type="Animation" id=7]
+[sub_resource type="Animation" id=6]
 resource_name = "ShuffleRight"
 length = 0.9
 step = 0.025
@@ -194,12 +194,12 @@ material/0 = ExtResource( 5 )
 [node name="MoveTween" type="Tween" parent="."]
 
 [node name="Animator" type="AnimationPlayer" parent="."]
-anims/Distribute = SubResource( 2 )
-anims/FlipFaceDown = SubResource( 3 )
-anims/FlipFaceUp = SubResource( 4 )
-anims/RevealNext = SubResource( 5 )
-anims/ShuffleLeft = SubResource( 6 )
-anims/ShuffleRight = SubResource( 7 )
+anims/Distribute = SubResource( 1 )
+anims/FlipFaceDown = SubResource( 2 )
+anims/FlipFaceUp = SubResource( 3 )
+anims/RevealNext = SubResource( 4 )
+anims/ShuffleLeft = SubResource( 5 )
+anims/ShuffleRight = SubResource( 6 )
 [connection signal="tween_completed" from="MoveTween" to="." method="_on_MoveTween_tween_completed"]
 
 [editable path="Mesh"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://src/deck/Deck.tscn" type="PackedScene" id=1]
 [ext_resource path="res://src/networking/hub/Hub.tscn" type="PackedScene" id=2]
@@ -15,6 +15,7 @@
 [ext_resource path="res://src/gamestates/action-handlers/AttackHandler.gd" type="Script" id=13]
 [ext_resource path="res://src/gamestates/action-handlers/GobbitHandler.gd" type="Script" id=14]
 [ext_resource path="res://src/gamestates/action-handlers/SpiritHandler.gd" type="Script" id=15]
+[ext_resource path="res://src/player/Pointer3D.tscn" type="PackedScene" id=16]
 
 [sub_resource type="Environment" id=1]
 ambient_light_color = Color( 0.54902, 0.54902, 0.54902, 1 )
@@ -124,3 +125,10 @@ script = ExtResource( 3 )
 [node name="Cards" type="Spatial" parent="."]
 
 [node name="Hub" parent="." instance=ExtResource( 2 )]
+
+[node name="PlayerPointers" type="Spatial" parent="."]
+visible = false
+
+[node name="PlayerPointer" parent="PlayerPointers" instance=ExtResource( 16 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.54335 )
+visible = false

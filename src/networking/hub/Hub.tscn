@@ -5,7 +5,6 @@
 [ext_resource path="res://src/networking/hub/Hub.gd" type="Script" id=3]
 [ext_resource path="res://src/networking/hub/ErrorsPanel.gd" type="Script" id=4]
 
-
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0, 0, 0, 0.588235 )
 

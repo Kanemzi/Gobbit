@@ -49,7 +49,8 @@ func enter(params := {}) -> void:
 	place_handler.init()
 	mouse_ray.enabled = true
 	mouse_ray.global_transform.origin = (gm.get_node("Pivot/Camera") as Camera).global_transform.origin
-
+	
+	gm.display_cursors()
 
 func physics_process(delta: float) -> void:
 	var position2D = get_viewport().get_mouse_position()

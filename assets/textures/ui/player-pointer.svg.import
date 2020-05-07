@@ -1,0 +1,36 @@
+[remap]
+
+importer="texture"
+type="StreamTexture"
+path.s3tc="res://.import/player-pointer.svg-31b7efe923606394405344b9918ebbc4.s3tc.stex"
+path.etc2="res://.import/player-pointer.svg-31b7efe923606394405344b9918ebbc4.etc2.stex"
+metadata={
+"imported_formats": [ "s3tc", "etc2" ],
+"vram_texture": true
+}
+
+[deps]
+
+source_file="res://assets/textures/ui/player-pointer.svg"
+dest_files=[ "res://.import/player-pointer.svg-31b7efe923606394405344b9918ebbc4.s3tc.stex", "res://.import/player-pointer.svg-31b7efe923606394405344b9918ebbc4.etc2.stex" ]
+
+[params]
+
+compress/mode=2
+compress/lossy_quality=0.7
+compress/hdr_mode=0
+compress/bptc_ldr=0
+compress/normal_map=0
+flags/repeat=true
+flags/filter=true
+flags/mipmaps=true
+flags/anisotropic=false
+flags/srgb=2
+process/fix_alpha_border=true
+process/premult_alpha=false
+process/HDR_as_SRGB=false
+process/invert_color=false
+stream=false
+size_limit=0
+detect_3d=false
+svg/scale=0.3

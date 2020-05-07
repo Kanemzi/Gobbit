@@ -7,6 +7,9 @@ signal game_started # Triggers when the game starts
 
 const NetworkCheckpoints := preload("res://src/networking/NetworkCheckpoints.gd")
 
+const player_colors = [Color.red,  Color.azure, Color.green, Color.yellow,
+		Color.fuchsia, Color.yellowgreen, Color.violet, Color.skyblue]
+
 var pseudo := ""
 var peer_id : int
 var is_server : bool
@@ -105,6 +108,7 @@ func start_game() -> void:
 
 # Initializes the scene for the game to start
 sync func initialize_game() -> void:
+	
 	# Initialize the checkpoint manager
 	net_cp = NetworkCheckpoints.new(get_tree(), players.size())
 	add_child(net_cp)
@@ -116,6 +120,12 @@ sync func initialize_game() -> void:
 	turn_order.sort_custom(Player, "compare")
 
 	player_count = players.size()
+	
+	# TODO: Move to a dedicated function
+	var i := 0
+	for player in turn_order:
+		player.color = player_colors[i]
+		i += 1
 	
 	game_started = true
 	var deck_manager := get_tree().get_root().get_node("GameManager/Decks") as DecksManager 

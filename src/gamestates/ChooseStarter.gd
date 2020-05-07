@@ -3,7 +3,7 @@ extends GameState
 
 export(float) var delay_before_next_rounds := 1.5
 export(float) var delay_before_shuffle := 2.0
-export(float) var delay_before_start := 2.0
+export(float) var delay_before_start := 1.0
 
 var starter: Player
 

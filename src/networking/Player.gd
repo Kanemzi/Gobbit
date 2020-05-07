@@ -9,6 +9,7 @@ var pseudo : String # The name of the player
 var deck : WeakRef # The deck of the player
 var played_cards : WeakRef # A reference to the deck of played cards
 var lost : bool # The player has lost the game
+var color: Color = Color.white
 
 func _init(id: int, pseudo: String) -> void:
 	self.id = id
