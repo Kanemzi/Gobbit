@@ -3,6 +3,8 @@ extends ActionHandler
 
 # Handles an attack from the current client on the target deck
 master func handle_defense(defenser_id: int) -> void:
+	# BUG: null on spirit
+	print("def: ", defenser_id)
 	var deck : Deck = NetworkManager.players[defenser_id].played_cards.get_ref()
 	if deck.empty() or \
 			turn.gobbit_handler.check_gobbit_active():

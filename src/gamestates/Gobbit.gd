@@ -5,12 +5,14 @@ class_name GobbitGameState
 
 var gobbit_player_id : int
 var choice_made := false
+var remaining_players : Array
 
 func enter(params := {}) -> void:
 	assert("player" in params)
 	
 	gobbit_player_id = params.player
 	choice_made = false
+	remaining_players = gm.get_remaining_players()
 
 	for player_id in NetworkManager.players:
 		if gobbit_player_id != player_id:
@@ -49,11 +51,11 @@ func unhandled_input(event: InputEvent) -> void:
 # Process the choice of the gobbit winner serverside
 master func _process_gobbit(choice: int) -> void:
 	gm.rpc("steal_cards", choice, gobbit_player_id)
-			
+	
 	var target = NetworkManager.players[choice]
 	yield(target, "lost_cards")
-			
-	for player_id in NetworkManager.players:
+	
+	for player_id in remaining_players:
 		gm.rpc("steal_cards", player_id, player_id)
 	
 	gm.gamestate.rpc("transition_to", "Turn", {turn=0, player=gobbit_player_id})

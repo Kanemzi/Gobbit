@@ -98,6 +98,7 @@ func unhandled_input(event: InputEvent) -> void:
 			if card.front_type != CardFactory.CardFrontType.GORILLA:
 				# BUG: Crash if the gorilla is the last card of the player
 				next_turn()
+			# NOTE: Eventual bug on this case
 			elif NetworkManager.me().deck.get_ref().empty():
 				gm.rpc("lose_cards", NetworkManager.peer_id)
 				next_turn()

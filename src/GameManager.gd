@@ -117,7 +117,6 @@ sync func lose_cards(target_id: int) -> void:
 	decks_manager.graveyard.merge_deck_on_top(cards)
 	yield(decks_manager.graveyard, "deck_merged")
 	
-	
 	# Check if the player loses the game
 	if target.has_just_lost():
 		target.loose()
