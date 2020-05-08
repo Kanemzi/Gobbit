@@ -70,6 +70,7 @@ func eats(other: Card) -> bool:
 	return colors[0] in other.colors
 
 # Flips the card up or down with a 0.3s animation
+# TODO: Put the flip animations in a separate animator (prevents card from beeing stuck between two states)
 func flip(face_down : bool) -> void:
 	if face_down:
 		$Animator.play("FlipFaceDown")

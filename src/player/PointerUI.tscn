@@ -4,7 +4,7 @@
 [ext_resource path="res://assets/fonts/base_font.tres" type="DynamicFontData" id=2]
 
 [sub_resource type="DynamicFont" id=1]
-size = 40
+size = 80
 use_filter = true
 font_data = ExtResource( 2 )
 
@@ -17,25 +17,25 @@ __meta__ = {
 }
 
 [node name="Name" type="Label" parent="."]
-margin_right = 1024.0
-margin_bottom = 50.0
+margin_right = 1148.0
+margin_bottom = 99.0
 custom_fonts/font = SubResource( 1 )
 text = "..."
 align = 1
 valign = 1
 
 [node name="Center" type="CenterContainer" parent="."]
-margin_top = 54.0
-margin_right = 1024.0
-margin_bottom = 130.0
+margin_top = 103.0
+margin_right = 1148.0
+margin_bottom = 256.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Pointer" type="TextureRect" parent="Center"]
-margin_left = 474.0
-margin_right = 550.0
-margin_bottom = 76.0
+margin_left = 497.0
+margin_right = 650.0
+margin_bottom = 153.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource( 1 )

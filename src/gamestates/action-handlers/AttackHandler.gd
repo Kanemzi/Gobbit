@@ -5,8 +5,6 @@ master func handle_attack(attacker_id : int, target_id: int) -> void:
 	var deck : Deck = NetworkManager.players[attacker_id].played_cards.get_ref()
 	var target : Deck = NetworkManager.players[target_id].played_cards.get_ref()
 	# No attacks when a Gobbit is active
-	Debug.println("Attack req : " + str(turn.top_cards[attacker_id].front_type))
-#	Debug.println("Attack req : " + str(deck.get_card_on_top().front_type))
 	if target.empty() or turn.top_cards[attacker_id] == null or \
 			turn.gobbit_handler.check_gobbit_active():
 		return
