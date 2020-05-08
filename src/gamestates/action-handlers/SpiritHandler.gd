@@ -7,10 +7,10 @@ master func handle_spirit_attack(target_id: int) -> void:
 		return
 	
 	if check_spirit_attack_valid(target):
-		turn.rpc("lose_cards", target_id)
+		turn.gm.rpc("lose_cards", target_id)
 		turn.gm.camera.rpc("shake")
 	else: # If this is an error, the card, is protected
-		turn.rpc("steal_cards", target_id, target_id)
+		turn.gm.rpc("steal_cards", target_id, target_id)
 
 
 # Checks if an attack from deck to the target deck is valid

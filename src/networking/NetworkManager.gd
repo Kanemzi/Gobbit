@@ -7,7 +7,7 @@ signal game_started # Triggers when the game starts
 
 const NetworkCheckpoints := preload("res://src/networking/NetworkCheckpoints.gd")
 
-const player_colors = [Color.red,  Color.yellow, 
+const player_colors = [Color.red,  Color.darkorange, 
 		Color.dodgerblue, Color.blueviolet,
 		Color.lawngreen, Color.darkorange, 
 		Color.cyan, Color.deeppink]

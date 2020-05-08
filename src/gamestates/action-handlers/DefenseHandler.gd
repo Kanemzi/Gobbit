@@ -9,9 +9,9 @@ master func handle_defense(defenser_id: int) -> void:
 		return
 	
 	if check_defense_valid(defenser_id):
-		turn.rpc("steal_cards", defenser_id, defenser_id)
+		turn.gm.rpc("steal_cards", defenser_id, defenser_id)
 	else:
-		turn.rpc("lose_cards", defenser_id)
+		turn.gm.rpc("lose_cards", defenser_id)
 
 
 # Checks if a defense is justified

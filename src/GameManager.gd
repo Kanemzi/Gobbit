@@ -84,3 +84,40 @@ sync func update_cursor_position(position: Vector3) -> void:
 	else:
 		# Slower but smooth movment for other clients
 		cursor.move_to(position)
+
+
+# The played cards of "from" goes to the bottom of the "to" deck
+# TODO: split steal & protect functions
+sync func steal_cards(from_id: int, to_id: int) -> void:
+	var to : Player = NetworkManager.players[to_id]
+	var from : Player = NetworkManager.players[from_id]
+	if to.deck == null or from.played_cards == null or from.played_cards.get_ref().empty():
+		return
+	
+	var deck : Deck = to.deck.get_ref()
+	var cards : Deck = from.played_cards.get_ref()
+	
+	deck.merge_deck_on_bottom(cards)
+	yield(deck, "deck_merged")
+	
+	from.emit_signal("lost_cards")
+	
+	# Check if the player loses the game
+	if from.has_just_lost():
+		from.loose()
+
+
+# The target player loses it's played card (they go to the graveyard)
+sync func lose_cards(target_id: int) -> void:
+	var target : Player = NetworkManager.players[target_id]
+	if target.played_cards == null or target.played_cards.get_ref().empty():
+		return
+	var cards : Deck = target.played_cards.get_ref()
+	
+	decks_manager.graveyard.merge_deck_on_top(cards)
+	yield(decks_manager.graveyard, "deck_merged")
+	
+	
+	# Check if the player loses the game
+	if target.has_just_lost():
+		target.loose()

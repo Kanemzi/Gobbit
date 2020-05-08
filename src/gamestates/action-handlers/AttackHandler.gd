@@ -13,12 +13,12 @@ master func handle_attack(attacker_id : int, target_id: int) -> void:
 	Debug.println("Card attack -> " + str(card.front_type))
 	if check_attack_valid(card, target):
 		if is_killing_attack(card):
-			turn.rpc("lose_cards", target_id)
+			turn.gm.rpc("lose_cards", target_id)
 		else:
-			turn.rpc("steal_cards",target_id, attacker_id)
+			turn.gm.rpc("steal_cards",target_id, attacker_id)
 		turn.gm.camera.rpc("shake")
 	elif not deck.empty():
-		turn.rpc("lose_cards", attacker_id)
+		turn.gm.rpc("lose_cards", attacker_id)
 
 
 # Checks if an attack from a card to the target deck is valid

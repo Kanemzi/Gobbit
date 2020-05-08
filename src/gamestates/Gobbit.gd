@@ -3,15 +3,16 @@ class_name GobbitGameState
 # The state when a player can put a card on the top of his deck
 # to play
 
-
-# All the top cards at the start of the turn (used for last breath checks)
-var top_cards := {}
-	
-# BUG: When 5 or more player, mouse tracking seems to be broken
+var gobbit_player_id : int
 
 func enter(params := {}) -> void:
 	assert("player" in params)
-	Debug.println("GOBBIT STATE !")
+	gobbit_player_id = params.player
+
+	for player_id in NetworkManager.players:
+		if gobbit_player_id != player_id:
+			gm.player_pointers.get_node(str(player_id)).visible = false
+	
 	
 
 func physics_process(delta: float) -> void:
@@ -27,12 +28,30 @@ func unhandled_input(event: InputEvent) -> void:
 	
 	var collider := gm.mouse_ray.get_collider()
 	
-	# TODO: detect clics on graveyard for Gobbit! rule
-	
 	if event.pressed:
 		if gm.decks_manager.is_played_cards(collider):
-			pass
+			var played_cards := collider as Deck
+			
+			# Can't choose your own deck
+			if played_cards.pid == gobbit_player_id:
+				return
+			
+			rpc("_process_gobbit", played_cards.pid)
+
+
+# Process the choice of the gobbit winner serverside
+master func _process_gobbit(choice: int) -> void:
+	gm.rpc("steal_cards", choice, gobbit_player_id)
+			
+	var target = NetworkManager.players[choice]
+	yield(target, "lost_cards")
+			
+	for player_id in NetworkManager.players:
+		gm.rpc("steal_cards", player_id, player_id)
+	
+	gm.gamestate.rpc("transition_to", "Turn", {turn=0, player=gobbit_player_id})
 
 
 func exit() -> void:
-	pass
+	for player_id in NetworkManager.players:
+		gm.player_pointers.get_node(str(player_id)).visible = true

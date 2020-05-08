@@ -9,8 +9,6 @@ class_name TurnGameState
 # - Protect it's own deck
 # - Play the "Gobbit !" by hitting the graveyard
 
-var turn_offset := 0 # Defines which player starts the game
-
 var turn_count : int = 0
 var player_turn : int
 
@@ -28,10 +26,13 @@ var top_cards := {}
 func enter(params := {}) -> void:
 	assert("turn" in params)
 	
-	# TODO: find a cleaner way to handle turn offset
-	# BUG: skip turn if the player has no cards in it's deck 
-	
-	turn_count = params.turn
+	# If the turns forces a player to play
+	if "player" in params:
+		var player = NetworkManager.players[params.player]
+		turn_count = NetworkManager.turn_order.find(player)
+	else:
+		turn_count = params.turn
+
 	var player_index : int = (turn_count) % NetworkManager.player_count
 	player_turn = NetworkManager.turn_order[player_index].id
 	
@@ -98,7 +99,7 @@ func unhandled_input(event: InputEvent) -> void:
 				# BUG: Crash if the gorilla is the last card of the player
 				next_turn()
 			elif NetworkManager.me().deck.get_ref().empty():
-				rpc("lose_cards", NetworkManager.peer_id)
+				gm.rpc("lose_cards", NetworkManager.peer_id)
 				next_turn()
 			else:
 				reset_turn()
@@ -149,38 +150,3 @@ func is_turn_deck(deck : Deck) -> bool:
 # Returns true if the played cards deck is that of the player whose turn it is.
 func is_turn_played_cards(deck : Deck) -> bool:
 	return deck == NetworkManager.players[player_turn].played_cards.get_ref()
-
-
-# The played cards of "from" goes to the bottom of the "to" deck
-# TODO: split steal & protect functions
-sync func steal_cards(from_id: int, to_id: int) -> void:
-	var to : Player = NetworkManager.players[to_id]
-	var from : Player = NetworkManager.players[from_id]
-	if to.deck == null or from.played_cards == null:
-		return
-	
-	var deck : Deck = to.deck.get_ref()
-	var cards : Deck = from.played_cards.get_ref()
-	
-	deck.merge_deck_on_bottom(cards)
-	yield(deck, "deck_merged")
-	
-	# Check if the player loses the game
-	if from.has_just_lost():
-		from.loose()
-
-
-# The target player loses it's played card (they go to the graveyard)
-sync func lose_cards(target_id: int) -> void:
-	var target : Player = NetworkManager.players[target_id]
-	if target.played_cards == null:
-		return
-	var cards : Deck = target.played_cards.get_ref()
-	
-	gm.decks_manager.graveyard.merge_deck_on_top(cards)
-	yield(gm.decks_manager.graveyard, "deck_merged")
-	
-	
-	# Check if the player loses the game
-	if target.has_just_lost():
-		target.loose()

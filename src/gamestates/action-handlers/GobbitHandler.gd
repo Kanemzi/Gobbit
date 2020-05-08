@@ -9,11 +9,10 @@ master func handle_gobbit(attacker_id: int) -> void:
 	
 	if check_gobbit_active():
 		turn.gm.camera.rpc("shake")
-		Debug.println("GOBBIT OK !")
 		turn.gm.gamestate.rpc("transition_to", "Gobbit", {player = attacker_id})
 	else:
 		Debug.println("GOBBIT NOPE !")
-		turn.rpc("lose_cards", attacker_id)
+		turn.gm.rpc("lose_cards", attacker_id)
 
 
 # Checks if there is a Gobbit configuration on the table
@@ -21,7 +20,6 @@ func check_gobbit_active() -> bool:
 	var all_cards := turn.top_cards
 	
 	var complete_colors := 1 | 2 | 4 # The value of the complete color mask
-	Debug.println("\nMAX: " + str(complete_colors))
 	var colors = 0 # Different colors mask
 	
 	# The graveyard must contain at least one carte to apply Gobbit! rule
@@ -37,7 +35,6 @@ func check_gobbit_active() -> bool:
 		
 		var cols = card.colors
 		for col in cols:
-			Debug.println("col: " + str(col) + "  -> " + str(colors))
 			colors |= 1 << int(col)
 			if colors == complete_colors:
 				return true
