@@ -9,14 +9,10 @@ func init() -> void:
 
 
 func update() -> void:
-	var mouse_pos = turn.mouse_ray.get_collision_point()
-	# TODO: Move in a dedicated function
-	if mouse_pos:
-		turn.gm.rpc_unreliable("update_cursor_position", mouse_pos)
+	var mouse_pos = turn.gm.mouse_ray.point
 	
 	if NetworkManager.peer_id != turn.player_turn:
 		return
-		
 	
 	if dragging and dragged_card != null:
 		rpc_unreliable("move_dragged_card", mouse_pos + Vector3.UP * 0.5)

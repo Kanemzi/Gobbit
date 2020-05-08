@@ -10,10 +10,10 @@ onready var card_pool := $Cards
 onready var gamestate := $GameStates
 onready var camera := $Pivot
 onready var player_pointers := $PlayerPointers
+onready var mouse_ray : RayCast = $MouseRay
 
-func _input(event: InputEvent) -> void:
-	if Input.is_action_just_pressed("ui_accept"):
-		pass
+func _process(delta: float) -> void:
+	pass
 
 
 func init_network_checkpoints() -> void:
@@ -68,6 +68,7 @@ func init_player_cursors() -> void:
 		pointer.name = str(player_id)
 		player_pointers.add_child(pointer)
 
+
 func display_cursors(displayed := true) -> void:
 	player_pointers.visible = displayed
 
@@ -75,6 +76,9 @@ func display_cursors(displayed := true) -> void:
 sync func update_cursor_position(position: Vector3) -> void:
 	var id := get_tree().get_rpc_sender_id()
 	var cursor = player_pointers.get_node(str(id))
+	if cursor == null:
+		return
+	
 	if id == NetworkManager.peer_id:
 		cursor.global_transform.origin = position
 	else:

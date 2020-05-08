@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://src/deck/Deck.tscn" type="PackedScene" id=1]
 [ext_resource path="res://src/networking/hub/Hub.tscn" type="PackedScene" id=2]
@@ -15,12 +15,15 @@
 [ext_resource path="res://src/gamestates/action-handlers/AttackHandler.gd" type="Script" id=13]
 [ext_resource path="res://src/gamestates/action-handlers/GobbitHandler.gd" type="Script" id=14]
 [ext_resource path="res://src/gamestates/action-handlers/SpiritHandler.gd" type="Script" id=15]
-[ext_resource path="res://src/player/Pointer3D.tscn" type="PackedScene" id=16]
+[ext_resource path="res://src/player/MouseRay.gd" type="Script" id=16]
+[ext_resource path="res://src/gamestates/Gobbit.gd" type="Script" id=17]
 
 [sub_resource type="Environment" id=1]
 ambient_light_color = Color( 0.54902, 0.54902, 0.54902, 1 )
 fog_depth_begin = 113.9
 fog_depth_end = 48.1
+glow_enabled = true
+glow_bloom = 0.5
 
 [sub_resource type="Animation" id=2]
 resource_name = "Shake"
@@ -78,15 +81,8 @@ script = ExtResource( 12 )
 [node name="GobbitHandler" type="Node" parent="GameStates/Turn"]
 script = ExtResource( 14 )
 
-[node name="MouseRay" type="RayCast" parent="GameStates/Turn"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5948, 3.30367 )
-visible = false
-enabled = true
-cast_to = Vector3( 0, 0, 0 )
-collision_mask = 3
-collide_with_areas = true
-
 [node name="Gobbit" type="Node" parent="GameStates"]
+script = ExtResource( 17 )
 
 [node name="Pivot" type="Spatial" parent="."]
 script = ExtResource( 5 )
@@ -94,7 +90,7 @@ script = ExtResource( 5 )
 [node name="Rail" type="Tween" parent="Pivot"]
 
 [node name="Camera" type="Camera" parent="Pivot"]
-transform = Transform( -1.62921e-07, -1, -1.62921e-07, 0, -1.62921e-07, 1, -1, 1.62921e-07, 2.65431e-14, 0, 10, 0 )
+transform = Transform( -1.62921e-07, -1, -1.62921e-07, 0, -1.62921e-07, 1, -1, 1.62921e-07, 2.65433e-14, 0, 10, 0 )
 environment = SubResource( 1 )
 
 [node name="Animator" type="AnimationPlayer" parent="Pivot/Camera"]
@@ -108,12 +104,13 @@ transform = Transform( -1.62921e-07, 1, 1.62921e-07, 0, -1.62921e-07, 1, 1, 1.62
 
 [node name="Table" parent="." instance=ExtResource( 10 )]
 
-[node name="DirectionalLight" type="DirectionalLight" parent="."]
-transform = Transform( 0.0126213, -0.582162, 0.812975, -0.0772258, 0.810044, 0.581262, -0.996934, -0.0701189, -0.0347341, 13.5591, 4.13921, -1.89672 )
+[node name="Light" type="DirectionalLight" parent="."]
+transform = Transform( 1, 0, 0, 0, 0.173648, 0.984808, 0, -0.984808, 0.173648, 0, 16, 0 )
 light_energy = 0.24
 shadow_enabled = true
 shadow_bias = 0.05
 shadow_contact = 0.14
+directional_shadow_max_distance = 200.0
 
 [node name="Decks" type="Spatial" parent="."]
 script = ExtResource( 3 )
@@ -124,11 +121,14 @@ script = ExtResource( 3 )
 
 [node name="Cards" type="Spatial" parent="."]
 
-[node name="Hub" parent="." instance=ExtResource( 2 )]
-
 [node name="PlayerPointers" type="Spatial" parent="."]
-visible = false
 
-[node name="PlayerPointer" parent="PlayerPointers" instance=ExtResource( 16 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.54335 )
+[node name="MouseRay" type="RayCast" parent="."]
 visible = false
+enabled = true
+cast_to = Vector3( 0, 0, 0 )
+collision_mask = 3
+collide_with_areas = true
+script = ExtResource( 16 )
+
+[node name="Hub" parent="." instance=ExtResource( 2 )]

@@ -8,6 +8,7 @@ resource_local_to_scene = true
 flags_transparent = true
 flags_unshaded = true
 flags_no_depth_test = true
+flags_albedo_tex_force_srgb = true
 flags_do_not_receive_shadows = true
 flags_disable_ambient_light = true
 params_billboard_mode = 1
@@ -41,7 +42,6 @@ handle_input_locally = false
 
 [node name="Light" type="SpotLight" parent="."]
 transform = Transform( 1, 0, 0, 0, -1.62921e-07, 1, 0, -1, -1.62921e-07, 0, 0.3, 0 )
-light_energy = 16.0
 light_cull_mask = 4293918724
 spot_range = 0.5
-spot_angle = 50.0
+spot_angle = 40.0

@@ -39,6 +39,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://src/gamestates/GameState.gd"
 }, {
+"base": "GameState",
+"class": "GobbitGameState",
+"language": "GDScript",
+"path": "res://src/gamestates/Gobbit.gd"
+}, {
 "base": "Node",
 "class": "NetworkCheckpoints",
 "language": "GDScript",
@@ -48,6 +53,11 @@ _global_script_classes=[ {
 "class": "Player",
 "language": "GDScript",
 "path": "res://src/networking/Player.gd"
+}, {
+"base": "VBoxContainer",
+"class": "PlayerPointerUI",
+"language": "GDScript",
+"path": "res://src/player/PointerUI.gd"
 }, {
 "base": "GameState",
 "class": "TurnGameState",
@@ -61,8 +71,10 @@ _global_script_class_icons={
 "DecksManager": "",
 "GameManager": "",
 "GameState": "",
+"GobbitGameState": "",
 "NetworkCheckpoints": "",
 "Player": "",
+"PlayerPointerUI": "",
 "TurnGameState": ""
 }
 
@@ -94,6 +106,11 @@ toggle_console={
 
 [rendering]
 
+quality/shadow_atlas/quadrant_1_subdiv=0
+quality/shadow_atlas/quadrant_2_subdiv=0
+quality/shadow_atlas/quadrant_3_subdiv=0
+quality/shadows/filter_mode=2
 quality/filters/use_nearest_mipmap_filter=true
+environment/default_clear_color=Color( 0.0156863, 0.0352941, 0.0156863, 1 )
 quality/filters/msaa=3
 environment/default_environment="res://default_env.tres"

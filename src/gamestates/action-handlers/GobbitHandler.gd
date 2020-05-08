@@ -24,6 +24,11 @@ func check_gobbit_active() -> bool:
 	Debug.println("\nMAX: " + str(complete_colors))
 	var colors = 0 # Different colors mask
 	
+	# The graveyard must contain at least one carte to apply Gobbit! rule
+	var graveyard : Deck = turn.gm.decks_manager.graveyard
+	if graveyard.empty():
+		return false
+	
 	for player_id in all_cards:
 		var card : Card = all_cards[player_id]
 		if card == null or \

@@ -14,8 +14,6 @@ var turn_offset := 0 # Defines which player starts the game
 var turn_count : int = 0
 var player_turn : int
 
-onready var mouse_ray : RayCast = $MouseRay
-
 onready var place_handler := $PlaceHandler
 onready var attack_handler := $AttackHandler
 onready var defense_handler := $DefenseHandler
@@ -46,20 +44,15 @@ func enter(params := {}) -> void:
 			return
 		
 	place_handler.init()
-	mouse_ray.enabled = true
-	mouse_ray.global_transform.origin = (gm.get_node("Pivot/Camera") as Camera).global_transform.origin
-	
+
 	gm.display_cursors()
 	
 	if NetworkManager.is_server:
 		top_cards = get_all_top_cards()
-		
 
+
+# NOTE: Maybe this could be moved directly to the gamemanager
 func physics_process(delta: float) -> void:
-	var position2D = get_viewport().get_mouse_position()
-	var p3 = (gm.get_node("Pivot/Camera") as Camera).project_ray_normal(position2D)
-	mouse_ray.cast_to = p3 * 100
-	
 	place_handler.update()
 
 
@@ -70,7 +63,7 @@ func unhandled_input(event: InputEvent) -> void:
 		# Only interact with left button
 		return
 	
-	var collider := mouse_ray.get_collider()
+	var collider := gm.mouse_ray.get_collider()
 	
 	# TODO: detect clics on graveyard for Gobbit! rule
 	
@@ -86,7 +79,7 @@ func unhandled_input(event: InputEvent) -> void:
 				attack_handler.rpc("handle_attack", NetworkManager.peer_id, target_id)
 		elif gm.decks_manager.is_graveyard(collider):
 			if not NetworkManager.me().lost:
-				gobbit_handler.handle_gobbit()
+				gobbit_handler.rpc("handle_gobbit", NetworkManager.peer_id)
 	
 	if NetworkManager.peer_id != player_turn or NetworkManager.me().lost:
 		return
@@ -123,7 +116,7 @@ func reset_turn() -> void:
 
 
 func exit() -> void:
-	mouse_ray.enabled = false
+	pass
 
 
 # Returns the deck of the player whose turn it is.
