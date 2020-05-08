@@ -4,10 +4,13 @@ class_name GobbitGameState
 # to play
 
 var gobbit_player_id : int
+var choice_made := false
 
 func enter(params := {}) -> void:
 	assert("player" in params)
+	
 	gobbit_player_id = params.player
+	choice_made = false
 
 	for player_id in NetworkManager.players:
 		if gobbit_player_id != player_id:
@@ -22,6 +25,9 @@ func physics_process(delta: float) -> void:
 # Defines what action handler should handle the input depending on
 # what player did the action and what deck he interacted with
 func unhandled_input(event: InputEvent) -> void:
+	if choice_made: # Prevent multiple steals
+		return
+	
 	if not event is InputEventMouseButton or event.button_index != BUTTON_LEFT:
 		# Only interact with left button
 		return
@@ -36,6 +42,7 @@ func unhandled_input(event: InputEvent) -> void:
 			if played_cards.pid == gobbit_player_id:
 				return
 			
+			choice_made = true
 			rpc("_process_gobbit", played_cards.pid)
 
 
