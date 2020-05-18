@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://src/player/PointerUI.tscn" type="PackedScene" id=1]
 [ext_resource path="res://src/player/Pointer3D.gd" type="Script" id=2]
@@ -17,6 +17,22 @@ params_billboard_keep_scale = true
 [sub_resource type="ViewportTexture" id=2]
 viewport_path = NodePath("Viewport")
 
+[sub_resource type="Animation" id=3]
+resource_name = "Fade"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("Viewport/PointerUI:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 0.5, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0.435294 ) ]
+}
+
 [node name="PlayerPointer" type="Spatial"]
 script = ExtResource( 2 )
 
@@ -26,6 +42,8 @@ material_override = SubResource( 1 )
 cast_shadow = 0
 offset = Vector2( 0, 100 )
 flip_v = true
+modulate = Color( 1, 1, 1, 0.313726 )
+opacity = 0.34
 billboard = 1
 double_sided = false
 texture = SubResource( 2 )
@@ -45,3 +63,6 @@ transform = Transform( 1, 0, 0, 0, -1.62921e-07, 1, 0, -1, -1.62921e-07, 0, 0.3,
 light_cull_mask = 4293918724
 spot_range = 0.5
 spot_angle = 40.0
+
+[node name="Fader" type="AnimationPlayer" parent="."]
+anims/Fade = SubResource( 3 )

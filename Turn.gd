@@ -46,7 +46,7 @@ func enter(params := {}) -> void:
 		
 	place_handler.init()
 
-	gm.display_cursors()
+	gm.player_pointers.display()
 	
 	if NetworkManager.is_server:
 		top_cards = get_all_top_cards()

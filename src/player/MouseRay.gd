@@ -7,7 +7,7 @@ var point : Vector3
 
 func _ready():
 	enabled = true
-	
+
 
 func _physics_process(delta: float) -> void:
 	var position2D = get_viewport().get_mouse_position()
@@ -17,4 +17,4 @@ func _physics_process(delta: float) -> void:
 	
 	point = get_collision_point()
 	if point:
-		gm.rpc_unreliable("update_cursor_position", point)
+		gm.player_pointers.rpc_unreliable("update_pointer_position", point)

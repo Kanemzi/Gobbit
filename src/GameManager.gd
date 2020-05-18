@@ -1,15 +1,13 @@
 extends Spatial
 class_name GameManager
 
-const PlayerPointer := preload("res://src/player/Pointer3D.tscn")
-
 onready var decks_manager : DecksManager = $Decks
+onready var player_pointers : PlayerPointerUI = $PlayerPointers
 onready var graveyard : Deck = $Decks/Graveyard
 onready var card_pool := $Cards
 
 onready var gamestate := $GameStates
 onready var camera := $Pivot
-onready var player_pointers := $PlayerPointers
 onready var mouse_ray : RayCast = $MouseRay
 
 func _process(delta: float) -> void:
@@ -31,7 +29,7 @@ sync func start() -> void:
 #	Engine.time_scale = 3 # TODO: remove when debugging finished 
 	$Pivot.move_to_player_pov(NetworkManager.me().deck.get_ref())
 
-	init_player_cursors()
+	player_pointers.init()
 
 	if NetworkManager.is_server:
 		init_network_checkpoints()
@@ -55,35 +53,6 @@ func player_left_count() -> int:
 		if not NetworkManager.players[player_id].lost:
 			count += 1
 	return count
-
-
-# TODO: Delegate these functionalities to PlayerPointers
-
-# Initialize player cursors
-func init_player_cursors() -> void:
-	var i = 0
-	for player_id in NetworkManager.players:
-		var pointer := PlayerPointer.instance()
-		pointer.set_player(NetworkManager.players[player_id])
-		pointer.name = str(player_id)
-		player_pointers.add_child(pointer)
-
-
-func display_cursors(displayed := true) -> void:
-	player_pointers.visible = displayed
-
-
-sync func update_cursor_position(position: Vector3) -> void:
-	var id := get_tree().get_rpc_sender_id()
-	var cursor = player_pointers.get_node(str(id))
-	if cursor == null:
-		return
-	
-	if id == NetworkManager.peer_id:
-		cursor.global_transform.origin = position
-	else:
-		# Slower but smooth movment for other clients
-		cursor.move_to(position)
 
 
 # The played cards of "from" goes to the bottom of the "to" deck

@@ -14,10 +14,10 @@ func enter(params := {}) -> void:
 	choice_made = false
 	remaining_players = gm.get_remaining_players()
 
-	for player_id in NetworkManager.players:
-		if gobbit_player_id != player_id:
-			gm.player_pointers.get_node(str(player_id)).visible = false
-	
+#	for player_id in NetworkManager.players:
+#		if gobbit_player_id != player_id:
+#			gm.player_pointers.get_node(str(player_id)).visible = false
+	gm.player_pointers.fade_but(gobbit_player_id)
 	
 
 func physics_process(delta: float) -> void:
@@ -62,5 +62,6 @@ master func _process_gobbit(choice: int) -> void:
 
 
 func exit() -> void:
-	for player_id in NetworkManager.players:
-		gm.player_pointers.get_node(str(player_id)).visible = true
+#	for player_id in NetworkManager.players:
+#		gm.player_pointers.get_node(str(player_id)).visible = true
+	gm.player_pointers.unfade_all()
