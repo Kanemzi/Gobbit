@@ -154,7 +154,7 @@ tracks/2/keys = {
 [sub_resource type="ViewportTexture" id=6]
 viewport_path = NodePath("Viewport")
 
-[sub_resource type="QuadMesh" id=34]
+[sub_resource type="QuadMesh" id=7]
 
 [node name="Deck" type="Area"]
 collision_layer = 2
@@ -182,6 +182,7 @@ anims/ShowBackHigh = SubResource( 5 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 flip_v = true
 billboard = 1
+alpha_cut = 2
 texture = SubResource( 6 )
 __meta__ = {
 "_editor_description_": "For debug purposes"
@@ -207,5 +208,5 @@ __meta__ = {
 [node name="Glow" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, -1.62921e-07, 1, 0, -1, -1.62921e-07, 0, 0, 0 )
 material_override = ExtResource( 2 )
-mesh = SubResource( 34 )
+mesh = SubResource( 7 )
 material/0 = null
