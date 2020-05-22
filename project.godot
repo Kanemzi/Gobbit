@@ -98,6 +98,11 @@ NetworkManager="*res://src/networking/NetworkManager.gd"
 Coroutines="*res://src/utils/Coroutines.gd"
 Debug="*res://src/utils/debug/Debug.gd"
 
+[display]
+
+window/stretch/mode="2d"
+window/stretch/aspect="expand"
+
 [editor_plugins]
 
 enabled=PoolStringArray( "todo" )
