@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/god-rays.png-c7d57cb205ca7326f8aaff44b8f7fd40.stex"
+path="res://.import/button-high.png-a52b4e4ad61e49896c1f5f165dd057f9.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/textures/ui/introduction/god-rays.png"
-dest_files=[ "res://.import/god-rays.png-c7d57cb205ca7326f8aaff44b8f7fd40.stex" ]
+source_file="res://assets/textures/ui/button-high.png"
+dest_files=[ "res://.import/button-high.png-a52b4e4ad61e49896c1f5f165dd057f9.stex" ]
 
 [params]
 

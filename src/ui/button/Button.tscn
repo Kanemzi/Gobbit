@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://src/ui/button/ButtonStyle.tres" type="StyleBox" id=1]
+[ext_resource path="res://assets/fonts/button-font.tres" type="DynamicFont" id=2]
+[ext_resource path="res://src/ui/button/Button.gd" type="Script" id=3]
+[ext_resource path="res://src/ui/button/IdleBumpAnimation.tres" type="Animation" id=4]
+
+[node name="Button" type="Button"]
+light_mask = 0
+margin_right = 208.0
+margin_bottom = 53.0
+rect_pivot_offset = Vector2( 104, 26.5 )
+custom_styles/hover = ExtResource( 1 )
+custom_styles/normal = ExtResource( 1 )
+custom_fonts/font = ExtResource( 2 )
+text = "Test"
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+label = "Test"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/IdleBumpAnimation = ExtResource( 4 )
