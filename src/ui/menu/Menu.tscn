@@ -155,7 +155,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.5 ),
 "transitions": PoolRealArray( 0.5, 1 ),
 "update": 0,
-"values": [ Vector2( 0, 0 ), Vector2( 200, 0 ) ]
+"values": [ Vector2( 0, 0 ), Vector2( 120, 0 ) ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("Button:visible")
@@ -379,7 +379,7 @@ shadow_filter_smooth = 2.2
 shadow_item_cull_mask = 5
 
 [node name="BackOccluders" type="Node2D" parent="."]
-rotation = -78.5246
+rotation = -2331.66
 script = ExtResource( 2 )
 rotating = true
 speed = 0.24
@@ -402,7 +402,7 @@ occluder = SubResource( 1 )
 light_mask = 8
 
 [node name="BigOccluders" type="Node2D" parent="."]
-rotation = -130.874
+rotation = -3884.07
 script = ExtResource( 2 )
 rotating = true
 speed = 0.4
@@ -461,7 +461,7 @@ occluder = SubResource( 2 )
 light_mask = 2
 
 [node name="ThinOccluders" type="Node2D" parent="."]
-rotation = -196.309
+rotation = -5829.55
 script = ExtResource( 2 )
 rotating = true
 speed = 0.6
@@ -599,7 +599,6 @@ __meta__ = {
 }
 
 [node name="Button" type="Node2D" parent="."]
-visible = false
 
 [node name="Start" parent="Button" instance=ExtResource( 10 )]
 margin_left = -125.0
