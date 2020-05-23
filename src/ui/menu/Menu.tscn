@@ -1,14 +1,12 @@
-[gd_scene load_steps=29 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://src/ui/menu/Logo.gd" type="Script" id=1]
 [ext_resource path="res://src/ui/menu/OccluderGroup.gd" type="Script" id=2]
 [ext_resource path="res://src/ui/menu/Menu.gd" type="Script" id=3]
-[ext_resource path="res://src/ui/button/ButtonStyle.tres" type="StyleBox" id=4]
 [ext_resource path="res://assets/textures/ui/menu/light-particle.png" type="Texture" id=5]
 [ext_resource path="res://assets/textures/environment/table-low.png" type="Texture" id=6]
 [ext_resource path="res://assets/textures/logo-high.png" type="Texture" id=7]
 [ext_resource path="res://assets/textures/ui/menu/god-rays.png" type="Texture" id=8]
-[ext_resource path="res://assets/fonts/button-font.tres" type="DynamicFont" id=9]
 [ext_resource path="res://src/ui/button/Button.tscn" type="PackedScene" id=10]
 
 [sub_resource type="OccluderPolygon2D" id=1]
@@ -141,7 +139,7 @@ scale_random = 1.0
 scale_curve = SubResource( 12 )
 color_ramp = SubResource( 15 )
 
-[sub_resource type="Animation" id=18]
+[sub_resource type="Animation" id=17]
 resource_name = "DeployMenu"
 length = 2.0
 step = 0.05
@@ -206,7 +204,7 @@ tracks/4/keys = {
 "values": [ Vector2( -125, 38 ), Vector2( -125, 38 ), Vector2( 190, 38 ), Vector2( 180, 38 ) ]
 }
 
-[sub_resource type="Animation" id=17]
+[sub_resource type="Animation" id=18]
 length = 2.0
 tracks/0/type = "value"
 tracks/0/path = NodePath("ThinRays:texture_scale")
@@ -379,7 +377,7 @@ shadow_filter_smooth = 2.2
 shadow_item_cull_mask = 5
 
 [node name="BackOccluders" type="Node2D" parent="."]
-rotation = -2331.66
+rotation = -12.9446
 script = ExtResource( 2 )
 rotating = true
 speed = 0.24
@@ -402,7 +400,7 @@ occluder = SubResource( 1 )
 light_mask = 8
 
 [node name="BigOccluders" type="Node2D" parent="."]
-rotation = -3884.07
+rotation = -21.5745
 script = ExtResource( 2 )
 rotating = true
 speed = 0.4
@@ -461,7 +459,7 @@ occluder = SubResource( 2 )
 light_mask = 2
 
 [node name="ThinOccluders" type="Node2D" parent="."]
-rotation = -5829.55
+rotation = -32.3619
 script = ExtResource( 2 )
 rotating = true
 speed = 0.6
@@ -515,7 +513,7 @@ occluder = SubResource( 5 )
 light_mask = 4
 
 [node name="Background" type="Polygon2D" parent="."]
-scale = Vector2( 2, 2 )
+scale = Vector2( 4, 4 )
 color = Color( 0.568627, 0.478431, 0.368627, 1 )
 offset = Vector2( -512, -300 )
 polygon = PoolVector2Array( -0.335938, 0, 1024, 0, 1024, 600, -0.335938, 600 )
@@ -560,43 +558,8 @@ texture = ExtResource( 5 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 method_call_mode = 1
-anims/DeployMenu = SubResource( 18 )
-anims/Opening = SubResource( 17 )
-
-[node name="PlayButton" type="Button" parent="."]
-visible = false
-light_mask = 0
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -126.0
-margin_top = -25.0
-margin_right = 126.0
-margin_bottom = 28.0
-rect_pivot_offset = Vector2( 126, 25 )
-custom_styles/hover = ExtResource( 4 )
-custom_styles/normal = ExtResource( 4 )
-custom_fonts/font = ExtResource( 9 )
-custom_colors/font_color_hover = Color( 0, 0, 0, 1 )
-text = "Jouer !"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="SettingsButton" type="Button" parent="."]
-visible = false
-light_mask = 0
-margin_left = 178.0
-margin_top = 14.0
-margin_right = 480.551
-margin_bottom = 67.0
-custom_styles/normal = ExtResource( 4 )
-custom_fonts/font = ExtResource( 9 )
-text = "Settings"
-__meta__ = {
-"_edit_use_anchors_": false
-}
+anims/DeployMenu = SubResource( 17 )
+anims/Opening = SubResource( 18 )
 
 [node name="Button" type="Node2D" parent="."]
 

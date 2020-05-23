@@ -67,7 +67,7 @@ _global_script_classes=[ {
 "base": "GameState",
 "class": "TurnGameState",
 "language": "GDScript",
-"path": "res://Turn.gd"
+"path": "res://src/gamestates/Turn.gd"
 } ]
 _global_script_class_icons={
 "ActionHandler": "",
@@ -97,6 +97,7 @@ Globals="*res://src/Globals.gd"
 NetworkManager="*res://src/networking/NetworkManager.gd"
 Coroutines="*res://src/utils/Coroutines.gd"
 Debug="*res://src/utils/debug/Debug.gd"
+Configuration="*res://src/utils/Configuration.gd"
 
 [display]
 
@@ -112,6 +113,11 @@ enabled=PoolStringArray( "todo" )
 toggle_console={
 "deadzone": 0.5,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":39,"unicode":0,"echo":false,"script":null)
+ ]
+}
+window_fullscreen={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777254,"unicode":0,"echo":false,"script":null)
  ]
 }
 

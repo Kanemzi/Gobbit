@@ -1,8 +1,5 @@
 extends Node2D
 
-
-#FIXME: Fix center limits in weird resolutions
-
 func _ready() -> void:
 	$AnimationPlayer.play("Opening")
 	
