@@ -1,36 +1,39 @@
-[gd_scene load_steps=27 format=2]
+[gd_scene load_steps=59 format=2]
 
 [ext_resource path="res://src/ui/menu/Logo.gd" type="Script" id=1]
 [ext_resource path="res://src/ui/menu/OccluderGroup.gd" type="Script" id=2]
 [ext_resource path="res://src/ui/menu/Menu.gd" type="Script" id=3]
+[ext_resource path="res://src/ui/menu/leafs/LeafLayer.tscn" type="PackedScene" id=4]
 [ext_resource path="res://assets/textures/ui/menu/light-particle.png" type="Texture" id=5]
 [ext_resource path="res://assets/textures/environment/table-low.png" type="Texture" id=6]
 [ext_resource path="res://assets/textures/logo-high.png" type="Texture" id=7]
 [ext_resource path="res://assets/textures/ui/menu/god-rays.png" type="Texture" id=8]
+[ext_resource path="res://src/ui/menu/ExitButton.gd" type="Script" id=9]
 [ext_resource path="res://src/ui/button/Button.tscn" type="PackedScene" id=10]
-
-[sub_resource type="OccluderPolygon2D" id=1]
-polygon = PoolVector2Array( 50, -36, 48, 34, 54, 34, 56, -36 )
+[ext_resource path="res://src/ui/menu/DeployMenuAnimation.tres" type="Animation" id=11]
+[ext_resource path="res://src/ui/menu/OpeningAnimation.tres" type="Animation" id=12]
 
 [sub_resource type="OccluderPolygon2D" id=2]
-polygon = PoolVector2Array( 48, -12, 48, 12, 56, 12, 56, -12 )
+polygon = PoolVector2Array( 50, -36, 48, 34, 54, 34, 56, -36 )
 
 [sub_resource type="OccluderPolygon2D" id=3]
-polygon = PoolVector2Array( 48, -32, 48, 30, 56, 30, 56, -32 )
+polygon = PoolVector2Array( 48, -12, 48, 12, 56, 12, 56, -12 )
 
 [sub_resource type="OccluderPolygon2D" id=4]
-polygon = PoolVector2Array( 48, -32, 46.8, -20.2426, 57.5511, -27.2004, 56, -32 )
+polygon = PoolVector2Array( 48, -32, 48, 30, 56, 30, 56, -32 )
 
 [sub_resource type="OccluderPolygon2D" id=5]
+polygon = PoolVector2Array( 48, -32, 46.8, -20.2426, 57.5511, -27.2004, 56, -32 )
+
+[sub_resource type="OccluderPolygon2D" id=6]
 polygon = PoolVector2Array( 48.582, -4.87766, 48, 30, 56, 30, 54.794, -3.69 )
 
-[sub_resource type="CanvasItemMaterial" id=6]
-
 [sub_resource type="CanvasItemMaterial" id=7]
+
+[sub_resource type="CanvasItemMaterial" id=8]
 light_mode = 1
 
-[sub_resource type="Animation" id=8]
-resource_name = "Float"
+[sub_resource type="Animation" id=9]
 length = 4.0
 loop = true
 tracks/0/type = "bezier"
@@ -86,20 +89,20 @@ tracks/4/keys = {
 "times": PoolRealArray( 0, 2, 4 )
 }
 
-[sub_resource type="Gradient" id=9]
+[sub_resource type="Gradient" id=10]
 offsets = PoolRealArray( 0, 0.156522, 0.804348, 1 )
 colors = PoolColorArray( 0, 0, 0, 0, 1, 1, 1, 0.588235, 1, 1, 1, 0.588235, 1, 1, 1, 0 )
 
-[sub_resource type="GradientTexture" id=10]
-gradient = SubResource( 9 )
+[sub_resource type="GradientTexture" id=11]
+gradient = SubResource( 10 )
 
-[sub_resource type="Curve" id=11]
+[sub_resource type="Curve" id=12]
 _data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 0.2, 1 ), 1.3058, 1.3058, 0, 0, Vector2( 1, 0 ), 0.0444685, 0.0, 0, 0 ]
 
-[sub_resource type="CurveTexture" id=12]
-curve = SubResource( 11 )
+[sub_resource type="CurveTexture" id=13]
+curve = SubResource( 12 )
 
-[sub_resource type="ParticlesMaterial" id=13]
+[sub_resource type="ParticlesMaterial" id=14]
 emission_shape = 1
 emission_sphere_radius = 250.0
 flag_disable_z = true
@@ -112,17 +115,17 @@ orbit_velocity = 0.0
 orbit_velocity_random = 0.0
 scale = 0.2
 scale_random = 0.29
-scale_curve = SubResource( 12 )
-color_ramp = SubResource( 10 )
+scale_curve = SubResource( 13 )
+color_ramp = SubResource( 11 )
 
-[sub_resource type="Gradient" id=14]
+[sub_resource type="Gradient" id=15]
 offsets = PoolRealArray( 0, 0.156522, 0.804348, 1 )
 colors = PoolColorArray( 0, 0, 0, 0, 1, 0.882353, 0.447059, 0.196078, 1, 0.566406, 0.25, 0.196078, 1, 1, 1, 0 )
 
-[sub_resource type="GradientTexture" id=15]
-gradient = SubResource( 14 )
+[sub_resource type="GradientTexture" id=16]
+gradient = SubResource( 15 )
 
-[sub_resource type="ParticlesMaterial" id=16]
+[sub_resource type="ParticlesMaterial" id=17]
 emission_shape = 1
 emission_sphere_radius = 20.0
 flag_disable_z = true
@@ -136,434 +139,600 @@ orbit_velocity_random = 0.0
 linear_accel = -300.0
 scale = 0.3
 scale_random = 1.0
-scale_curve = SubResource( 12 )
-color_ramp = SubResource( 15 )
+scale_curve = SubResource( 13 )
+color_ramp = SubResource( 16 )
 
-[sub_resource type="Animation" id=17]
-resource_name = "DeployMenu"
-length = 2.0
-step = 0.05
-tracks/0/type = "value"
-tracks/0/path = NodePath("Camera2D:position")
+[sub_resource type="VisualShaderNodeScalarUniform" id=1]
+uniform_name = "Blur_Samples"
+
+[sub_resource type="VisualShaderNodeScalarUniform" id=28]
+uniform_name = "Blur_Radius"
+
+[sub_resource type="VisualShaderNodeExpression" id=29]
+size = Vector2( 979.92, 771.44 )
+expression = "float scale = radius / (SAMPLES*2.0);
+
+vec4 col = vec4(0.0);
+float n = 0.0;
+	
+for(int x=-int(SAMPLES)/2; x < int(SAMPLES)/2; ++x) {
+	for(int y=-int(SAMPLES)/2; y < int(SAMPLES)/2; ++y) {
+		col += texture(TEXTURE, UV + scale * vec2(float(x), float(y)));
+		n += 1.0;
+	}
+}
+
+col /= n;
+
+color = col.rgb;
+alpha = col.a;"
+
+[sub_resource type="VisualShaderNodeVectorCompose" id=30]
+
+[sub_resource type="VisualShaderNodeScalarFunc" id=27]
+function = 1
+
+[sub_resource type="VisualShaderNodeScalarFunc" id=31]
+function = 0
+
+[sub_resource type="VisualShaderNodeVectorCompose" id=32]
+
+[sub_resource type="VisualShaderNodeScalarFunc" id=33]
+function = 1
+
+[sub_resource type="VisualShaderNodeScalarFunc" id=34]
+function = 0
+
+[sub_resource type="VisualShaderNodeScalarUniform" id=35]
+uniform_name = "Wind_Force"
+
+[sub_resource type="VisualShaderNodeScalarOp" id=36]
+default_input_values = [ 0, 0.0, 1, 1.0 ]
+operator = 2
+
+[sub_resource type="VisualShaderNodeInput" id=37]
+input_name = "time"
+
+[sub_resource type="VisualShaderNodeScalarOp" id=38]
+default_input_values = [ 0, 0.0, 1, 1.0 ]
+operator = 2
+
+[sub_resource type="VisualShaderNodeScalarFunc" id=39]
+function = 0
+
+[sub_resource type="VisualShaderNodeScalarUniform" id=40]
+uniform_name = "Wind_Speed"
+
+[sub_resource type="VisualShaderNodeScalarFunc" id=41]
+function = 0
+
+[sub_resource type="VisualShaderNodeScalarOp" id=42]
+default_input_values = [ 0, 0.0, 1, 2.0 ]
+operator = 2
+
+[sub_resource type="VisualShaderNodeScalarOp" id=18]
+
+[sub_resource type="VisualShaderNodeScalarOp" id=19]
+default_input_values = [ 0, 0.0, 1, 2.3 ]
+operator = 2
+
+[sub_resource type="VisualShaderNodeScalarUniform" id=20]
+uniform_name = "Wind_Offset"
+
+[sub_resource type="VisualShaderNodeScalarOp" id=21]
+
+[sub_resource type="VisualShaderNodeScalarFunc" id=22]
+function = 19
+
+[sub_resource type="VisualShaderNodeInput" id=23]
+input_name = "vertex"
+
+[sub_resource type="VisualShaderNodeTransformVecMult" id=24]
+
+[sub_resource type="VisualShaderNodeTransformCompose" id=25]
+default_input_values = [ 0, Vector3( 1, 0, 0 ), 1, Vector3( 0, 1, 0 ), 2, Vector3( 0, 0, 0 ), 3, Vector3( 0, 0, 0 ) ]
+
+[sub_resource type="VisualShader" id=43]
+resource_local_to_scene = true
+code = "shader_type canvas_item;
+uniform float Wind_Offset;
+uniform float Wind_Speed;
+uniform float Wind_Force;
+uniform float Blur_Radius;
+uniform float Blur_Samples;
+
+
+
+void vertex() {
+// Input:2
+	float n_out2p0 = TIME;
+
+// ScalarUniform:31
+	float n_out31p0 = Wind_Offset;
+
+// ScalarOp:32
+	float n_out32p0 = n_out2p0 + n_out31p0;
+
+// ScalarUniform:26
+	float n_out26p0 = Wind_Speed;
+
+// ScalarOp:24
+	float n_out24p0 = n_out32p0 * n_out26p0;
+
+// ScalarFunc:25
+	float n_out25p0 = sin(n_out24p0);
+
+// ScalarOp:30
+	float n_in30p1 = 2.30000;
+	float n_out30p0 = n_out26p0 * n_in30p1;
+
+// ScalarOp:28
+	float n_out28p0 = n_out32p0 * n_out30p0;
+
+// ScalarFunc:27
+	float n_out27p0 = sin(n_out28p0);
+
+// ScalarOp:29
+	float n_out29p0 = n_out25p0 + n_out27p0;
+
+// ScalarUniform:18
+	float n_out18p0 = Wind_Force;
+
+// ScalarOp:19
+	float n_out19p0 = n_out29p0 * n_out18p0;
+
+// ScalarFunc:11
+	float n_out11p0 = cos(n_out19p0);
+
+// ScalarFunc:33
+	float n_out33p0 = -(n_out19p0);
+
+// ScalarFunc:12
+	float n_out12p0 = sin(n_out33p0);
+
+// VectorCompose:10
+	float n_in10p2 = 0.00000;
+	vec3 n_out10p0 = vec3(n_out11p0, n_out12p0, n_in10p2);
+
+// ScalarFunc:16
+	float n_out16p0 = sin(n_out19p0);
+
+// ScalarFunc:15
+	float n_out15p0 = cos(n_out19p0);
+
+// VectorCompose:14
+	float n_in14p2 = 0.00000;
+	vec3 n_out14p0 = vec3(n_out16p0, n_out15p0, n_in14p2);
+
+// TransformCompose:9
+	vec3 n_in9p2 = vec3(0.00000, 0.00000, 0.00000);
+	vec3 n_in9p3 = vec3(0.00000, 0.00000, 0.00000);
+	mat4 n_out9p0 = mat4(vec4(n_out10p0, 0.0), vec4(n_out14p0, 0.0), vec4(n_in9p2, 0.0), vec4(n_in9p3, 1.0));
+
+// Input:5
+	vec3 n_out5p0 = vec3(VERTEX, 0.0);
+
+// TransformVectorMult:8
+	vec3 n_out8p0 = (n_out9p0 * vec4(n_out5p0, 1.0)).xyz;
+
+// Output:0
+	VERTEX = n_out8p0.xy;
+
+}
+
+void fragment() {
+// ScalarUniform:5
+	float n_out5p0 = Blur_Radius;
+
+// ScalarUniform:10
+	float n_out10p0 = Blur_Samples;
+
+// Expression:9
+	vec3 n_out9p0;
+	float n_out9p1;
+	n_out9p0 = vec3(0.0, 0.0, 0.0);
+	n_out9p1 = 0.0;
+	{
+		float scale = n_out5p0 / (n_out10p0*2.0);
+		
+		vec4 col = vec4(0.0);
+		float n = 0.0;
+			
+		for(int x=-int(n_out10p0)/2; x < int(n_out10p0)/2; ++x) {
+			for(int y=-int(n_out10p0)/2; y < int(n_out10p0)/2; ++y) {
+				col += texture(TEXTURE, UV + scale * vec2(float(x), float(y)));
+				n += 1.0;
+			}
+		}
+		
+		col /= n;
+		
+		n_out9p0 = col.rgb;
+		n_out9p1 = col.a;
+	}
+
+// Output:0
+	COLOR.rgb = n_out9p0;
+	COLOR.a = n_out9p1;
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -334.227, 382.875 )
+mode = 1
+flags/light_only = false
+nodes/vertex/0/position = Vector2( 520, 100 )
+nodes/vertex/2/node = SubResource( 37 )
+nodes/vertex/2/position = Vector2( -2020, -80 )
+nodes/vertex/5/node = SubResource( 23 )
+nodes/vertex/5/position = Vector2( 60, 160 )
+nodes/vertex/8/node = SubResource( 24 )
+nodes/vertex/8/position = Vector2( 260, 80 )
+nodes/vertex/9/node = SubResource( 25 )
+nodes/vertex/9/position = Vector2( 0, 20 )
+nodes/vertex/10/node = SubResource( 30 )
+nodes/vertex/10/position = Vector2( -220, -80 )
+nodes/vertex/11/node = SubResource( 27 )
+nodes/vertex/11/position = Vector2( -420, -120 )
+nodes/vertex/12/node = SubResource( 31 )
+nodes/vertex/12/position = Vector2( -420, -20 )
+nodes/vertex/14/node = SubResource( 32 )
+nodes/vertex/14/position = Vector2( -220, 120 )
+nodes/vertex/15/node = SubResource( 33 )
+nodes/vertex/15/position = Vector2( -420, 180 )
+nodes/vertex/16/node = SubResource( 34 )
+nodes/vertex/16/position = Vector2( -420, 80 )
+nodes/vertex/18/node = SubResource( 35 )
+nodes/vertex/18/position = Vector2( -980, 220 )
+nodes/vertex/19/node = SubResource( 36 )
+nodes/vertex/19/position = Vector2( -860, -40 )
+nodes/vertex/24/node = SubResource( 38 )
+nodes/vertex/24/position = Vector2( -1440, -40 )
+nodes/vertex/25/node = SubResource( 39 )
+nodes/vertex/25/position = Vector2( -1260, -20 )
+nodes/vertex/26/node = SubResource( 40 )
+nodes/vertex/26/position = Vector2( -1960, 160 )
+nodes/vertex/27/node = SubResource( 41 )
+nodes/vertex/27/position = Vector2( -1260, 100 )
+nodes/vertex/28/node = SubResource( 42 )
+nodes/vertex/28/position = Vector2( -1440, 80 )
+nodes/vertex/29/node = SubResource( 18 )
+nodes/vertex/29/position = Vector2( -1080, 0 )
+nodes/vertex/30/node = SubResource( 19 )
+nodes/vertex/30/position = Vector2( -1640, 180 )
+nodes/vertex/31/node = SubResource( 20 )
+nodes/vertex/31/position = Vector2( -1960, 100 )
+nodes/vertex/32/node = SubResource( 21 )
+nodes/vertex/32/position = Vector2( -1860, -100 )
+nodes/vertex/33/node = SubResource( 22 )
+nodes/vertex/33/position = Vector2( -600, -20 )
+nodes/vertex/connections = PoolIntArray( 5, 0, 8, 1, 9, 0, 8, 0, 11, 0, 10, 0, 12, 0, 10, 1, 10, 0, 9, 0, 15, 0, 14, 1, 16, 0, 14, 0, 14, 0, 9, 1, 18, 0, 19, 1, 8, 0, 0, 0, 24, 0, 25, 0, 26, 0, 24, 1, 19, 0, 11, 0, 19, 0, 16, 0, 19, 0, 15, 0, 28, 0, 27, 0, 29, 0, 19, 0, 30, 0, 28, 1, 26, 0, 30, 0, 2, 0, 32, 0, 31, 0, 32, 1, 32, 0, 28, 0, 32, 0, 24, 0, 27, 0, 29, 1, 25, 0, 29, 0, 19, 0, 33, 0, 33, 0, 12, 0 )
+nodes/fragment/0/position = Vector2( 940, 480 )
+nodes/fragment/5/node = SubResource( 28 )
+nodes/fragment/5/position = Vector2( -300, 480 )
+nodes/fragment/9/node = SubResource( 29 )
+nodes/fragment/9/position = Vector2( -80, 440 )
+nodes/fragment/9/size = Vector2( 979.92, 771.44 )
+nodes/fragment/9/input_ports = "0,0,radius;1,0,SAMPLES;"
+nodes/fragment/9/output_ports = "0,1,color;1,0,alpha;"
+nodes/fragment/9/expression = "float scale = radius / (SAMPLES*2.0);
+
+vec4 col = vec4(0.0);
+float n = 0.0;
+	
+for(int x=-int(SAMPLES)/2; x < int(SAMPLES)/2; ++x) {
+	for(int y=-int(SAMPLES)/2; y < int(SAMPLES)/2; ++y) {
+		col += texture(TEXTURE, UV + scale * vec2(float(x), float(y)));
+		n += 1.0;
+	}
+}
+
+col /= n;
+
+color = col.rgb;
+alpha = col.a;"
+nodes/fragment/10/node = SubResource( 1 )
+nodes/fragment/10/position = Vector2( -300, 540 )
+nodes/fragment/connections = PoolIntArray( 9, 1, 0, 1, 9, 0, 0, 0, 5, 0, 9, 0, 10, 0, 9, 1 )
+
+[sub_resource type="ShaderMaterial" id=44]
+resource_local_to_scene = true
+shader = SubResource( 43 )
+shader_param/Wind_Offset = 1.0
+shader_param/Wind_Speed = 3.0
+shader_param/Wind_Force = 0.05
+shader_param/Blur_Radius = 0.0
+shader_param/Blur_Samples = 2.0
+
+[sub_resource type="ShaderMaterial" id=45]
+resource_local_to_scene = true
+shader = SubResource( 43 )
+shader_param/Wind_Offset = null
+shader_param/Wind_Speed = 0.8
+shader_param/Wind_Force = 0.1
+shader_param/Blur_Radius = 0.03
+shader_param/Blur_Samples = 3.0
+
+[sub_resource type="ShaderMaterial" id=46]
+resource_local_to_scene = true
+shader = SubResource( 43 )
+shader_param/Wind_Offset = null
+shader_param/Wind_Speed = 0.5
+shader_param/Wind_Force = 0.2
+shader_param/Blur_Radius = 0.05
+shader_param/Blur_Samples = 6.0
+
+[sub_resource type="Animation" id=47]
+resource_name = "Close"
+tracks/0/type = "animation"
+tracks/0/path = NodePath("LeafLayer/AnimationPlayer")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.5 ),
-"transitions": PoolRealArray( 0.5, 1 ),
-"update": 0,
-"values": [ Vector2( 0, 0 ), Vector2( 120, 0 ) ]
+"clips": PoolStringArray( "Close" ),
+"times": PoolRealArray( 0 )
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("Button:visible")
+tracks/1/path = NodePath(".:modulate")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
-tracks/1/enabled = true
+tracks/1/enabled = false
 tracks/1/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ true ]
+"times": PoolRealArray( 0, 0.4, 1 ),
+"transitions": PoolRealArray( 1, 0.0717936, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("Button/Start:rect_position")
+tracks/2/path = NodePath(".:scale")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0, 0.3, 0.6 ),
-"transitions": PoolRealArray( 0.5, 2, 1 ),
+"times": PoolRealArray( 0, 0.4, 1 ),
+"transitions": PoolRealArray( 1, 0.3, 1 ),
 "update": 0,
-"values": [ Vector2( -125, -90 ), Vector2( 190, -90 ), Vector2( 180, -90 ) ]
-}
-tracks/3/type = "value"
-tracks/3/path = NodePath("Button/Settings:rect_position")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/keys = {
-"times": PoolRealArray( 0, 0.15, 0.45, 0.75 ),
-"transitions": PoolRealArray( 1, 0.5, 2, 1 ),
-"update": 0,
-"values": [ Vector2( -125, -26 ), Vector2( -125, -26 ), Vector2( 190, -26 ), Vector2( 180, -26 ) ]
-}
-tracks/4/type = "value"
-tracks/4/path = NodePath("Button/Exit:rect_position")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/keys = {
-"times": PoolRealArray( 0, 0.35, 0.65, 1.05 ),
-"transitions": PoolRealArray( 1, 0.5, 2, 1 ),
-"update": 0,
-"values": [ Vector2( -125, 38 ), Vector2( -125, 38 ), Vector2( 190, 38 ), Vector2( 180, 38 ) ]
+"values": [ Vector2( 0.8, 0.8 ), Vector2( 0.8, 0.8 ), Vector2( 0, 0 ) ]
 }
 
-[sub_resource type="Animation" id=18]
-length = 2.0
-tracks/0/type = "value"
-tracks/0/path = NodePath("ThinRays:texture_scale")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 1.2, 2 ),
-"transitions": PoolRealArray( 0.25, 0.25, 1 ),
-"update": 0,
-"values": [ 0.01, 0.01, 2.4 ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("BigRays:texture_scale")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0, 1.1, 2 ),
-"transitions": PoolRealArray( 0.25, 0.25, 1 ),
-"update": 0,
-"values": [ 0.01, 0.01, 2.4 ]
-}
-tracks/2/type = "value"
-tracks/2/path = NodePath("BackRays:texture_scale")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/keys = {
-"times": PoolRealArray( 0, 1, 2 ),
-"transitions": PoolRealArray( 0.25, 0.25, 1 ),
-"update": 0,
-"values": [ 0.01, 0.01, 2.4 ]
-}
-tracks/3/type = "value"
-tracks/3/path = NodePath("Ambient:energy")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/keys = {
-"times": PoolRealArray( 0, 1, 2 ),
-"transitions": PoolRealArray( 1, 1, -5 ),
-"update": 0,
-"values": [ 3.0, 3.0, 3.0 ]
-}
-tracks/4/type = "value"
-tracks/4/path = NodePath("Logo:scale")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/keys = {
-"times": PoolRealArray( 0, 1, 1.7 ),
-"transitions": PoolRealArray( 5, 4.5, 1 ),
-"update": 0,
-"values": [ Vector2( 0, 0 ), Vector2( 1.2, 1.2 ), Vector2( 1, 1 ) ]
-}
-tracks/5/type = "value"
-tracks/5/path = NodePath("Logo:rotation_degrees")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/keys = {
-"times": PoolRealArray( 0, 1, 1.7 ),
-"transitions": PoolRealArray( 5, 4.5, 1 ),
-"update": 0,
-"values": [ -1500.0, 45.0, 0.0 ]
-}
-tracks/6/type = "value"
-tracks/6/path = NodePath("LightParticles:emitting")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/keys = {
-"times": PoolRealArray( 0, 0.8 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 1,
-"values": [ false, true ]
-}
-tracks/7/type = "value"
-tracks/7/path = NodePath("LightExplosion:emitting")
-tracks/7/interp = 1
-tracks/7/loop_wrap = true
-tracks/7/imported = false
-tracks/7/enabled = true
-tracks/7/keys = {
-"times": PoolRealArray( 0, 0.8, 0.9 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 1,
-"values": [ false, true, false ]
-}
-tracks/8/type = "value"
-tracks/8/path = NodePath(".:modulate")
-tracks/8/interp = 1
-tracks/8/loop_wrap = true
-tracks/8/imported = false
-tracks/8/enabled = true
-tracks/8/keys = {
-"times": PoolRealArray( 0, 1.4 ),
-"transitions": PoolRealArray( 4, 1 ),
-"update": 0,
-"values": [ Color( 0, 0, 0, 1 ), Color( 1, 1, 1, 1 ) ]
-}
-tracks/9/type = "value"
-tracks/9/path = NodePath("Button:visible")
-tracks/9/interp = 1
-tracks/9/loop_wrap = true
-tracks/9/imported = false
-tracks/9/enabled = true
-tracks/9/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ false ]
-}
-
-[node name="Introduction" type="Node2D"]
-position = Vector2( 512, 300 )
+[node name="Menu" type="Node2D"]
+position = Vector2( -120, 0 )
+scale = Vector2( 0.8, 0.8 )
 script = ExtResource( 3 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
 
-[node name="Ambient" type="Light2D" parent="."]
+[node name="MenuLayer" type="Node2D" parent="."]
+
+[node name="Ambient" type="Light2D" parent="MenuLayer"]
+light_mask = 0
 texture = ExtResource( 8 )
 texture_scale = 3.0
 color = Color( 1, 0.654902, 0, 1 )
 energy = 3.0
 
-[node name="BackRays" type="Light2D" parent="."]
+[node name="BackRays" type="Light2D" parent="MenuLayer"]
 light_mask = 9
 texture = ExtResource( 8 )
 texture_scale = 2.4
 color = Color( 0.592157, 1, 0, 1 )
-energy = 2.0
+energy = 1.6
 range_z_min = -2
 range_z_max = 0
 shadow_enabled = true
 shadow_gradient_length = 700.0
 shadow_filter = 5
 shadow_filter_smooth = 10.0
-shadow_item_cull_mask = 9
+shadow_item_cull_mask = 0
 
-[node name="BigRays" type="Light2D" parent="."]
-light_mask = 5
+[node name="BigRays" type="Light2D" parent="MenuLayer"]
+light_mask = 0
 texture = ExtResource( 8 )
 texture_scale = 2.4
 color = Color( 1, 0.619608, 0.215686, 1 )
 energy = 3.0
+range_item_cull_mask = 17
 shadow_enabled = true
 shadow_gradient_length = 500.0
 shadow_filter = 3
 shadow_filter_smooth = 15.0
-shadow_item_cull_mask = 3
+shadow_item_cull_mask = 19
 
-[node name="ThinRays" type="Light2D" parent="."]
+[node name="ThinRays" type="Light2D" parent="MenuLayer"]
+light_mask = 0
 texture = ExtResource( 8 )
 texture_scale = 2.4
 energy = 2.6
+range_item_cull_mask = 17
 shadow_enabled = true
 shadow_gradient_length = 300.0
-shadow_filter = 4
+shadow_filter = 1
 shadow_filter_smooth = 2.2
-shadow_item_cull_mask = 5
+shadow_item_cull_mask = 21
 
-[node name="BackOccluders" type="Node2D" parent="."]
-rotation = -12.9446
+[node name="BackOccluders" type="Node2D" parent="MenuLayer"]
+rotation = -1129.32
 script = ExtResource( 2 )
-rotating = true
 speed = 0.24
 
-[node name="LightOccluder2D" type="LightOccluder2D" parent="BackOccluders"]
+[node name="LightOccluder2D" type="LightOccluder2D" parent="MenuLayer/BackOccluders"]
 light_mask = 8
-occluder = SubResource( 1 )
+occluder = SubResource( 2 )
 light_mask = 8
 
-[node name="LightOccluder2D2" type="LightOccluder2D" parent="BackOccluders"]
+[node name="LightOccluder2D2" type="LightOccluder2D" parent="MenuLayer/BackOccluders"]
 light_mask = 8
 rotation = -2.17016
-occluder = SubResource( 1 )
+occluder = SubResource( 2 )
 light_mask = 8
 
-[node name="LightOccluder2D3" type="LightOccluder2D" parent="BackOccluders"]
+[node name="LightOccluder2D3" type="LightOccluder2D" parent="MenuLayer/BackOccluders"]
 light_mask = 8
 rotation = -4.22607
-occluder = SubResource( 1 )
+occluder = SubResource( 2 )
 light_mask = 8
 
-[node name="BigOccluders" type="Node2D" parent="."]
-rotation = -21.5745
+[node name="BigOccluders" type="Node2D" parent="MenuLayer"]
+rotation = -1880.72
 script = ExtResource( 2 )
-rotating = true
 speed = 0.4
 
-[node name="LightOccluder2D" type="LightOccluder2D" parent="BigOccluders"]
+[node name="LightOccluder2D" type="LightOccluder2D" parent="MenuLayer/BigOccluders"]
 light_mask = 2
-occluder = SubResource( 2 )
+occluder = SubResource( 3 )
 light_mask = 2
 
-[node name="LightOccluder2D2" type="LightOccluder2D" parent="BigOccluders"]
+[node name="LightOccluder2D2" type="LightOccluder2D" parent="MenuLayer/BigOccluders"]
 light_mask = 2
 rotation = -0.684597
-occluder = SubResource( 2 )
+occluder = SubResource( 3 )
 light_mask = 2
 
-[node name="LightOccluder2D3" type="LightOccluder2D" parent="BigOccluders"]
+[node name="LightOccluder2D3" type="LightOccluder2D" parent="MenuLayer/BigOccluders"]
 light_mask = 2
 rotation = -1.24344
-occluder = SubResource( 2 )
+occluder = SubResource( 3 )
 light_mask = 2
 
-[node name="LightOccluder2D4" type="LightOccluder2D" parent="BigOccluders"]
+[node name="LightOccluder2D4" type="LightOccluder2D" parent="MenuLayer/BigOccluders"]
 light_mask = 2
 rotation = -2.05972
-occluder = SubResource( 2 )
+occluder = SubResource( 3 )
 light_mask = 2
 
-[node name="LightOccluder2D5" type="LightOccluder2D" parent="BigOccluders"]
+[node name="LightOccluder2D5" type="LightOccluder2D" parent="MenuLayer/BigOccluders"]
 light_mask = 2
 rotation = -2.65924
-occluder = SubResource( 2 )
+occluder = SubResource( 3 )
 light_mask = 2
 
-[node name="LightOccluder2D6" type="LightOccluder2D" parent="BigOccluders"]
+[node name="LightOccluder2D6" type="LightOccluder2D" parent="MenuLayer/BigOccluders"]
 light_mask = 2
 rotation = -3.5574
-occluder = SubResource( 2 )
+occluder = SubResource( 3 )
 light_mask = 2
 
-[node name="LightOccluder2D7" type="LightOccluder2D" parent="BigOccluders"]
+[node name="LightOccluder2D7" type="LightOccluder2D" parent="MenuLayer/BigOccluders"]
 light_mask = 2
 rotation = -4.20372
-occluder = SubResource( 2 )
+occluder = SubResource( 3 )
 light_mask = 2
 
-[node name="LightOccluder2D8" type="LightOccluder2D" parent="BigOccluders"]
+[node name="LightOccluder2D8" type="LightOccluder2D" parent="MenuLayer/BigOccluders"]
 light_mask = 2
 rotation = -5.13374
-occluder = SubResource( 2 )
+occluder = SubResource( 3 )
 light_mask = 2
 
-[node name="LightOccluder2D9" type="LightOccluder2D" parent="BigOccluders"]
+[node name="LightOccluder2D9" type="LightOccluder2D" parent="MenuLayer/BigOccluders"]
 light_mask = 2
 rotation = -5.45541
-occluder = SubResource( 2 )
+occluder = SubResource( 3 )
 light_mask = 2
 
-[node name="ThinOccluders" type="Node2D" parent="."]
-rotation = -32.3619
+[node name="ThinOccluders" type="Node2D" parent="MenuLayer"]
+rotation = -2817.49
 script = ExtResource( 2 )
-rotating = true
 speed = 0.6
 
-[node name="LightOccluder2D" type="LightOccluder2D" parent="ThinOccluders"]
+[node name="LightOccluder2D" type="LightOccluder2D" parent="MenuLayer/ThinOccluders"]
 light_mask = 4
-occluder = SubResource( 3 )
+occluder = SubResource( 4 )
 light_mask = 4
 
-[node name="LightOccluder2D2" type="LightOccluder2D" parent="ThinOccluders"]
+[node name="LightOccluder2D2" type="LightOccluder2D" parent="MenuLayer/ThinOccluders"]
 light_mask = 4
 rotation = -1.1975
-occluder = SubResource( 3 )
+occluder = SubResource( 4 )
 light_mask = 4
 
-[node name="LightOccluder2D3" type="LightOccluder2D" parent="ThinOccluders"]
+[node name="LightOccluder2D3" type="LightOccluder2D" parent="MenuLayer/ThinOccluders"]
 light_mask = 4
 rotation = -2.79497
-occluder = SubResource( 3 )
+occluder = SubResource( 4 )
 light_mask = 4
 
-[node name="LightOccluder2D4" type="LightOccluder2D" parent="ThinOccluders"]
+[node name="LightOccluder2D4" type="LightOccluder2D" parent="MenuLayer/ThinOccluders"]
 visible = false
 light_mask = 4
 rotation = -4.76297
-occluder = SubResource( 3 )
+occluder = SubResource( 4 )
 light_mask = 4
 
-[node name="LightOccluder2D6" type="LightOccluder2D" parent="ThinOccluders"]
+[node name="LightOccluder2D6" type="LightOccluder2D" parent="MenuLayer/ThinOccluders"]
 light_mask = 4
 rotation = -5.03405
-occluder = SubResource( 4 )
-light_mask = 4
-
-[node name="LightOccluder2D8" type="LightOccluder2D" parent="ThinOccluders"]
-light_mask = 4
-rotation = -7.7991
-occluder = SubResource( 4 )
-light_mask = 4
-
-[node name="LightOccluder2D5" type="LightOccluder2D" parent="ThinOccluders"]
-light_mask = 4
-rotation = -4.00752
-occluder = SubResource( 3 )
-light_mask = 4
-
-[node name="LightOccluder2D7" type="LightOccluder2D" parent="ThinOccluders"]
-light_mask = 4
-rotation = -5.22305
 occluder = SubResource( 5 )
 light_mask = 4
 
-[node name="Background" type="Polygon2D" parent="."]
-scale = Vector2( 4, 4 )
-color = Color( 0.568627, 0.478431, 0.368627, 1 )
-offset = Vector2( -512, -300 )
-polygon = PoolVector2Array( -0.335938, 0, 1024, 0, 1024, 600, -0.335938, 600 )
+[node name="LightOccluder2D8" type="LightOccluder2D" parent="MenuLayer/ThinOccluders"]
+light_mask = 4
+rotation = -7.7991
+occluder = SubResource( 5 )
+light_mask = 4
 
-[node name="Logo" type="Node2D" parent="."]
+[node name="LightOccluder2D5" type="LightOccluder2D" parent="MenuLayer/ThinOccluders"]
+light_mask = 4
+rotation = -4.00752
+occluder = SubResource( 4 )
+light_mask = 4
+
+[node name="LightOccluder2D7" type="LightOccluder2D" parent="MenuLayer/ThinOccluders"]
+light_mask = 4
+rotation = -5.22305
+occluder = SubResource( 6 )
+light_mask = 4
+
+[node name="Logo" type="Node2D" parent="MenuLayer"]
 script = ExtResource( 1 )
 
-[node name="Table" type="Sprite" parent="Logo"]
-material = SubResource( 6 )
-scale = Vector2( 0.209833, 0.209845 )
+[node name="Table" type="Sprite" parent="MenuLayer/Logo"]
+material = SubResource( 7 )
+scale = Vector2( 0.21, 0.21 )
 z_index = 1
 texture = ExtResource( 6 )
 
-[node name="Text" type="Sprite" parent="Logo"]
+[node name="Text" type="Sprite" parent="MenuLayer/Logo"]
 light_mask = 0
-material = SubResource( 7 )
-rotation = -6.36508
-scale = Vector2( 0.351225, 0.351378 )
+material = SubResource( 8 )
+rotation = -6.37045
+scale = Vector2( 0.35, 0.35 )
 z_index = 1
 texture = ExtResource( 7 )
 
-[node name="Animator" type="AnimationPlayer" parent="Logo"]
-anims/Float = SubResource( 8 )
+[node name="Animator" type="AnimationPlayer" parent="MenuLayer/Logo"]
+anims/Float = SubResource( 9 )
 
-[node name="LightParticles" type="Particles2D" parent="."]
+[node name="LightParticles" type="Particles2D" parent="MenuLayer"]
 z_index = 1
 amount = 20
 lifetime = 8.0
 visibility_rect = Rect2( -300, -300, 600, 600 )
-process_material = SubResource( 13 )
+process_material = SubResource( 14 )
 texture = ExtResource( 5 )
 
-[node name="LightExplosion" type="Particles2D" parent="."]
+[node name="LightExplosion" type="Particles2D" parent="MenuLayer"]
 z_index = 1
 emitting = false
 amount = 60
 lifetime = 3.0
 explosiveness = 1.0
 visibility_rect = Rect2( -500, -500, 1000, 1000 )
-process_material = SubResource( 16 )
+process_material = SubResource( 17 )
 texture = ExtResource( 5 )
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-method_call_mode = 1
-anims/DeployMenu = SubResource( 17 )
-anims/Opening = SubResource( 18 )
+[node name="Button" type="Node2D" parent="MenuLayer"]
 
-[node name="Button" type="Node2D" parent="."]
-
-[node name="Start" parent="Button" instance=ExtResource( 10 )]
+[node name="Start" parent="MenuLayer/Button" instance=ExtResource( 10 )]
 margin_left = -125.0
 margin_top = -90.0
 margin_right = 127.0
@@ -572,7 +741,7 @@ rect_pivot_offset = Vector2( 126, 26.5 )
 text = "Jouer !"
 label = "Jouer !"
 
-[node name="Settings" parent="Button" instance=ExtResource( 10 )]
+[node name="Settings" parent="MenuLayer/Button" instance=ExtResource( 10 )]
 margin_left = -125.0
 margin_top = -26.0
 margin_right = 152.0
@@ -581,12 +750,44 @@ rect_pivot_offset = Vector2( 138.5, 26.5 )
 text = "Options"
 label = "Options"
 
-[node name="Exit" parent="Button" instance=ExtResource( 10 )]
+[node name="Exit" parent="MenuLayer/Button" instance=ExtResource( 10 )]
 margin_left = -125.0
 margin_top = 38.0
 margin_right = 139.0
 margin_bottom = 91.0
 rect_pivot_offset = Vector2( 132, 26.5 )
 text = "Quitter"
+script = ExtResource( 9 )
 label = "Quitter"
+
+[node name="Background" type="Polygon2D" parent="."]
+scale = Vector2( 1.1, 1.1 )
+z_index = -1
+color = Color( 0.568627, 0.478431, 0.368627, 1 )
+offset = Vector2( -800, -800 )
+polygon = PoolVector2Array( 238, 238, 800, 0, 1362, 238, 1600, 800, 1362, 1362, 800, 1600, 238, 1362, 0, 800 )
+
+[node name="LeafLayer" parent="." instance=ExtResource( 4 )]
+rotation = 0.174533
+scale = Vector2( 1.2, 1 )
+
+[node name="Back" parent="LeafLayer" index="0"]
+material = SubResource( 44 )
+scale = Vector2( 2.2, 2.2 )
+
+[node name="Middle" parent="LeafLayer" index="1"]
+material = SubResource( 45 )
+scale = Vector2( 2.2, 2.2 )
+
+[node name="Front" parent="LeafLayer" index="2"]
+material = SubResource( 46 )
+scale = Vector2( 2.2, 2.2 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+method_call_mode = 1
+anims/Close = SubResource( 47 )
+anims/DeployMenu = ExtResource( 11 )
+anims/Opening = ExtResource( 12 )
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
+
+[editable path="LeafLayer"]
