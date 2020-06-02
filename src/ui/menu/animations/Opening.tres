@@ -100,7 +100,7 @@ tracks/7/keys = {
 "values": [ false, true, false ]
 }
 tracks/8/type = "value"
-tracks/8/path = NodePath("MenuLayer/Button:visible")
+tracks/8/path = NodePath("MenuLayer/SubMenus/Main:visible")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/imported = false
@@ -143,5 +143,5 @@ tracks/11/imported = false
 tracks/11/enabled = true
 tracks/11/keys = {
 "clips": PoolStringArray( "Reset", "Shrink" ),
-"times": PoolRealArray( 0, 1.3 )
+"times": PoolRealArray( 0, 1.5 )
 }

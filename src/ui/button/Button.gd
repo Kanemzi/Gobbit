@@ -1,20 +1,15 @@
 tool
-extends Button
+extends Node2D
 
-signal clicked
-
-export(String) var label = "Label" setget _set_label
-var active := false
-
-func _ready() -> void:
-	active = true
+export(String) var label = "..." setget _set_label
+export var active := false
 
 # Auto adjust pivot point
 func _set_label(value: String) -> void:
-	rect_pivot_offset.x = rect_size.x / 2
-	rect_pivot_offset.y = rect_size.y / 2
+	$UIButton.rect_pivot_offset.x = $UIButton.rect_size.x / 2
+	$UIButton.rect_pivot_offset.y = $UIButton.rect_size.y / 2
 	label = value
-	text = value
+	$UIButton.text = value
 
 
 # The button bumps every few seconds to catch player attention
@@ -36,7 +31,7 @@ func _on_pressed() -> void:
 		return
 	$AnimationPlayer.play("SingleBump")
 	_action()
-	
+
 
 func _action() -> void:
 	pass

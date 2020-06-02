@@ -3,30 +3,13 @@
 [ext_resource path="res://src/ui/button/ButtonStyle.tres" type="StyleBox" id=1]
 [ext_resource path="res://assets/fonts/button-font.tres" type="DynamicFont" id=2]
 [ext_resource path="res://src/ui/button/Button.gd" type="Script" id=3]
-[ext_resource path="res://src/ui/button/IdleBumpAnimation.tres" type="Animation" id=4]
 
 [sub_resource type="Animation" id=1]
-resource_name = "Hold"
-length = 0.2
-tracks/0/type = "value"
-tracks/0/path = NodePath(".:rect_scale")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.2 ),
-"transitions": PoolRealArray( 0.5, 1 ),
-"update": 0,
-"values": [ Vector2( 1, 1 ), Vector2( 0.9, 0.9 ) ]
-}
-
-[sub_resource type="Animation" id=2]
-resource_name = "SingleBump"
+resource_name = "Bump"
 length = 0.6
 step = 0.01
 tracks/0/type = "value"
-tracks/0/path = NodePath(".:rect_scale")
+tracks/0/path = NodePath("UIButton:rect_scale")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -38,7 +21,7 @@ tracks/0/keys = {
 "values": [ Vector2( 1, 1 ), Vector2( 1.3, 1.3 ), Vector2( 0.9, 0.9 ), Vector2( 1, 1 ) ]
 }
 tracks/1/type = "bezier"
-tracks/1/path = NodePath(".:rect_rotation")
+tracks/1/path = NodePath("UIButton:rect_rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -48,7 +31,53 @@ tracks/1/keys = {
 "times": PoolRealArray( 0, 0.2, 0.35, 0.47, 0.6 )
 }
 
-[node name="Button" type="Button"]
+[sub_resource type="Animation" id=2]
+resource_name = "Deploy"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/path = NodePath("UIButton:rect_position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.3, 0.6 ),
+"transitions": PoolRealArray( 0.5, 2, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 315, 0 ), Vector2( 305, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:active")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.6 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+
+[sub_resource type="Animation" id=3]
+length = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath("UIButton:rect_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 0.5, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 0.9, 0.9 ) ]
+}
+
+[node name="Button" type="Node2D"]
+script = ExtResource( 3 )
+
+[node name="UIButton" type="Button" parent="."]
 light_mask = 0
 margin_right = 208.0
 margin_bottom = 53.0
@@ -63,16 +92,14 @@ custom_colors/font_color = Color( 1, 0.913725, 0.678431, 1 )
 custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
 custom_colors/font_color_pressed = Color( 1, 1, 1, 1 )
 shortcut_in_tooltip = false
-text = "Test"
-script = ExtResource( 3 )
+text = "..."
 __meta__ = {
 "_edit_use_anchors_": false
 }
-label = "Test"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/Hold = SubResource( 1 )
-anims/IdleBump = ExtResource( 4 )
-anims/SingleBump = SubResource( 2 )
-[connection signal="button_down" from="." to="." method="_on_button_down"]
-[connection signal="pressed" from="." to="." method="_on_pressed"]
+anims/Bump = SubResource( 1 )
+anims/Deploy = SubResource( 2 )
+anims/Hold = SubResource( 3 )
+[connection signal="button_down" from="UIButton" to="UIButton" method="_on_button_down"]
+[connection signal="pressed" from="UIButton" to="UIButton" method="_on_pressed"]
