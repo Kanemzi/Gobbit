@@ -1,8 +1,8 @@
-[gd_scene load_steps=60 format=2]
+[gd_scene load_steps=64 format=2]
 
 [ext_resource path="res://src/ui/menu/Logo.gd" type="Script" id=1]
 [ext_resource path="res://src/ui/menu/OccluderGroup.gd" type="Script" id=2]
-[ext_resource path="res://src/ui/menu/Menu.gd" type="Script" id=3]
+[ext_resource path="res://src/ui/menu/GlobalMenu.gd" type="Script" id=3]
 [ext_resource path="res://src/ui/menu/leafs-overlay/LeafLayer.tscn" type="PackedScene" id=4]
 [ext_resource path="res://assets/textures/ui/menu/light-particle.png" type="Texture" id=5]
 [ext_resource path="res://assets/textures/environment/table-low.png" type="Texture" id=6]
@@ -10,9 +10,13 @@
 [ext_resource path="res://assets/textures/ui/menu/god-rays.png" type="Texture" id=8]
 [ext_resource path="res://src/ui/menu/SubMenu.gd" type="Script" id=9]
 [ext_resource path="res://src/ui/button/Button.tscn" type="PackedScene" id=10]
-[ext_resource path="res://src/ui/menu/animations/DeployMenu.tres" type="Animation" id=11]
+[ext_resource path="res://src/ui/menu/animations/DeploySubMenu.tres" type="Animation" id=11]
 [ext_resource path="res://src/ui/menu/animations/Opening.tres" type="Animation" id=12]
-[ext_resource path="res://src/ui/menu/animations/DeployHostJoin.tres" type="Animation" id=13]
+[ext_resource path="res://src/ui/menu/buttons/ReturnButton.gd" type="Script" id=13]
+[ext_resource path="res://src/ui/menu/buttons/PlayButton.gd" type="Script" id=14]
+[ext_resource path="res://src/ui/menu/animations/ShrinkSubMenu.tres" type="Animation" id=15]
+[ext_resource path="res://src/ui/line-edit/LineEdit.tscn" type="PackedScene" id=16]
+[ext_resource path="res://src/ui/menu/buttons/JoinModeButton.gd" type="Script" id=17]
 
 [sub_resource type="OccluderPolygon2D" id=1]
 polygon = PoolVector2Array( 50, -36, 48, 34, 54, 34, 56, -36 )
@@ -468,7 +472,7 @@ shader_param/Blur_Radius = 0.05
 shader_param/Blur_Samples = 6.0
 
 [sub_resource type="Animation" id=46]
-resource_name = "Close"
+resource_name = "Exit"
 tracks/0/type = "animation"
 tracks/0/path = NodePath("LeafLayer/AnimationPlayer")
 tracks/0/interp = 1
@@ -561,7 +565,7 @@ shadow_filter_smooth = 2.2
 shadow_item_cull_mask = 21
 
 [node name="BackOccluders" type="Node2D" parent="MenuLayer"]
-rotation = -4967.12
+rotation = -10700.5
 script = ExtResource( 2 )
 speed = 0.24
 
@@ -583,7 +587,7 @@ occluder = SubResource( 1 )
 light_mask = 8
 
 [node name="BigOccluders" type="Node2D" parent="MenuLayer"]
-rotation = -8341.66
+rotation = -17947.3
 script = ExtResource( 2 )
 speed = 0.4
 
@@ -641,7 +645,7 @@ occluder = SubResource( 2 )
 light_mask = 2
 
 [node name="ThinOccluders" type="Node2D" parent="MenuLayer"]
-rotation = -12414.4
+rotation = -26811.4
 script = ExtResource( 2 )
 speed = 0.6
 
@@ -736,14 +740,14 @@ texture = ExtResource( 5 )
 
 [node name="SubMenus" type="Node2D" parent="MenuLayer"]
 position = Vector2( -125, 0 )
-scale = Vector2( 1, 1 )
 
 [node name="Main" type="Node2D" parent="MenuLayer/SubMenus"]
-scale = Vector2( 1, 1 )
+visible = false
 script = ExtResource( 9 )
 
-[node name="Start" parent="MenuLayer/SubMenus/Main" instance=ExtResource( 10 )]
+[node name="Play" parent="MenuLayer/SubMenus/Main" instance=ExtResource( 10 )]
 position = Vector2( 0, -92 )
+script = ExtResource( 14 )
 label = "Jouer !"
 
 [node name="Settings" parent="MenuLayer/SubMenus/Main" instance=ExtResource( 10 )]
@@ -752,18 +756,56 @@ label = "Options"
 
 [node name="Exit" parent="MenuLayer/SubMenus/Main" instance=ExtResource( 10 )]
 position = Vector2( 0, 36 )
+script = ExtResource( 13 )
 label = "Quitter"
 
 [node name="HostJoin" type="Node2D" parent="MenuLayer/SubMenus"]
 visible = false
-scale = Vector2( 1, 1 )
 script = ExtResource( 9 )
 
 [node name="Host" parent="MenuLayer/SubMenus/HostJoin" instance=ExtResource( 10 )]
+position = Vector2( 0, -92 )
+label = "Heberger"
 
 [node name="Join" parent="MenuLayer/SubMenus/HostJoin" instance=ExtResource( 10 )]
+position = Vector2( 0, -28 )
+script = ExtResource( 17 )
+label = "Rejoindre"
 
 [node name="Return" parent="MenuLayer/SubMenus/HostJoin" instance=ExtResource( 10 )]
+position = Vector2( 0, 36 )
+script = ExtResource( 13 )
+label = "Retour"
+
+[node name="Join" type="Node2D" parent="MenuLayer/SubMenus"]
+visible = false
+script = ExtResource( 9 )
+
+[node name="Pseudo" parent="MenuLayer/SubMenus/Join" instance=ExtResource( 16 )]
+position = Vector2( 0, -114 )
+placeholder = "Pseudo"
+
+[node name="UIElement" parent="MenuLayer/SubMenus/Join/Pseudo" index="0"]
+margin_right = 332.0
+focus_next = NodePath("../../IPAddress/UIElement")
+placeholder_text = "Pseudo"
+
+[node name="IPAddress" parent="MenuLayer/SubMenus/Join" instance=ExtResource( 16 )]
+position = Vector2( 0, -56 )
+placeholder = "Adresse IP"
+
+[node name="UIElement" parent="MenuLayer/SubMenus/Join/IPAddress" index="0"]
+margin_right = 332.0
+placeholder_text = "Adresse IP"
+
+[node name="Join" parent="MenuLayer/SubMenus/Join" instance=ExtResource( 10 )]
+position = Vector2( 0, 2 )
+label = "Rejoindre"
+
+[node name="Return" parent="MenuLayer/SubMenus/Join" instance=ExtResource( 10 )]
+position = Vector2( 0, 60 )
+script = ExtResource( 13 )
+label = "Retour"
 
 [node name="Background" type="Polygon2D" parent="."]
 position = Vector2( 5.9375, 23.7499 )
@@ -790,10 +832,14 @@ scale = Vector2( 1, 1 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 method_call_mode = 1
-anims/Close = SubResource( 46 )
-anims/DeployHostJoin = ExtResource( 13 )
-anims/DeployMenu = ExtResource( 11 )
+anims/DeploySubMenu = ExtResource( 11 )
+anims/Exit = SubResource( 46 )
 anims/Opening = ExtResource( 12 )
+anims/ShrinkSubMenu = ExtResource( 15 )
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
+
+[editable path="MenuLayer/SubMenus/Join/Pseudo"]
+
+[editable path="MenuLayer/SubMenus/Join/IPAddress"]
 
 [editable path="LeafLayer"]

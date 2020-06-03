@@ -6,18 +6,10 @@ export var active := false
 
 # Auto adjust pivot point
 func _set_label(value: String) -> void:
-	$UIButton.rect_pivot_offset.x = $UIButton.rect_size.x / 2
-	$UIButton.rect_pivot_offset.y = $UIButton.rect_size.y / 2
+	$UIElement.rect_pivot_offset.x = $UIElement.rect_size.x / 2
+	$UIElement.rect_pivot_offset.y = $UIElement.rect_size.y / 2
 	label = value
-	$UIButton.text = value
-
-
-# The button bumps every few seconds to catch player attention
-func bumps_highlight(enabled := true) -> void:
-	if enabled:
-		$AnimationPlayer.play("BumpAnimation")
-	else:
-		$AnimationPlayer.stop(true)
+	$UIElement.text = value
 
 
 func _on_button_down() -> void:
@@ -29,7 +21,8 @@ func _on_button_down() -> void:
 func _on_pressed() -> void:
 	if not active:
 		return
-	$AnimationPlayer.play("SingleBump")
+	$AnimationPlayer.play("Bump")
+	yield($AnimationPlayer, "animation_finished")
 	_action()
 
 
