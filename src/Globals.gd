@@ -15,7 +15,7 @@ const CARD_MESH_HEIGHT := 0.005
 
 
 # strings for UI
-const HUB_ERROR_PSEUDO_EMPTY_MESSAGE := "You must specify a pseudo."
+const HUB_ERROR_PSEUDO_EMPTY_MESSAGE := "Vous devez entrer un pseudo"
 const HUB_ERROR_IP_ADDRESS_EMPTY_MESSAGE := "You must specify an IP address."
 const HUB_ERROR_INVALID_IP_ADDRESS_MESSAGE := "The IP address is invalid."
 const HUB_CONNECTION_ERROR_MESSAGE := "Can't connect to the server"

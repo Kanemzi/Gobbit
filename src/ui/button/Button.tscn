@@ -39,13 +39,13 @@ tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0, 0.36 ),
+"times": PoolRealArray( 0, 0.35 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 1,
 "values": [ false, true ]
 }
 
-[sub_resource type="Animation" id=3]
+[sub_resource type="Animation" id=2]
 length = 0.2
 tracks/0/type = "value"
 tracks/0/path = NodePath("UIElement:rect_scale")
@@ -62,6 +62,7 @@ tracks/0/keys = {
 
 [node name="Button" type="Node2D"]
 script = ExtResource( 3 )
+active = true
 
 [node name="UIElement" type="Button" parent="."]
 light_mask = 0
@@ -86,7 +87,8 @@ __meta__ = {
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Bump = SubResource( 1 )
 anims/Deploy = ExtResource( 4 )
-anims/Hold = SubResource( 3 )
+anims/Hold = SubResource( 2 )
 anims/Shrink = ExtResource( 5 )
 [connection signal="button_down" from="UIElement" to="." method="_on_button_down"]
+[connection signal="button_up" from="UIElement" to="." method="_on_released"]
 [connection signal="pressed" from="UIElement" to="." method="_on_pressed"]

@@ -1,6 +1,8 @@
 extends Node2D
 class_name GlobalMenu
 
+onready var popup_manager : MenuPopupManager = $PopupLayer
+
 var menu_stack = [] # The stack of the opened submenus
 
 func _ready() -> void:

@@ -49,6 +49,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://src/gamestates/Gobbit.gd"
 }, {
+"base": "Node2D",
+"class": "MenuPopupManager",
+"language": "GDScript",
+"path": "res://src/ui/menu/PopupManager.gd"
+}, {
 "base": "Node",
 "class": "NetworkCheckpoints",
 "language": "GDScript",
@@ -88,6 +93,7 @@ _global_script_class_icons={
 "GameState": "",
 "GlobalMenu": "",
 "GobbitGameState": "",
+"MenuPopupManager": "",
 "NetworkCheckpoints": "",
 "Player": "",
 "PlayerPointerUI": "",
