@@ -18,6 +18,7 @@ margin_bottom = 53.0
 custom_styles/focus = SubResource( 1 )
 custom_styles/normal = ExtResource( 2 )
 custom_fonts/font = ExtResource( 1 )
+max_length = 10
 caret_blink = true
 __meta__ = {
 "_edit_use_anchors_": false

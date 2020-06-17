@@ -6,6 +6,7 @@ onready var popup := $Popup
 func _ready() -> void:
 	popup.connect("closed", self, "_on_Popup_Closed")
 
+
 func show_message(message: String) -> void:
 	$GrayOverlay.visible = true
 	popup.message = message

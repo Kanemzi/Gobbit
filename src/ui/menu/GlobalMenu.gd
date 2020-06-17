@@ -7,6 +7,7 @@ var menu_stack = [] # The stack of the opened submenus
 
 func _ready() -> void:
 	$AnimationPlayer.play("Opening")
+	add_to_group("global_menu")
 
 
 func _on_AnimationPlayer_animation_finished(anim_name: String) -> void:
@@ -36,6 +37,7 @@ func push_menu(sm: SubMenu) -> void:
 
 
 # Pop the last submenu from the stack
+# If the stack is empty, the game is closed
 func pop_menu() -> void:
 	$AnimationPlayer.play("ShrinkSubMenu")
 	menu_stack[-1].close()

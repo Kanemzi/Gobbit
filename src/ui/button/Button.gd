@@ -1,6 +1,8 @@
 tool
 extends Node2D
 
+signal clicked
+
 export(String) var label = "..." setget _set_label
 export var active := false
 
@@ -24,7 +26,8 @@ func _on_pressed() -> void:
 		return
 	$AnimationPlayer.play("Bump")
 	yield($AnimationPlayer, "animation_finished")
-	_action()
+	_action() # Execute the action if it's defined
+	emit_signal("clicked")
 
 
 func _on_released() -> void:

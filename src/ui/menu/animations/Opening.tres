@@ -4,7 +4,7 @@
 resource_name = "Opening"
 length = 3.0
 tracks/0/type = "value"
-tracks/0/path = NodePath("MenuLayer/ThinRays:texture_scale")
+tracks/0/path = NodePath("MenuLayer/LightRays/ThinRays:texture_scale")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -16,7 +16,7 @@ tracks/0/keys = {
 "values": [ 0.01, 0.01, 2.4 ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("MenuLayer/BigRays:texture_scale")
+tracks/1/path = NodePath("MenuLayer/LightRays/BigRays:texture_scale")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -28,7 +28,7 @@ tracks/1/keys = {
 "values": [ 0.01, 0.01, 2.4 ]
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("MenuLayer/BackRays:texture_scale")
+tracks/2/path = NodePath("MenuLayer/LightRays/BackRays:texture_scale")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
@@ -40,7 +40,7 @@ tracks/2/keys = {
 "values": [ 0.01, 0.01, 2.4 ]
 }
 tracks/3/type = "value"
-tracks/3/path = NodePath("MenuLayer/Ambient:energy")
+tracks/3/path = NodePath("MenuLayer/LightRays/Ambient:energy")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/imported = false
