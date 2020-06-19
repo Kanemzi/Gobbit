@@ -14,7 +14,7 @@ margin_right = 110.759
 margin_top = 133.615
 margin_bottom = 101.969
 
-[sub_resource type="StyleBoxEmpty" id=7]
+[sub_resource type="StyleBoxEmpty" id=2]
 
 [sub_resource type="StyleBoxEmpty" id=3]
 
@@ -208,7 +208,7 @@ margin_left = -22.0
 margin_top = -10.0
 rect_pivot_offset = Vector2( 16, 16 )
 mouse_default_cursor_shape = 2
-custom_styles/hover = SubResource( 7 )
+custom_styles/hover = SubResource( 2 )
 custom_styles/focus = SubResource( 3 )
 custom_styles/normal = SubResource( 4 )
 icon = ExtResource( 2 )

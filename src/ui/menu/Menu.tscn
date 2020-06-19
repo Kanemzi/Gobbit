@@ -1,4 +1,4 @@
-[gd_scene load_steps=73 format=2]
+[gd_scene load_steps=82 format=2]
 
 [ext_resource path="res://src/ui/menu/Logo.gd" type="Script" id=1]
 [ext_resource path="res://src/ui/menu/OccluderGroup.gd" type="Script" id=2]
@@ -12,6 +12,7 @@
 [ext_resource path="res://src/ui/button/Button.tscn" type="PackedScene" id=10]
 [ext_resource path="res://src/ui/menu/animations/DeploySubMenu.tres" type="Animation" id=11]
 [ext_resource path="res://src/ui/menu/animations/Opening.tres" type="Animation" id=12]
+[ext_resource path="res://assets/textures/ui/panel-background.png" type="Texture" id=13]
 [ext_resource path="res://src/ui/menu/submenus/Main.gd" type="Script" id=14]
 [ext_resource path="res://src/ui/menu/animations/ShrinkSubMenu.tres" type="Animation" id=15]
 [ext_resource path="res://src/ui/line-edit/LineEdit.tscn" type="PackedScene" id=16]
@@ -19,6 +20,11 @@
 [ext_resource path="res://src/ui/menu/submenus/Host.gd" type="Script" id=18]
 [ext_resource path="res://src/ui/popup/Popup.tscn" type="PackedScene" id=19]
 [ext_resource path="res://src/ui/menu/PopupManager.gd" type="Script" id=20]
+[ext_resource path="res://assets/textures/ui/loader.svg" type="Texture" id=22]
+[ext_resource path="res://src/ui/menu/hub/Hub.gd" type="Script" id=23]
+[ext_resource path="res://src/ui/menu/animations/DeployHub.tres" type="Animation" id=24]
+[ext_resource path="res://assets/textures/ui/checkbox-check.png" type="Texture" id=25]
+[ext_resource path="res://assets/textures/ui/checkbox-background.png" type="Texture" id=26]
 
 [sub_resource type="VisualShaderNodeScalarOp" id=1]
 operator = 1
@@ -118,12 +124,65 @@ polygon = PoolVector2Array( 48, -32, 46.8, -20.2426, 57.5511, -27.2004, 56, -32 
 [sub_resource type="OccluderPolygon2D" id=12]
 polygon = PoolVector2Array( 48.582, -4.87766, 48, 30, 56, 30, 54.794, -3.69 )
 
-[sub_resource type="CanvasItemMaterial" id=13]
+[sub_resource type="Gradient" id=13]
+offsets = PoolRealArray( 0, 0.156522, 0.804348, 1 )
+colors = PoolColorArray( 0, 0, 0, 0, 1, 1, 1, 0.588235, 1, 1, 1, 0.588235, 1, 1, 1, 0 )
 
-[sub_resource type="CanvasItemMaterial" id=14]
+[sub_resource type="GradientTexture" id=14]
+gradient = SubResource( 13 )
+
+[sub_resource type="Curve" id=15]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 0.2, 1 ), 1.3058, 1.3058, 0, 0, Vector2( 1, 0 ), 0.0255116, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=16]
+curve = SubResource( 15 )
+
+[sub_resource type="ParticlesMaterial" id=17]
+emission_shape = 1
+emission_sphere_radius = 400.0
+flag_disable_z = true
+direction = Vector3( 0, 0, 0 )
+spread = 180.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 10.0
+initial_velocity_random = 0.13
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+scale = 0.2
+scale_random = 0.29
+scale_curve = SubResource( 16 )
+color_ramp = SubResource( 14 )
+
+[sub_resource type="Gradient" id=18]
+offsets = PoolRealArray( 0, 0.156522, 0.804348, 1 )
+colors = PoolColorArray( 0, 0, 0, 0, 1, 0.882353, 0.447059, 0.352941, 1, 0.447059, 0, 0.392157, 1, 1, 1, 0 )
+
+[sub_resource type="GradientTexture" id=19]
+gradient = SubResource( 18 )
+
+[sub_resource type="ParticlesMaterial" id=20]
+emission_shape = 1
+emission_sphere_radius = 20.0
+flag_disable_z = true
+direction = Vector3( 0, 0, 0 )
+spread = 180.0
+gravity = Vector3( 0, 100, 0 )
+initial_velocity = 800.0
+initial_velocity_random = 0.6
+orbit_velocity = 0.06
+orbit_velocity_random = 0.0
+linear_accel = -300.0
+scale = 0.3
+scale_random = 1.0
+scale_curve = SubResource( 16 )
+color_ramp = SubResource( 19 )
+
+[sub_resource type="CanvasItemMaterial" id=21]
+
+[sub_resource type="CanvasItemMaterial" id=22]
 light_mode = 1
 
-[sub_resource type="Animation" id=15]
+[sub_resource type="Animation" id=23]
 length = 4.0
 loop = true
 tracks/0/type = "bezier"
@@ -179,66 +238,35 @@ tracks/4/keys = {
 "times": PoolRealArray( 0, 2, 4 )
 }
 
-[sub_resource type="Gradient" id=16]
-offsets = PoolRealArray( 0, 0.156522, 0.804348, 1 )
-colors = PoolColorArray( 0, 0, 0, 0, 1, 1, 1, 0.588235, 1, 1, 1, 0.588235, 1, 1, 1, 0 )
+[sub_resource type="GDScript" id=24]
+script/source = "extends Sprite
+# TODO : put this script in a .gd file
+export(float) var speed := 10.0
 
-[sub_resource type="GradientTexture" id=17]
-gradient = SubResource( 16 )
+func _ready():
+	pass
 
-[sub_resource type="Curve" id=18]
-_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 0.2, 1 ), 1.3058, 1.3058, 0, 0, Vector2( 1, 0 ), 0.0255116, 0.0, 0, 0 ]
+func _physics_process(delta: float) -> void:
+	rotation_degrees += delta * speed
+	if rotation_degrees >= 360.0: # Avoid big rotation values
+		rotation_degrees -= 360.0
+"
 
-[sub_resource type="CurveTexture" id=19]
-curve = SubResource( 18 )
+[sub_resource type="StyleBoxTexture" id=25]
+texture = ExtResource( 13 )
+region_rect = Rect2( 0, 0, 568, 552 )
+margin_left = 134.413
+margin_right = 134.413
+margin_top = 136.361
+margin_bottom = 138.309
 
-[sub_resource type="ParticlesMaterial" id=20]
-emission_shape = 1
-emission_sphere_radius = 400.0
-flag_disable_z = true
-direction = Vector3( 0, 0, 0 )
-spread = 180.0
-gravity = Vector3( 0, 0, 0 )
-initial_velocity = 10.0
-initial_velocity_random = 0.13
-orbit_velocity = 0.0
-orbit_velocity_random = 0.0
-scale = 0.2
-scale_random = 0.29
-scale_curve = SubResource( 19 )
-color_ramp = SubResource( 17 )
-
-[sub_resource type="Gradient" id=21]
-offsets = PoolRealArray( 0, 0.156522, 0.804348, 1 )
-colors = PoolColorArray( 0, 0, 0, 0, 1, 0.882353, 0.447059, 0.352941, 1, 0.447059, 0, 0.392157, 1, 1, 1, 0 )
-
-[sub_resource type="GradientTexture" id=22]
-gradient = SubResource( 21 )
-
-[sub_resource type="ParticlesMaterial" id=23]
-emission_shape = 1
-emission_sphere_radius = 20.0
-flag_disable_z = true
-direction = Vector3( 0, 0, 0 )
-spread = 180.0
-gravity = Vector3( 0, 100, 0 )
-initial_velocity = 800.0
-initial_velocity_random = 0.6
-orbit_velocity = 0.06
-orbit_velocity_random = 0.0
-linear_accel = -300.0
-scale = 0.3
-scale_random = 1.0
-scale_curve = SubResource( 19 )
-color_ramp = SubResource( 22 )
-
-[sub_resource type="VisualShaderNodeScalarUniform" id=24]
+[sub_resource type="VisualShaderNodeScalarUniform" id=26]
 uniform_name = "Blur_Samples"
 
-[sub_resource type="VisualShaderNodeScalarUniform" id=25]
+[sub_resource type="VisualShaderNodeScalarUniform" id=27]
 uniform_name = "Blur_Radius"
 
-[sub_resource type="VisualShaderNodeExpression" id=26]
+[sub_resource type="VisualShaderNodeExpression" id=28]
 size = Vector2( 979.92, 771.44 )
 expression = "float scale = radius / (SAMPLES*2.0);
 
@@ -257,72 +285,72 @@ col /= n;
 color = col.rgb;
 alpha = col.a;"
 
-[sub_resource type="VisualShaderNodeVectorCompose" id=27]
+[sub_resource type="VisualShaderNodeVectorCompose" id=29]
 
-[sub_resource type="VisualShaderNodeScalarFunc" id=28]
+[sub_resource type="VisualShaderNodeScalarFunc" id=30]
 function = 1
-
-[sub_resource type="VisualShaderNodeScalarFunc" id=29]
-function = 0
-
-[sub_resource type="VisualShaderNodeVectorCompose" id=30]
 
 [sub_resource type="VisualShaderNodeScalarFunc" id=31]
-function = 1
-
-[sub_resource type="VisualShaderNodeScalarFunc" id=32]
 function = 0
 
-[sub_resource type="VisualShaderNodeScalarUniform" id=33]
+[sub_resource type="VisualShaderNodeVectorCompose" id=32]
+
+[sub_resource type="VisualShaderNodeScalarFunc" id=33]
+function = 1
+
+[sub_resource type="VisualShaderNodeScalarFunc" id=34]
+function = 0
+
+[sub_resource type="VisualShaderNodeScalarUniform" id=35]
 uniform_name = "Wind_Force"
-
-[sub_resource type="VisualShaderNodeScalarOp" id=34]
-default_input_values = [ 0, 0.0, 1, 1.0 ]
-operator = 2
-
-[sub_resource type="VisualShaderNodeInput" id=35]
-input_name = "time"
 
 [sub_resource type="VisualShaderNodeScalarOp" id=36]
 default_input_values = [ 0, 0.0, 1, 1.0 ]
 operator = 2
 
-[sub_resource type="VisualShaderNodeScalarFunc" id=37]
-function = 0
+[sub_resource type="VisualShaderNodeInput" id=37]
+input_name = "time"
 
-[sub_resource type="VisualShaderNodeScalarUniform" id=38]
-uniform_name = "Wind_Speed"
+[sub_resource type="VisualShaderNodeScalarOp" id=38]
+default_input_values = [ 0, 0.0, 1, 1.0 ]
+operator = 2
 
 [sub_resource type="VisualShaderNodeScalarFunc" id=39]
 function = 0
 
-[sub_resource type="VisualShaderNodeScalarOp" id=40]
+[sub_resource type="VisualShaderNodeScalarUniform" id=40]
+uniform_name = "Wind_Speed"
+
+[sub_resource type="VisualShaderNodeScalarFunc" id=41]
+function = 0
+
+[sub_resource type="VisualShaderNodeScalarOp" id=42]
 default_input_values = [ 0, 0.0, 1, 2.0 ]
 operator = 2
 
-[sub_resource type="VisualShaderNodeScalarOp" id=41]
+[sub_resource type="VisualShaderNodeScalarOp" id=43]
 
-[sub_resource type="VisualShaderNodeScalarOp" id=42]
+[sub_resource type="VisualShaderNodeScalarOp" id=44]
 default_input_values = [ 0, 0.0, 1, 2.3 ]
 operator = 2
 
-[sub_resource type="VisualShaderNodeScalarUniform" id=43]
+[sub_resource type="VisualShaderNodeScalarUniform" id=45]
 uniform_name = "Wind_Offset"
 
-[sub_resource type="VisualShaderNodeScalarOp" id=44]
+[sub_resource type="VisualShaderNodeScalarOp" id=46]
 
-[sub_resource type="VisualShaderNodeScalarFunc" id=45]
+[sub_resource type="VisualShaderNodeScalarFunc" id=47]
 function = 19
 
-[sub_resource type="VisualShaderNodeInput" id=46]
+[sub_resource type="VisualShaderNodeInput" id=48]
 input_name = "vertex"
 
-[sub_resource type="VisualShaderNodeTransformVecMult" id=47]
+[sub_resource type="VisualShaderNodeTransformVecMult" id=49]
 
-[sub_resource type="VisualShaderNodeTransformCompose" id=48]
+[sub_resource type="VisualShaderNodeTransformCompose" id=50]
 default_input_values = [ 0, Vector3( 1, 0, 0 ), 1, Vector3( 0, 1, 0 ), 2, Vector3( 0, 0, 0 ), 3, Vector3( 0, 0, 0 ) ]
 
-[sub_resource type="VisualShader" id=49]
+[sub_resource type="VisualShader" id=51]
 resource_local_to_scene = true
 code = "shader_type canvas_item;
 uniform float Wind_Offset;
@@ -456,55 +484,55 @@ graph_offset = Vector2( -334.227, 382.875 )
 mode = 1
 flags/light_only = false
 nodes/vertex/0/position = Vector2( 520, 100 )
-nodes/vertex/2/node = SubResource( 35 )
+nodes/vertex/2/node = SubResource( 37 )
 nodes/vertex/2/position = Vector2( -2020, -80 )
-nodes/vertex/5/node = SubResource( 46 )
+nodes/vertex/5/node = SubResource( 48 )
 nodes/vertex/5/position = Vector2( 60, 160 )
-nodes/vertex/8/node = SubResource( 47 )
+nodes/vertex/8/node = SubResource( 49 )
 nodes/vertex/8/position = Vector2( 260, 80 )
-nodes/vertex/9/node = SubResource( 48 )
+nodes/vertex/9/node = SubResource( 50 )
 nodes/vertex/9/position = Vector2( 0, 20 )
-nodes/vertex/10/node = SubResource( 27 )
+nodes/vertex/10/node = SubResource( 29 )
 nodes/vertex/10/position = Vector2( -220, -80 )
-nodes/vertex/11/node = SubResource( 28 )
+nodes/vertex/11/node = SubResource( 30 )
 nodes/vertex/11/position = Vector2( -420, -120 )
-nodes/vertex/12/node = SubResource( 29 )
+nodes/vertex/12/node = SubResource( 31 )
 nodes/vertex/12/position = Vector2( -420, -20 )
-nodes/vertex/14/node = SubResource( 30 )
+nodes/vertex/14/node = SubResource( 32 )
 nodes/vertex/14/position = Vector2( -220, 120 )
-nodes/vertex/15/node = SubResource( 31 )
+nodes/vertex/15/node = SubResource( 33 )
 nodes/vertex/15/position = Vector2( -420, 180 )
-nodes/vertex/16/node = SubResource( 32 )
+nodes/vertex/16/node = SubResource( 34 )
 nodes/vertex/16/position = Vector2( -420, 80 )
-nodes/vertex/18/node = SubResource( 33 )
+nodes/vertex/18/node = SubResource( 35 )
 nodes/vertex/18/position = Vector2( -980, 220 )
-nodes/vertex/19/node = SubResource( 34 )
+nodes/vertex/19/node = SubResource( 36 )
 nodes/vertex/19/position = Vector2( -860, -40 )
-nodes/vertex/24/node = SubResource( 36 )
+nodes/vertex/24/node = SubResource( 38 )
 nodes/vertex/24/position = Vector2( -1440, -40 )
-nodes/vertex/25/node = SubResource( 37 )
+nodes/vertex/25/node = SubResource( 39 )
 nodes/vertex/25/position = Vector2( -1260, -20 )
-nodes/vertex/26/node = SubResource( 38 )
+nodes/vertex/26/node = SubResource( 40 )
 nodes/vertex/26/position = Vector2( -1960, 160 )
-nodes/vertex/27/node = SubResource( 39 )
+nodes/vertex/27/node = SubResource( 41 )
 nodes/vertex/27/position = Vector2( -1260, 100 )
-nodes/vertex/28/node = SubResource( 40 )
+nodes/vertex/28/node = SubResource( 42 )
 nodes/vertex/28/position = Vector2( -1440, 80 )
-nodes/vertex/29/node = SubResource( 41 )
+nodes/vertex/29/node = SubResource( 43 )
 nodes/vertex/29/position = Vector2( -1080, 0 )
-nodes/vertex/30/node = SubResource( 42 )
+nodes/vertex/30/node = SubResource( 44 )
 nodes/vertex/30/position = Vector2( -1640, 180 )
-nodes/vertex/31/node = SubResource( 43 )
+nodes/vertex/31/node = SubResource( 45 )
 nodes/vertex/31/position = Vector2( -1960, 100 )
-nodes/vertex/32/node = SubResource( 44 )
+nodes/vertex/32/node = SubResource( 46 )
 nodes/vertex/32/position = Vector2( -1860, -100 )
-nodes/vertex/33/node = SubResource( 45 )
+nodes/vertex/33/node = SubResource( 47 )
 nodes/vertex/33/position = Vector2( -600, -20 )
 nodes/vertex/connections = PoolIntArray( 5, 0, 8, 1, 9, 0, 8, 0, 11, 0, 10, 0, 12, 0, 10, 1, 10, 0, 9, 0, 15, 0, 14, 1, 16, 0, 14, 0, 14, 0, 9, 1, 18, 0, 19, 1, 8, 0, 0, 0, 24, 0, 25, 0, 26, 0, 24, 1, 19, 0, 11, 0, 19, 0, 16, 0, 19, 0, 15, 0, 28, 0, 27, 0, 29, 0, 19, 0, 30, 0, 28, 1, 26, 0, 30, 0, 2, 0, 32, 0, 31, 0, 32, 1, 32, 0, 28, 0, 32, 0, 24, 0, 27, 0, 29, 1, 25, 0, 29, 0, 19, 0, 33, 0, 33, 0, 12, 0 )
 nodes/fragment/0/position = Vector2( 940, 480 )
-nodes/fragment/5/node = SubResource( 25 )
+nodes/fragment/5/node = SubResource( 27 )
 nodes/fragment/5/position = Vector2( -300, 480 )
-nodes/fragment/9/node = SubResource( 26 )
+nodes/fragment/9/node = SubResource( 28 )
 nodes/fragment/9/position = Vector2( -80, 440 )
 nodes/fragment/9/size = Vector2( 979.92, 771.44 )
 nodes/fragment/9/input_ports = "0,0,radius;1,0,SAMPLES;"
@@ -525,38 +553,151 @@ col /= n;
 
 color = col.rgb;
 alpha = col.a;"
-nodes/fragment/10/node = SubResource( 24 )
+nodes/fragment/10/node = SubResource( 26 )
 nodes/fragment/10/position = Vector2( -300, 540 )
 nodes/fragment/connections = PoolIntArray( 9, 1, 0, 1, 9, 0, 0, 0, 5, 0, 9, 0, 10, 0, 9, 1 )
 
-[sub_resource type="ShaderMaterial" id=50]
+[sub_resource type="ShaderMaterial" id=52]
 resource_local_to_scene = true
-shader = SubResource( 49 )
+shader = SubResource( 51 )
 shader_param/Wind_Offset = 1.0
 shader_param/Wind_Speed = 3.0
 shader_param/Wind_Force = 0.05
 shader_param/Blur_Radius = 0.0
 shader_param/Blur_Samples = 2.0
 
-[sub_resource type="ShaderMaterial" id=51]
+[sub_resource type="ShaderMaterial" id=53]
 resource_local_to_scene = true
-shader = SubResource( 49 )
+shader = SubResource( 51 )
 shader_param/Wind_Offset = null
 shader_param/Wind_Speed = 0.8
 shader_param/Wind_Force = 0.1
 shader_param/Blur_Radius = 0.03
 shader_param/Blur_Samples = 3.0
 
-[sub_resource type="ShaderMaterial" id=52]
+[sub_resource type="ShaderMaterial" id=54]
 resource_local_to_scene = true
-shader = SubResource( 49 )
+shader = SubResource( 51 )
 shader_param/Wind_Offset = null
 shader_param/Wind_Speed = 0.5
 shader_param/Wind_Force = 0.2
 shader_param/Blur_Radius = 0.05
 shader_param/Blur_Samples = 6.0
 
-[sub_resource type="Animation" id=53]
+[sub_resource type="Animation" id=55]
+resource_name = "CloseHub"
+length = 0.6
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("MenuLayer:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray(  ),
+"transitions": PoolRealArray(  ),
+"update": 0,
+"values": [  ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("MenuLayer/Logo:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.2, 0.45 ),
+"transitions": PoolRealArray( 0.5, -2, 1 ),
+"update": 0,
+"values": [ Vector2( 0.9, 0.9 ), Vector2( 1.4, 1.4 ), Vector2( 1, 1 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("MenuLayer/Logo/Table:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0.21, 0.21 ), Vector2( 0.189, 0.189 ), Vector2( 0.252, 0.252 ), Vector2( 0.21, 0.21 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("MenuLayer/Logo/Text:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.15, 0.25, 0.35, 0.45, 0.6 ),
+"transitions": PoolRealArray( 1, 1, 1, 0.5, -2, 1 ),
+"update": 0,
+"values": [ Vector2( 0.35, 0.35 ), Vector2( 0.35, 0.35 ), Vector2( 0.49, 0.49 ), Vector2( 0.35, 0.35 ), Vector2( 0.332, 0.332 ), Vector2( 0.35, 0.35 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("MenuLayer/Hub:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 0.5, 0.5, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( -20, 0 ), Vector2( 80, 0 ) ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("MenuLayer/Hub:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ true, false ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("MenuLayer/Logo/Loader:modulate")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 2, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0.313726 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("MenuLayer/Hub/Start:position")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 0.5, 0.5, 1 ),
+"update": 0,
+"values": [ Vector2( 142, 42 ), Vector2( 182, 42 ), Vector2( -18, 42 ) ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("MenuLayer/Hub/Return:position")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 0.5, 0.5, 1 ),
+"update": 0,
+"values": [ Vector2( 114, 105 ), Vector2( 154, 105 ), Vector2( -46, 105 ) ]
+}
+
+[sub_resource type="Animation" id=56]
 tracks/0/type = "animation"
 tracks/0/path = NodePath("LeafLayer/AnimationPlayer")
 tracks/0/interp = 1
@@ -621,12 +762,10 @@ __meta__ = {
 [node name="MenuLayer" type="Node2D" parent="."]
 z_index = -20
 
-[node name="LightRays" type="Node2D" parent="MenuLayer"]
-scale = Vector2( 1, 1 )
+[node name="Lights" type="Node2D" parent="MenuLayer"]
 
-[node name="Ambient" type="Light2D" parent="MenuLayer/LightRays"]
+[node name="Ambient" type="Light2D" parent="MenuLayer/Lights"]
 light_mask = 0
-scale = Vector2( 1, 1 )
 texture = ExtResource( 8 )
 texture_scale = 3.0
 color = Color( 1, 0.654902, 0, 1 )
@@ -635,9 +774,8 @@ __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="BackRays" type="Light2D" parent="MenuLayer/LightRays"]
+[node name="BackRays" type="Light2D" parent="MenuLayer/Lights"]
 light_mask = 9
-scale = Vector2( 1, 1 )
 texture = ExtResource( 8 )
 texture_scale = 2.4
 color = Color( 0.592157, 1, 0, 1 )
@@ -651,9 +789,8 @@ __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="BigRays" type="Light2D" parent="MenuLayer/LightRays"]
+[node name="BigRays" type="Light2D" parent="MenuLayer/Lights"]
 light_mask = 0
-scale = Vector2( 1, 1 )
 texture = ExtResource( 8 )
 texture_scale = 2.4
 color = Color( 1, 0.619608, 0.215686, 1 )
@@ -668,9 +805,8 @@ __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="ThinRays" type="Light2D" parent="MenuLayer/LightRays"]
+[node name="ThinRays" type="Light2D" parent="MenuLayer/Lights"]
 light_mask = 0
-scale = Vector2( 1, 1 )
 texture = ExtResource( 8 )
 texture_scale = 2.4
 energy = 2.6
@@ -684,151 +820,180 @@ __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="BackOccluders" type="Node2D" parent="MenuLayer/LightRays"]
-rotation = -89.4794
-scale = Vector2( 1, 1 )
+[node name="BackOccluders" type="Node2D" parent="MenuLayer/Lights"]
+light_mask = 0
+rotation = -40.3079
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_lock_": true
 }
+rotating = true
 speed = 0.24
 
-[node name="LightOccluder2D" type="LightOccluder2D" parent="MenuLayer/LightRays/BackOccluders"]
+[node name="LightOccluder2D" type="LightOccluder2D" parent="MenuLayer/Lights/BackOccluders"]
 light_mask = 8
 occluder = SubResource( 8 )
 light_mask = 8
 
-[node name="LightOccluder2D2" type="LightOccluder2D" parent="MenuLayer/LightRays/BackOccluders"]
+[node name="LightOccluder2D2" type="LightOccluder2D" parent="MenuLayer/Lights/BackOccluders"]
 light_mask = 8
 rotation = -2.17016
 occluder = SubResource( 8 )
 light_mask = 8
 
-[node name="LightOccluder2D3" type="LightOccluder2D" parent="MenuLayer/LightRays/BackOccluders"]
+[node name="LightOccluder2D3" type="LightOccluder2D" parent="MenuLayer/Lights/BackOccluders"]
 light_mask = 8
 rotation = -4.22607
 occluder = SubResource( 8 )
 light_mask = 8
 
-[node name="BigOccluders" type="Node2D" parent="MenuLayer/LightRays"]
-rotation = -144.239
-scale = Vector2( 1, 1 )
+[node name="BigOccluders" type="Node2D" parent="MenuLayer/Lights"]
+light_mask = 0
+rotation = -67.1819
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_lock_": true
 }
+rotating = true
 speed = 0.4
 
-[node name="LightOccluder2D" type="LightOccluder2D" parent="MenuLayer/LightRays/BigOccluders"]
+[node name="LightOccluder2D" type="LightOccluder2D" parent="MenuLayer/Lights/BigOccluders"]
 light_mask = 2
 occluder = SubResource( 9 )
 light_mask = 2
 
-[node name="LightOccluder2D2" type="LightOccluder2D" parent="MenuLayer/LightRays/BigOccluders"]
+[node name="LightOccluder2D2" type="LightOccluder2D" parent="MenuLayer/Lights/BigOccluders"]
 light_mask = 2
 rotation = -0.684597
 occluder = SubResource( 9 )
 light_mask = 2
 
-[node name="LightOccluder2D3" type="LightOccluder2D" parent="MenuLayer/LightRays/BigOccluders"]
+[node name="LightOccluder2D3" type="LightOccluder2D" parent="MenuLayer/Lights/BigOccluders"]
 light_mask = 2
 rotation = -1.24344
 occluder = SubResource( 9 )
 light_mask = 2
 
-[node name="LightOccluder2D4" type="LightOccluder2D" parent="MenuLayer/LightRays/BigOccluders"]
+[node name="LightOccluder2D4" type="LightOccluder2D" parent="MenuLayer/Lights/BigOccluders"]
 light_mask = 2
 rotation = -2.05972
 occluder = SubResource( 9 )
 light_mask = 2
 
-[node name="LightOccluder2D5" type="LightOccluder2D" parent="MenuLayer/LightRays/BigOccluders"]
+[node name="LightOccluder2D5" type="LightOccluder2D" parent="MenuLayer/Lights/BigOccluders"]
 light_mask = 2
 rotation = -2.65924
 occluder = SubResource( 9 )
 light_mask = 2
 
-[node name="LightOccluder2D6" type="LightOccluder2D" parent="MenuLayer/LightRays/BigOccluders"]
+[node name="LightOccluder2D6" type="LightOccluder2D" parent="MenuLayer/Lights/BigOccluders"]
 light_mask = 2
 rotation = -3.5574
 occluder = SubResource( 9 )
 light_mask = 2
 
-[node name="LightOccluder2D7" type="LightOccluder2D" parent="MenuLayer/LightRays/BigOccluders"]
+[node name="LightOccluder2D7" type="LightOccluder2D" parent="MenuLayer/Lights/BigOccluders"]
 light_mask = 2
 rotation = -4.20372
 occluder = SubResource( 9 )
 light_mask = 2
 
-[node name="LightOccluder2D8" type="LightOccluder2D" parent="MenuLayer/LightRays/BigOccluders"]
+[node name="LightOccluder2D8" type="LightOccluder2D" parent="MenuLayer/Lights/BigOccluders"]
 light_mask = 2
 rotation = -5.13374
 occluder = SubResource( 9 )
 light_mask = 2
 
-[node name="LightOccluder2D9" type="LightOccluder2D" parent="MenuLayer/LightRays/BigOccluders"]
+[node name="LightOccluder2D9" type="LightOccluder2D" parent="MenuLayer/Lights/BigOccluders"]
 light_mask = 2
 rotation = -5.45541
 occluder = SubResource( 9 )
 light_mask = 2
 
-[node name="ThinOccluders" type="Node2D" parent="MenuLayer/LightRays"]
-rotation = -222.275
+[node name="ThinOccluders" type="Node2D" parent="MenuLayer/Lights"]
+light_mask = 0
+rotation = -100.767
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_lock_": true
 }
+rotating = true
 speed = 0.6
 
-[node name="LightOccluder2D" type="LightOccluder2D" parent="MenuLayer/LightRays/ThinOccluders"]
+[node name="LightOccluder2D" type="LightOccluder2D" parent="MenuLayer/Lights/ThinOccluders"]
 light_mask = 4
 occluder = SubResource( 10 )
 light_mask = 4
 
-[node name="LightOccluder2D2" type="LightOccluder2D" parent="MenuLayer/LightRays/ThinOccluders"]
+[node name="LightOccluder2D2" type="LightOccluder2D" parent="MenuLayer/Lights/ThinOccluders"]
 light_mask = 4
 rotation = -1.1975
 occluder = SubResource( 10 )
 light_mask = 4
 
-[node name="LightOccluder2D3" type="LightOccluder2D" parent="MenuLayer/LightRays/ThinOccluders"]
+[node name="LightOccluder2D3" type="LightOccluder2D" parent="MenuLayer/Lights/ThinOccluders"]
 light_mask = 4
 rotation = -2.79497
 occluder = SubResource( 10 )
 light_mask = 4
 
-[node name="LightOccluder2D4" type="LightOccluder2D" parent="MenuLayer/LightRays/ThinOccluders"]
+[node name="LightOccluder2D4" type="LightOccluder2D" parent="MenuLayer/Lights/ThinOccluders"]
 visible = false
 light_mask = 4
 rotation = -4.76297
 occluder = SubResource( 10 )
 light_mask = 4
 
-[node name="LightOccluder2D6" type="LightOccluder2D" parent="MenuLayer/LightRays/ThinOccluders"]
+[node name="LightOccluder2D6" type="LightOccluder2D" parent="MenuLayer/Lights/ThinOccluders"]
 light_mask = 4
 rotation = -5.03405
 occluder = SubResource( 11 )
 light_mask = 4
 
-[node name="LightOccluder2D8" type="LightOccluder2D" parent="MenuLayer/LightRays/ThinOccluders"]
+[node name="LightOccluder2D8" type="LightOccluder2D" parent="MenuLayer/Lights/ThinOccluders"]
 light_mask = 4
 rotation = -7.7991
 occluder = SubResource( 11 )
 light_mask = 4
 
-[node name="LightOccluder2D5" type="LightOccluder2D" parent="MenuLayer/LightRays/ThinOccluders"]
+[node name="LightOccluder2D5" type="LightOccluder2D" parent="MenuLayer/Lights/ThinOccluders"]
 light_mask = 4
 rotation = -4.00752
 occluder = SubResource( 10 )
 light_mask = 4
 
-[node name="LightOccluder2D7" type="LightOccluder2D" parent="MenuLayer/LightRays/ThinOccluders"]
+[node name="LightOccluder2D7" type="LightOccluder2D" parent="MenuLayer/Lights/ThinOccluders"]
 light_mask = 4
 rotation = -5.22305
 occluder = SubResource( 12 )
 light_mask = 4
 
+[node name="LightParticles" type="Particles2D" parent="MenuLayer/Lights"]
+z_index = 2
+amount = 60
+lifetime = 8.0
+visibility_rect = Rect2( -300, -300, 600, 600 )
+process_material = SubResource( 17 )
+texture = ExtResource( 5 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="LightExplosion" type="Particles2D" parent="MenuLayer/Lights"]
+z_index = 2
+emitting = false
+amount = 60
+lifetime = 3.0
+explosiveness = 1.0
+visibility_rect = Rect2( -500, -500, 1000, 1000 )
+process_material = SubResource( 20 )
+texture = ExtResource( 5 )
+__meta__ = {
+"_edit_lock_": true
+}
+
 [node name="Logo" type="Node2D" parent="MenuLayer"]
+scale = Vector2( 0.9, 0.9 )
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_group_": true,
@@ -836,45 +1001,31 @@ __meta__ = {
 }
 
 [node name="Table" type="Sprite" parent="MenuLayer/Logo"]
-material = SubResource( 13 )
+material = SubResource( 21 )
+rotation = 6.28319
 scale = Vector2( 0.21, 0.21 )
 z_index = 1
 texture = ExtResource( 6 )
 
 [node name="Text" type="Sprite" parent="MenuLayer/Logo"]
 light_mask = 0
-material = SubResource( 14 )
+material = SubResource( 22 )
 rotation = -6.37045
 scale = Vector2( 0.35, 0.35 )
 z_index = 1
 texture = ExtResource( 7 )
 
 [node name="Animator" type="AnimationPlayer" parent="MenuLayer/Logo"]
-anims/Float = SubResource( 15 )
+anims/Float = SubResource( 23 )
 
-[node name="LightParticles" type="Particles2D" parent="MenuLayer"]
-z_index = 1
-amount = 60
-lifetime = 8.0
-visibility_rect = Rect2( -300, -300, 600, 600 )
-process_material = SubResource( 20 )
-texture = ExtResource( 5 )
-__meta__ = {
-"_edit_lock_": true
-}
-
-[node name="LightExplosion" type="Particles2D" parent="MenuLayer"]
-z_index = 1
-emitting = false
-amount = 60
-lifetime = 3.0
-explosiveness = 1.0
-visibility_rect = Rect2( -500, -500, 1000, 1000 )
-process_material = SubResource( 23 )
-texture = ExtResource( 5 )
-__meta__ = {
-"_edit_lock_": true
-}
+[node name="Loader" type="Sprite" parent="MenuLayer/Logo"]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( -4, 4 )
+rotation = 5.75959
+scale = Vector2( 1.8, 1.8 )
+texture = ExtResource( 22 )
+script = SubResource( 24 )
+speed = 150.0
 
 [node name="SubMenus" type="Node2D" parent="MenuLayer"]
 position = Vector2( -125, 0 )
@@ -948,6 +1099,7 @@ placeholder = "Pseudo"
 [node name="IPAddress" parent="MenuLayer/SubMenus/Join" instance=ExtResource( 16 )]
 position = Vector2( 0, -56 )
 placeholder = "Adresse IP"
+max_characters = 16
 
 [node name="Join" parent="MenuLayer/SubMenus/Join" instance=ExtResource( 10 )]
 position = Vector2( 0, 2 )
@@ -957,6 +1109,93 @@ label = "Rejoindre"
 position = Vector2( 0, 60 )
 label = "Retour"
 active = false
+
+[node name="Hub" type="Node2D" parent="MenuLayer"]
+visible = false
+z_index = -1
+script = ExtResource( 23 )
+
+[node name="Players" type="Panel" parent="MenuLayer/Hub"]
+margin_left = -420.0
+margin_top = -140.0
+margin_right = -150.0
+margin_bottom = 140.0
+custom_styles/panel = SubResource( 25 )
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="List" type="VBoxContainer" parent="MenuLayer/Hub/Players"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 20.0
+margin_top = 26.0
+margin_right = -20.0
+margin_bottom = -20.0
+custom_constants/separation = 1
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Start" parent="MenuLayer/Hub" instance=ExtResource( 10 )]
+position = Vector2( 142, 42 )
+z_index = -1
+label = "Lancer"
+
+[node name="Return" parent="MenuLayer/Hub" instance=ExtResource( 10 )]
+position = Vector2( 114, 105 )
+z_index = -1
+label = "Retour"
+
+[node name="ExpertRules" type="CheckBox" parent="MenuLayer/Hub"]
+visible = false
+light_mask = 0
+anchor_right = 0.544
+margin_left = 226.515
+margin_top = -56.7195
+margin_right = 474.515
+margin_bottom = 191.281
+rect_scale = Vector2( 0.25, 0.25 )
+focus_mode = 0
+custom_icons/checked = ExtResource( 25 )
+custom_icons/unchecked = ExtResource( 26 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GobbitRule" type="CheckBox" parent="MenuLayer/Hub"]
+visible = false
+light_mask = 0
+anchor_right = 0.544
+margin_left = 206.106
+margin_top = -148.779
+margin_right = 454.106
+margin_bottom = 99.2209
+rect_scale = Vector2( 0.25, 0.25 )
+focus_mode = 0
+custom_icons/checked = ExtResource( 25 )
+custom_icons/unchecked = ExtResource( 26 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AllowSpirits" type="CheckBox" parent="MenuLayer/Hub"]
+visible = false
+light_mask = 0
+anchor_right = 0.544
+margin_left = 143.594
+margin_top = -222.425
+margin_right = 391.594
+margin_bottom = 25.5754
+rect_scale = Vector2( 0.25, 0.25 )
+focus_mode = 0
+custom_icons/checked = ExtResource( 25 )
+custom_icons/unchecked = ExtResource( 26 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Background" type="Polygon2D" parent="."]
 position = Vector2( 5.9375, 23.7499 )
@@ -974,21 +1213,23 @@ scale = Vector2( 1.2, 1 )
 z_index = -10
 
 [node name="Back" parent="LeafLayer" index="0"]
-material = SubResource( 50 )
+material = SubResource( 52 )
 scale = Vector2( 1, 1 )
 
 [node name="Middle" parent="LeafLayer" index="1"]
-material = SubResource( 51 )
+material = SubResource( 53 )
 scale = Vector2( 1, 1 )
 
 [node name="Front" parent="LeafLayer" index="2"]
-material = SubResource( 52 )
+material = SubResource( 54 )
 scale = Vector2( 1, 1 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 method_call_mode = 1
+anims/CloseHub = SubResource( 55 )
+anims/DeployHub = ExtResource( 24 )
 anims/DeploySubMenu = ExtResource( 11 )
-anims/Exit = SubResource( 53 )
+anims/Exit = SubResource( 56 )
 anims/Opening = ExtResource( 12 )
 anims/ShrinkSubMenu = ExtResource( 15 )
 [connection signal="clicked" from="MenuLayer/SubMenus/Main/Play" to="MenuLayer/SubMenus/Main" method="_on_Play_clicked"]
@@ -1001,6 +1242,7 @@ anims/ShrinkSubMenu = ExtResource( 15 )
 [connection signal="clicked" from="MenuLayer/SubMenus/Host/Return" to="MenuLayer/SubMenus/Host" method="_on_Return_clicked"]
 [connection signal="clicked" from="MenuLayer/SubMenus/Join/Join" to="MenuLayer/SubMenus/Join" method="_on_Join_clicked"]
 [connection signal="clicked" from="MenuLayer/SubMenus/Join/Return" to="MenuLayer/SubMenus/Join" method="_on_Return_clicked"]
+[connection signal="clicked" from="MenuLayer/Hub/Return" to="MenuLayer/Hub" method="_on_Return_clicked"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
 
 [editable path="LeafLayer"]

@@ -1,0 +1,113 @@
+[gd_resource type="Animation" format=2]
+
+[resource]
+length = 1.5
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("MenuLayer:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.15, 0.45, 0.75 ),
+"transitions": PoolRealArray( 0.5, 0.4, 0.5, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 30, 0 ), Vector2( -282, 0 ), Vector2( 0, 0 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("MenuLayer/Logo:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.15, 0.45, 0.75 ),
+"transitions": PoolRealArray( 0.3, 0.4, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 1.4, 1.4 ), Vector2( 1, 1 ), Vector2( 0.9, 0.9 ) ]
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("MenuLayer/Logo/Table:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = false
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.1, 0.25, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0.21, 0.21 ), Vector2( 0.189, 0.189 ), Vector2( 0.252, 0.252 ), Vector2( 0.21, 0.21 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("MenuLayer/Logo/Text:scale")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = false
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.15, 0.3, 0.45, 0.55, 0.7 ),
+"transitions": PoolRealArray( 1, 1, 1, 0.5, -2, 1 ),
+"update": 0,
+"values": [ Vector2( 0.35, 0.35 ), Vector2( 0.35, 0.35 ), Vector2( 0.49, 0.49 ), Vector2( 0.35, 0.35 ), Vector2( 0.332, 0.332 ), Vector2( 0.35, 0.35 ) ]
+}
+tracks/4/type = "value"
+tracks/4/path = NodePath("MenuLayer/Hub:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0.45, 0.75 ),
+"transitions": PoolRealArray( 0.5, 1 ),
+"update": 0,
+"values": [ Vector2( 282, 0 ), Vector2( 0, 0 ) ]
+}
+tracks/5/type = "value"
+tracks/5/path = NodePath("MenuLayer/Hub:visible")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/keys = {
+"times": PoolRealArray( 0, 0.45 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+tracks/6/type = "value"
+tracks/6/path = NodePath("MenuLayer/Logo/Loader:modulate")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0, 1.4 ),
+"transitions": PoolRealArray( 2, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 0.313726 ) ]
+}
+tracks/7/type = "value"
+tracks/7/path = NodePath("MenuLayer/Hub/Start:position")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/keys = {
+"times": PoolRealArray( 0, 0.45, 0.75, 0.95, 1.15 ),
+"transitions": PoolRealArray( 0.5, 0.5, 0.5, 2, 1 ),
+"update": 0,
+"values": [ Vector2( -400, 42 ), Vector2( -400, 42 ), Vector2( -118, 42 ), Vector2( 152, 42 ), Vector2( 142, 42 ) ]
+}
+tracks/8/type = "value"
+tracks/8/path = NodePath("MenuLayer/Hub/Return:position")
+tracks/8/interp = 1
+tracks/8/loop_wrap = true
+tracks/8/imported = false
+tracks/8/enabled = true
+tracks/8/keys = {
+"times": PoolRealArray( 0, 0.45, 0.75, 0.95, 1.15, 1.35 ),
+"transitions": PoolRealArray( 1, 0.5, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( -400, 105 ), Vector2( -400, 105 ), Vector2( -136, 105 ), Vector2( -136, 105 ), Vector2( 124, 105 ), Vector2( 114, 105 ) ]
+}

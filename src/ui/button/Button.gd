@@ -4,7 +4,7 @@ extends Node2D
 signal clicked
 
 export(String) var label = "..." setget _set_label
-export var active := false
+export var active := false setget _set_active
 
 # Auto adjust pivot point
 func _set_label(value: String) -> void:
@@ -14,6 +14,16 @@ func _set_label(value: String) -> void:
 	$UIElement.rect_pivot_offset.x = $UIElement.rect_size.x / 2
 	$UIElement.rect_pivot_offset.y = $UIElement.rect_size.y / 2
 
+
+func _set_active(value: bool) -> void:
+	active = value
+	# NOTE: A prettier way of indicating non-active buttons could be found
+#	if not is_instance_valid($UIElement):
+#		return
+#	if active:
+#		$UIElement.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+#	else:
+#		$UIElement.mouse_default_cursor_shape = Control.CURSOR_FORBIDDEN
 
 func _on_button_down() -> void:
 	if not active:

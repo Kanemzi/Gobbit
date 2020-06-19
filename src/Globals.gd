@@ -15,11 +15,12 @@ const CARD_MESH_HEIGHT := 0.005
 
 
 # strings for UI
-const HUB_ERROR_PSEUDO_EMPTY_MESSAGE := "Vous devez entrer un pseudo"
-const HUB_ERROR_IP_ADDRESS_EMPTY_MESSAGE := "You must specify an IP address."
-const HUB_ERROR_INVALID_IP_ADDRESS_MESSAGE := "The IP address is invalid."
-const HUB_CONNECTION_ERROR_MESSAGE := "Can't connect to the server"
-
+const HUB_ERROR_PSEUDO_EMPTY_MESSAGE := "Vous devez entrer un pseudo !"
+const HUB_ERROR_IP_ADDRESS_EMPTY_MESSAGE := "Vous devez entrer une adresse IP !"
+const HUB_ERROR_INVALID_IP_ADDRESS_MESSAGE := "Le format de l'adresse IP est invalide"
+const HUB_CONNECTION_ERROR_MESSAGE := "Erreur de connexion au serveur"
+const HUB_HOST_ERROR_MESSAGE := "Impossible de creer un serveur"
+const HUB_SERVER_CLOSED_MESSAGE := "Le serveur a ete ferme par l'hebergeur\nde la partie"
 
 const NETWORK_PORT := 60817
 const DEFAULT_MAX_PLAYERS := 4

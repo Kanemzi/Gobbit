@@ -4,7 +4,7 @@
 resource_name = "Opening"
 length = 3.0
 tracks/0/type = "value"
-tracks/0/path = NodePath("MenuLayer/LightRays/ThinRays:texture_scale")
+tracks/0/path = NodePath("MenuLayer/Lights/ThinRays:texture_scale")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -16,7 +16,7 @@ tracks/0/keys = {
 "values": [ 0.01, 0.01, 2.4 ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("MenuLayer/LightRays/BigRays:texture_scale")
+tracks/1/path = NodePath("MenuLayer/Lights/BigRays:texture_scale")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -28,7 +28,7 @@ tracks/1/keys = {
 "values": [ 0.01, 0.01, 2.4 ]
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("MenuLayer/LightRays/BackRays:texture_scale")
+tracks/2/path = NodePath("MenuLayer/Lights/BackRays:texture_scale")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
@@ -40,7 +40,7 @@ tracks/2/keys = {
 "values": [ 0.01, 0.01, 2.4 ]
 }
 tracks/3/type = "value"
-tracks/3/path = NodePath("MenuLayer/LightRays/Ambient:energy")
+tracks/3/path = NodePath("MenuLayer/Lights/Ambient:energy")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/imported = false
@@ -76,7 +76,7 @@ tracks/5/keys = {
 "values": [ -1500.0, 45.0, 45.0, 0.0 ]
 }
 tracks/6/type = "value"
-tracks/6/path = NodePath("MenuLayer/LightParticles:emitting")
+tracks/6/path = NodePath("MenuLayer/Lights/LightParticles:emitting")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/imported = false
@@ -88,7 +88,7 @@ tracks/6/keys = {
 "values": [ false, true ]
 }
 tracks/7/type = "value"
-tracks/7/path = NodePath("MenuLayer/LightExplosion:emitting")
+tracks/7/path = NodePath("MenuLayer/Lights/LightExplosion:emitting")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/imported = false
