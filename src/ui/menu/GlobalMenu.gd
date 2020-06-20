@@ -4,6 +4,8 @@ class_name GlobalMenu
 onready var popup_manager : MenuPopupManager = $PopupLayer
 onready var hub := $MenuLayer/Hub
 
+const BOARD_SCENE = "res://Game.tscn"
+
 var menu_stack = [] # The stack of the opened submenus
 var in_hub := false # Is the player in the hub or not
 
@@ -75,3 +77,10 @@ func pop_menu() -> void:
 	else:
 		$AnimationPlayer.play("DeploySubMenu")
 		menu_stack[-1].open()
+
+
+# Plays a start-game animation and loads the board scene after
+func start_game() -> void:
+	$AnimationPlayer.play("StartGame")
+	yield($AnimationPlayer, "animation_finished")
+	get_tree().change_scene("res://Game.tscn")

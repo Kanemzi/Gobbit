@@ -1,4 +1,4 @@
-[gd_scene load_steps=82 format=2]
+[gd_scene load_steps=83 format=2]
 
 [ext_resource path="res://src/ui/menu/Logo.gd" type="Script" id=1]
 [ext_resource path="res://src/ui/menu/OccluderGroup.gd" type="Script" id=2]
@@ -20,6 +20,7 @@
 [ext_resource path="res://src/ui/menu/submenus/Host.gd" type="Script" id=18]
 [ext_resource path="res://src/ui/popup/Popup.tscn" type="PackedScene" id=19]
 [ext_resource path="res://src/ui/menu/PopupManager.gd" type="Script" id=20]
+[ext_resource path="res://src/ui/menu/animations/StartGame.tres" type="Animation" id=21]
 [ext_resource path="res://assets/textures/ui/loader.svg" type="Texture" id=22]
 [ext_resource path="res://src/ui/menu/hub/Hub.gd" type="Script" id=23]
 [ext_resource path="res://src/ui/menu/animations/DeployHub.tres" type="Animation" id=24]
@@ -748,16 +749,18 @@ script = ExtResource( 20 )
 visible = false
 light_mask = 0
 material = SubResource( 7 )
-margin_left = -1280.0
-margin_top = -1280.0
-margin_right = 768.0
-margin_bottom = 768.0
+margin_left = -2560.0
+margin_top = -2560.0
+margin_right = 2560.0
+margin_bottom = 2560.0
 color = Color( 0, 0, 0, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Popup" parent="PopupLayer" instance=ExtResource( 19 )]
+margin = 50.0
+message = "[message]"
 
 [node name="MenuLayer" type="Node2D" parent="."]
 z_index = -20
@@ -809,7 +812,7 @@ __meta__ = {
 light_mask = 0
 texture = ExtResource( 8 )
 texture_scale = 2.4
-energy = 2.6
+energy = 2.7
 range_item_cull_mask = 17
 shadow_enabled = true
 shadow_gradient_length = 300.0
@@ -822,7 +825,7 @@ __meta__ = {
 
 [node name="BackOccluders" type="Node2D" parent="MenuLayer/Lights"]
 light_mask = 0
-rotation = -40.3079
+rotation = -3020.21
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_lock_": true
@@ -849,7 +852,7 @@ light_mask = 8
 
 [node name="BigOccluders" type="Node2D" parent="MenuLayer/Lights"]
 light_mask = 0
-rotation = -67.1819
+rotation = -5041.9
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_lock_": true
@@ -912,7 +915,7 @@ light_mask = 2
 
 [node name="ThinOccluders" type="Node2D" parent="MenuLayer/Lights"]
 light_mask = 0
-rotation = -100.767
+rotation = -7539.14
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_lock_": true
@@ -1019,7 +1022,7 @@ texture = ExtResource( 7 )
 anims/Float = SubResource( 23 )
 
 [node name="Loader" type="Sprite" parent="MenuLayer/Logo"]
-modulate = Color( 1, 1, 1, 0 )
+modulate = Color( 1, 1, 1, 0.313726 )
 position = Vector2( -4, 4 )
 rotation = 5.75959
 scale = Vector2( 1.8, 1.8 )
@@ -1077,6 +1080,7 @@ script = ExtResource( 18 )
 [node name="Pseudo" parent="MenuLayer/SubMenus/Host" instance=ExtResource( 16 )]
 position = Vector2( 0, -92 )
 placeholder = "Pseudo"
+max_characters = 10
 
 [node name="Host" parent="MenuLayer/SubMenus/Host" instance=ExtResource( 10 )]
 position = Vector2( 0, -28 )
@@ -1095,6 +1099,7 @@ script = ExtResource( 9 )
 [node name="Pseudo" parent="MenuLayer/SubMenus/Join" instance=ExtResource( 16 )]
 position = Vector2( 0, -114 )
 placeholder = "Pseudo"
+max_characters = 10
 
 [node name="IPAddress" parent="MenuLayer/SubMenus/Join" instance=ExtResource( 16 )]
 position = Vector2( 0, -56 )
@@ -1112,6 +1117,7 @@ active = false
 
 [node name="Hub" type="Node2D" parent="MenuLayer"]
 visible = false
+position = Vector2( 80, 0 )
 z_index = -1
 script = ExtResource( 23 )
 
@@ -1140,12 +1146,12 @@ __meta__ = {
 }
 
 [node name="Start" parent="MenuLayer/Hub" instance=ExtResource( 10 )]
-position = Vector2( 142, 42 )
+position = Vector2( -18, 42 )
 z_index = -1
 label = "Lancer"
 
 [node name="Return" parent="MenuLayer/Hub" instance=ExtResource( 10 )]
-position = Vector2( 114, 105 )
+position = Vector2( -46, 105 )
 z_index = -1
 label = "Retour"
 
@@ -1208,21 +1214,30 @@ __meta__ = {
 "_edit_lock_": true
 }
 
+[node name="Foreground" type="Polygon2D" parent="."]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 5.9375, 23.7499 )
+scale = Vector2( 1.1, 1.1 )
+z_index = 1000
+offset = Vector2( -800, -800 )
+polygon = PoolVector2Array( -962, -962, 2562, -962, 2562, 2562, -962, 2562 )
+__meta__ = {
+"_edit_lock_": true,
+"_editor_description_": "Used for screen fade"
+}
+
 [node name="LeafLayer" parent="." instance=ExtResource( 4 )]
 scale = Vector2( 1.2, 1 )
 z_index = -10
 
 [node name="Back" parent="LeafLayer" index="0"]
 material = SubResource( 52 )
-scale = Vector2( 1, 1 )
 
 [node name="Middle" parent="LeafLayer" index="1"]
 material = SubResource( 53 )
-scale = Vector2( 1, 1 )
 
 [node name="Front" parent="LeafLayer" index="2"]
 material = SubResource( 54 )
-scale = Vector2( 1, 1 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 method_call_mode = 1
@@ -1232,6 +1247,7 @@ anims/DeploySubMenu = ExtResource( 11 )
 anims/Exit = SubResource( 56 )
 anims/Opening = ExtResource( 12 )
 anims/ShrinkSubMenu = ExtResource( 15 )
+anims/StartGame = ExtResource( 21 )
 [connection signal="clicked" from="MenuLayer/SubMenus/Main/Play" to="MenuLayer/SubMenus/Main" method="_on_Play_clicked"]
 [connection signal="clicked" from="MenuLayer/SubMenus/Main/Settings" to="MenuLayer/SubMenus/Main" method="_on_Settings_clicked"]
 [connection signal="clicked" from="MenuLayer/SubMenus/Main/Exit" to="MenuLayer/SubMenus/Main" method="_on_Exit_clicked"]
@@ -1242,6 +1258,7 @@ anims/ShrinkSubMenu = ExtResource( 15 )
 [connection signal="clicked" from="MenuLayer/SubMenus/Host/Return" to="MenuLayer/SubMenus/Host" method="_on_Return_clicked"]
 [connection signal="clicked" from="MenuLayer/SubMenus/Join/Join" to="MenuLayer/SubMenus/Join" method="_on_Join_clicked"]
 [connection signal="clicked" from="MenuLayer/SubMenus/Join/Return" to="MenuLayer/SubMenus/Join" method="_on_Return_clicked"]
+[connection signal="clicked" from="MenuLayer/Hub/Start" to="MenuLayer/Hub" method="_on_Start_clicked"]
 [connection signal="clicked" from="MenuLayer/Hub/Return" to="MenuLayer/Hub" method="_on_Return_clicked"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
 

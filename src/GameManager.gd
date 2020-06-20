@@ -1,6 +1,11 @@
 extends Spatial
 class_name GameManager
 
+const player_colors = [Color.red,  Color.darkorange, 
+		Color.dodgerblue, Color.blueviolet,
+		Color.lawngreen, Color.darkorange, 
+		Color.cyan, Color.deeppink]
+
 onready var decks_manager : DecksManager = $Decks
 onready var player_pointers : PlayerPointerUI = $PlayerPointers
 onready var graveyard : Deck = $Decks/Graveyard
@@ -10,8 +15,21 @@ onready var gamestate := $GameStates
 onready var camera := $Pivot
 onready var mouse_ray : RayCast = $MouseRay
 
-func _process(delta: float) -> void:
-	pass
+
+# Initializes the board scene then notice the server when it's ready
+func _ready() -> void:
+	# Attribute colors to players
+	var i := 0
+	for player in NetworkManager.turn_order:
+		player.color = player_colors[i]
+		i += 1
+	
+	NetworkManager.game_started = true
+	decks_manager.create_graveyard()
+	decks_manager.create_decks()
+
+	NetworkManager.net_cp.validate("scene_ready")
+	# TODO: Start with a white overlay
 
 
 func init_network_checkpoints() -> void:
@@ -26,7 +44,6 @@ func init_network_checkpoints() -> void:
 
 # Start the game
 sync func start() -> void:
-#	Engine.time_scale = 3 # TODO: remove when debugging finished 
 	$Pivot.move_to_player_pov(NetworkManager.me().deck.get_ref())
 
 	player_pointers.init()

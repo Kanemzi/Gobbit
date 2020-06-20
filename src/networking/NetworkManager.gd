@@ -8,11 +8,6 @@ signal server_closed # Triggers when the server is closed by the host
 
 const NetworkCheckpoints := preload("res://src/networking/NetworkCheckpoints.gd")
 
-const player_colors = [Color.red,  Color.darkorange, 
-		Color.dodgerblue, Color.blueviolet,
-		Color.lawngreen, Color.darkorange, 
-		Color.cyan, Color.deeppink]
-
 var pseudo := ""
 var peer_id : int
 var is_server : bool
@@ -36,12 +31,10 @@ func _ready():
 # Called when a new player connects to the room
 # Sends the client pseudo to the new player
 func _player_connected(id) -> void:
-	print("NEW CONNECTION: " + str(id))
 	rpc_id(id, "register_player", pseudo)
 
 
 func _player_disconnected(id):
-	print("player disconnected : " + str(id))
 	if game_started : # Disconnection during game
 		if is_server:
 			pass # TODO: Handler server disconnection
@@ -91,32 +84,27 @@ func _connection_failed():
 remote func register_player(pseudo):
 	var id = get_tree().get_rpc_sender_id()
 	players[id] = Player.new(id, pseudo)
+	player_count = players.size()
 	emit_signal("player_list_changed")
-	print("R3EGISTER PLAYER : " + pseudo + " " + str(id))
 
 
 # Unregister a player from the room
 func unregister_player(id):
 	players.erase(id)
+	player_count = players.size()
 	emit_signal("player_list_changed")
-	print("REMOVE PLAYER : " + str(id))
 
 
 # Starts the game
 func start_game() -> void:
-	if not is_server:
-		print("You're not an admin")
-		return
 	print("Start game")
 	# TODO: Reset game scene
 	get_tree().set_refuse_new_network_connections(true)
-	
 	rpc("initialize_game")
 
 
-# Initializes the scene for the game to start
+# Open the board scene for each client for the game to start
 sync func initialize_game() -> void:
-	
 	# Initialize the checkpoint manager
 	net_cp = NetworkCheckpoints.new(get_tree(), players.size())
 	add_child(net_cp)
@@ -126,21 +114,6 @@ sync func initialize_game() -> void:
 	
 	turn_order = players.values()
 	turn_order.sort_custom(Player, "compare")
-
-	player_count = players.size()
-	
-	# TODO: Move to a dedicated function
-	var i := 0
-	for player in turn_order:
-		player.color = player_colors[i]
-		i += 1
-	
-	game_started = true
-	var deck_manager := get_tree().get_root().get_node("GameManager/Decks") as DecksManager 
-	deck_manager.create_graveyard()
-	deck_manager.create_decks()
-	
-	net_cp.validate("scene_ready")
 	emit_signal("game_started")
 
 

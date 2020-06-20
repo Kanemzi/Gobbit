@@ -21,6 +21,10 @@ const HUB_ERROR_INVALID_IP_ADDRESS_MESSAGE := "Le format de l'adresse IP est inv
 const HUB_CONNECTION_ERROR_MESSAGE := "Erreur de connexion au serveur"
 const HUB_HOST_ERROR_MESSAGE := "Impossible de creer un serveur"
 const HUB_SERVER_CLOSED_MESSAGE := "Le serveur a ete ferme par l'hebergeur\nde la partie"
+const HUB_NOT_HOST_MESSAGE := "Seul le proprietaire de la salle peut\nlancer la partie"
+const HUB_NOT_ENOUGH_PLAYERS_MESSAGE := "Il faut au moins 2 joueurs pour\nlancer la partie"
+
+
 
 const NETWORK_PORT := 60817
 const DEFAULT_MAX_PLAYERS := 4
