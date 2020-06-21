@@ -28,8 +28,18 @@ func _ready() -> void:
 	decks_manager.create_graveyard()
 	decks_manager.create_decks()
 
+	if NetworkManager.is_server:
+		# We use DEFERRED to ensure the _ready function is finished when
+		# the _on_everyone_ready is called
+		NetworkManager.net_cp.connect("scene_ready", self, "_on_everyone_ready", [], CONNECT_DEFERRED)
+	
 	NetworkManager.net_cp.validate("scene_ready")
+	
 	# TODO: Start with a white overlay
+
+
+master func _on_everyone_ready() -> void:
+	rpc("start")
 
 
 func init_network_checkpoints() -> void:
@@ -45,12 +55,12 @@ func init_network_checkpoints() -> void:
 # Start the game
 sync func start() -> void:
 	$Pivot.move_to_player_pov(NetworkManager.me().deck.get_ref())
-
+	
 	player_pointers.init()
-
+	
 	if NetworkManager.is_server:
 		init_network_checkpoints()
-
+	
 	gamestate.start("Distribute")
 
 

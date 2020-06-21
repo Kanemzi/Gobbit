@@ -53,7 +53,8 @@ func host_room(pseudo) -> void:
 	get_tree().set_network_peer(host)
 	# Add the server to it's local player list
 	peer_id = get_tree().get_network_unique_id()
-	players[peer_id] = Player.new(peer_id, pseudo)
+#	players[peer_id] = Player.new(peer_id, pseudo)
+	register_player(pseudo)
 	is_server = true
 
 
@@ -83,8 +84,11 @@ func _connection_failed():
 # Registers a new player in the room
 remote func register_player(pseudo):
 	var id = get_tree().get_rpc_sender_id()
+	if id == 0: 
+		id = 1
 	players[id] = Player.new(id, pseudo)
 	player_count = players.size()
+	print("registred")
 	emit_signal("player_list_changed")
 
 
@@ -97,7 +101,6 @@ func unregister_player(id):
 
 # Starts the game
 func start_game() -> void:
-	print("Start game")
 	# TODO: Reset game scene
 	get_tree().set_refuse_new_network_connections(true)
 	rpc("initialize_game")
@@ -110,18 +113,10 @@ sync func initialize_game() -> void:
 	add_child(net_cp)
 	if is_server:
 		net_cp.create_checkpoint("scene_ready")
-		net_cp.connect("scene_ready", self, "_on_everyone_ready")
 	
 	turn_order = players.values()
 	turn_order.sort_custom(Player, "compare")
 	emit_signal("game_started")
-
-
-func _on_everyone_ready() -> void:
-	if not is_server:
-		return
-	var gm = get_tree().get_root().get_node("GameManager") as GameManager
-	gm.rpc("start")
 
 
 # Reset the room and reopen the lobby for new players

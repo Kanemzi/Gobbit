@@ -38,9 +38,10 @@ func _on_Start_clicked() -> void:
 	if not NetworkManager.is_server:
 		global_menu.popup_manager.show_message(Globals.HUB_NOT_HOST_MESSAGE)
 		return
-	if NetworkManager.player_count <= 1:
-		global_menu.popup_manager.show_message(Globals.HUB_NOT_ENOUGH_PLAYERS_MESSAGE)
-		return
+	# TODO : Commented for debug, uncomment for releases
+#	if NetworkManager.player_count <= 1:
+#		global_menu.popup_manager.show_message(Globals.HUB_NOT_ENOUGH_PLAYERS_MESSAGE)
+#		return
 	
 	NetworkManager.start_game()
 

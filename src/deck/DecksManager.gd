@@ -83,7 +83,7 @@ func starter_from_the_decks(decks : Array) -> Dictionary:
 	if decks.size() == 1:
 		return {starter=decks[0], draw_count=draw_count, draws=max_draws}
 	
-	# TODO: handle pure draw rare case (2 decks are the same)
+	# BUG: handle pure draw rare case (2 decks are the same)
 	while starter == null:
 		var best := remaining[0] as Deck
 		var draw := [best]

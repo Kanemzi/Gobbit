@@ -106,7 +106,7 @@ _global_script_class_icons={
 
 config/name="Gobbit"
 run/main_scene="res://src/ui/menu/Menu.tscn"
-boot_splash/bg_color=Color( 0.141176, 0.141176, 0.141176, 1 )
+boot_splash/bg_color=Color( 0.0705882, 0.137255, 0.0666667, 1 )
 config/icon="res://gobbit-icon.png"
 
 [autoload]
