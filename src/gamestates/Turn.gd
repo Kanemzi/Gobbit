@@ -40,7 +40,6 @@ func enter(params := {}) -> void:
 		var player : Player = NetworkManager.players[player_turn]
 		if player.lost or \
 				(player.deck != null and player.deck.get_ref().empty()):
-			#TODO: Check if game end !
 			next_turn()
 			return
 		

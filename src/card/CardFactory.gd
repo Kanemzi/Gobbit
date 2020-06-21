@@ -23,7 +23,7 @@ enum CardBackType {
 }
 
 const CardScene : PackedScene = preload("res://src/card/Card.tscn")
-const CARD_DECK_PATH := "res://data/deck.json"
+const CARD_DECK_PATH := "res://data/simplified.json"
 
 # card textures cache
 var card_textures := {}

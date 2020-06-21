@@ -10,6 +10,7 @@ onready var decks_manager : DecksManager = $Decks
 onready var player_pointers : PlayerPointerUI = $PlayerPointers
 onready var graveyard : Deck = $Decks/Graveyard
 onready var card_pool := $Cards
+onready var leaderboard : Leaderboard = $GUI/Leaderboard
 
 onready var gamestate := $GameStates
 onready var camera := $Pivot
@@ -18,10 +19,11 @@ onready var mouse_ray : RayCast = $MouseRay
 
 # Initializes the board scene then notice the server when it's ready
 func _ready() -> void:
-	# Attribute colors to players
+	# Attribute colors to players and setups signals
 	var i := 0
 	for player in NetworkManager.turn_order:
 		player.color = player_colors[i]
+		player.connect("lost", self, "_on_player_lost")
 		i += 1
 	
 	NetworkManager.game_started = true
@@ -38,8 +40,20 @@ func _ready() -> void:
 	# TODO: Start with a white overlay
 
 
+# Executed when the scene is instanced for all the players
 master func _on_everyone_ready() -> void:
 	rpc("start")
+
+
+# Executed when a player loses the games
+# Adds the player to the leaderboard
+func _on_player_lost(player) -> void:
+	leaderboard.add_entry_first(player.pseudo)
+	# We have a winner here !
+	if player_left_count() == 1:
+		var winner = NetworkManager.players[get_remaining_players()[0]]
+		leaderboard.add_entry_first(winner.pseudo)
+		leaderboard.show()
 
 
 func init_network_checkpoints() -> void:
@@ -101,7 +115,6 @@ sync func steal_cards(from_id: int, to_id: int) -> void:
 	# Check if the player loses the game
 	if from.has_just_lost():
 		from.loose()
-
 
 # The target player loses it's played card (they go to the graveyard)
 sync func lose_cards(target_id: int) -> void:

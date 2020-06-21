@@ -3,7 +3,7 @@ extends Node
 
 const min_width := 1024
 const min_height := 576
-const game_speed := 3 # Debug only
+const game_speed := 1 # Debug only
 
 var fullscreen := false
 

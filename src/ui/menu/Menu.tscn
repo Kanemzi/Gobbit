@@ -4,10 +4,10 @@
 [ext_resource path="res://src/ui/menu/OccluderGroup.gd" type="Script" id=2]
 [ext_resource path="res://src/ui/menu/GlobalMenu.gd" type="Script" id=3]
 [ext_resource path="res://src/ui/menu/leafs-overlay/LeafLayer.tscn" type="PackedScene" id=4]
-[ext_resource path="res://assets/textures/ui/menu/light-particle.png" type="Texture" id=5]
+[ext_resource path="res://assets/textures/environment/light-particle.png" type="Texture" id=5]
 [ext_resource path="res://assets/textures/environment/table-low.png" type="Texture" id=6]
 [ext_resource path="res://assets/textures/logo-high.png" type="Texture" id=7]
-[ext_resource path="res://assets/textures/ui/menu/god-rays.png" type="Texture" id=8]
+[ext_resource path="res://assets/textures/environment/god-rays.png" type="Texture" id=8]
 [ext_resource path="res://src/ui/menu/submenus/Join.gd" type="Script" id=9]
 [ext_resource path="res://src/ui/button/Button.tscn" type="PackedScene" id=10]
 [ext_resource path="res://src/ui/menu/animations/DeploySubMenu.tres" type="Animation" id=11]
@@ -735,6 +735,7 @@ tracks/2/keys = {
 }
 
 [node name="Menu" type="Node2D"]
+modulate = Color( 0, 0, 0, 1 )
 scale = Vector2( 0.8, 0.8 )
 script = ExtResource( 3 )
 
@@ -780,7 +781,7 @@ __meta__ = {
 [node name="BackRays" type="Light2D" parent="MenuLayer/Lights"]
 light_mask = 9
 texture = ExtResource( 8 )
-texture_scale = 2.4
+texture_scale = 0.01
 color = Color( 0.592157, 1, 0, 1 )
 energy = 2.0
 shadow_enabled = true
@@ -795,7 +796,7 @@ __meta__ = {
 [node name="BigRays" type="Light2D" parent="MenuLayer/Lights"]
 light_mask = 0
 texture = ExtResource( 8 )
-texture_scale = 2.4
+texture_scale = 0.01
 color = Color( 1, 0.619608, 0.215686, 1 )
 energy = 3.0
 range_item_cull_mask = 17
@@ -811,7 +812,7 @@ __meta__ = {
 [node name="ThinRays" type="Light2D" parent="MenuLayer/Lights"]
 light_mask = 0
 texture = ExtResource( 8 )
-texture_scale = 2.4
+texture_scale = 0.01
 energy = 2.7
 range_item_cull_mask = 17
 shadow_enabled = true
@@ -825,7 +826,7 @@ __meta__ = {
 
 [node name="BackOccluders" type="Node2D" parent="MenuLayer/Lights"]
 light_mask = 0
-rotation = -0.235499
+rotation = -47.5121
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_lock_": true
@@ -852,7 +853,7 @@ light_mask = 8
 
 [node name="BigOccluders" type="Node2D" parent="MenuLayer/Lights"]
 light_mask = 0
-rotation = -0.392498
+rotation = -79.1911
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_lock_": true
@@ -915,7 +916,7 @@ light_mask = 2
 
 [node name="ThinOccluders" type="Node2D" parent="MenuLayer/Lights"]
 light_mask = 0
-rotation = -0.588747
+rotation = -118.779
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_lock_": true
@@ -973,6 +974,7 @@ light_mask = 4
 
 [node name="LightParticles" type="Particles2D" parent="MenuLayer/Lights"]
 z_index = 2
+emitting = false
 amount = 60
 lifetime = 8.0
 visibility_rect = Rect2( -300, -300, 600, 600 )
@@ -996,7 +998,8 @@ __meta__ = {
 }
 
 [node name="Logo" type="Node2D" parent="MenuLayer"]
-scale = Vector2( 0.9, 0.9 )
+rotation = -26.1799
+scale = Vector2( 1e-05, 1e-05 )
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_group_": true,
@@ -1006,7 +1009,7 @@ __meta__ = {
 [node name="Table" type="Sprite" parent="MenuLayer/Logo"]
 material = SubResource( 21 )
 rotation = 6.28319
-scale = Vector2( 0.21, 0.21 )
+scale = Vector2( 0.1995, 0.1995 )
 z_index = 1
 texture = ExtResource( 6 )
 
@@ -1022,7 +1025,7 @@ texture = ExtResource( 7 )
 anims/Float = SubResource( 23 )
 
 [node name="Loader" type="Sprite" parent="MenuLayer/Logo"]
-modulate = Color( 1, 1, 1, 0.313726 )
+modulate = Color( 1, 1, 1, 0 )
 position = Vector2( -4, 4 )
 rotation = 5.75959
 scale = Vector2( 1.8, 1.8 )
@@ -1117,7 +1120,6 @@ active = false
 
 [node name="Hub" type="Node2D" parent="MenuLayer"]
 visible = false
-position = Vector2( 80, 0 )
 z_index = -1
 script = ExtResource( 23 )
 
@@ -1146,12 +1148,12 @@ __meta__ = {
 }
 
 [node name="Start" parent="MenuLayer/Hub" instance=ExtResource( 10 )]
-position = Vector2( -18, 42 )
+position = Vector2( 142, 42 )
 z_index = -1
 label = "Lancer"
 
 [node name="Return" parent="MenuLayer/Hub" instance=ExtResource( 10 )]
-position = Vector2( -46, 105 )
+position = Vector2( 114, 105 )
 z_index = -1
 label = "Retour"
 
@@ -1232,12 +1234,15 @@ z_index = -10
 
 [node name="Back" parent="LeafLayer" index="0"]
 material = SubResource( 52 )
+scale = Vector2( 1, 1 )
 
 [node name="Middle" parent="LeafLayer" index="1"]
 material = SubResource( 53 )
+scale = Vector2( 1, 1 )
 
 [node name="Front" parent="LeafLayer" index="2"]
 material = SubResource( 54 )
+scale = Vector2( 1, 1 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 method_call_mode = 1

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/god-rays.png-79fd6653e038a4aa609a3255d1e2ffc5.stex"
+path="res://.import/gorilla.png-9d213e608626773dc2ba22a86ae4589e.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/textures/ui/menu/god-rays.png"
-dest_files=[ "res://.import/god-rays.png-79fd6653e038a4aa609a3255d1e2ffc5.stex" ]
+source_file="res://assets/textures/ui/game-end/gorilla.png"
+dest_files=[ "res://.import/gorilla.png-9d213e608626773dc2ba22a86ae4589e.stex" ]
 
 [params]
 

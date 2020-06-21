@@ -142,6 +142,30 @@ tracks/11/loop_wrap = true
 tracks/11/imported = false
 tracks/11/enabled = true
 tracks/11/keys = {
-"clips": PoolStringArray( "Reset", "Shrink" ),
-"times": PoolRealArray( 0, 1.5 )
+"clips": PoolStringArray( "Reset", "Reset_Large", "Shrink" ),
+"times": PoolRealArray( 0, 0.001, 1.5 )
+}
+tracks/12/type = "value"
+tracks/12/path = NodePath("MenuLayer/Logo/Loader:modulate")
+tracks/12/interp = 1
+tracks/12/loop_wrap = true
+tracks/12/imported = false
+tracks/12/enabled = true
+tracks/12/keys = {
+"times": PoolRealArray( 0, 3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/13/type = "value"
+tracks/13/path = NodePath("MenuLayer/Hub:visible")
+tracks/13/interp = 1
+tracks/13/loop_wrap = true
+tracks/13/imported = false
+tracks/13/enabled = true
+tracks/13/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
 }

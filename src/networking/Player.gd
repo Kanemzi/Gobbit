@@ -3,6 +3,7 @@ class_name Player
 
 # TODO: Add signals for other cases
 signal lost_cards # Triggered when the player lost his cards
+signal lost(player) # Triggered when the player loses the game
 
 # The player has a deck, and a reference to a face up deck where he 
 # puts it's cards each turn
@@ -39,3 +40,4 @@ func loose() -> void:
 	lost = true
 	deck.get_ref().queue_free()
 	played_cards.get_ref().queue_free()
+	emit_signal("lost", self)
