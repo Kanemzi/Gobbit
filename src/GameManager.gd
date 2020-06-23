@@ -50,7 +50,7 @@ master func _on_everyone_ready() -> void:
 func _on_player_lost(player) -> void:
 	leaderboard.add_entry_first(player.pseudo)
 	# We have a winner here !
-	if player_left_count() == 1:
+	if NetworkManager.is_server and player_left_count() == 1:
 		gamestate.rpc("transition_to", "End")
 
 
