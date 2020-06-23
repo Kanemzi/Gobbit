@@ -4,7 +4,7 @@ class_name GlobalMenu
 onready var popup_manager : MenuPopupManager = $PopupLayer
 onready var hub := $MenuLayer/Hub
 
-const BOARD_SCENE = "res://Game.tscn"
+const GAME_SCENE = "res://src/game/Game.tscn"
 
 var menu_stack = [] # The stack of the opened submenus
 var in_hub := false # Is the player in the hub or not
@@ -87,5 +87,5 @@ func start_game() -> void:
 	print("start game")
 	$AnimationPlayer.play("StartGame")
 	yield($AnimationPlayer, "animation_finished")
-	var game_scene = load("res://Game.tscn")
+	var game_scene = load(GAME_SCENE)
 	get_tree().change_scene_to(game_scene)

@@ -18,6 +18,8 @@ onready var gamestate := $GameStates
 onready var camera := $Pivot
 onready var mouse_ray : RayCast = $MouseRay
 
+onready var turn_light := $TurnLight
+
 
 # Initializes the board scene then notice the server when it's ready
 func _ready() -> void:
@@ -51,6 +53,7 @@ master func _on_everyone_ready() -> void:
 # Executed when a player loses the games
 # Adds the player to the leaderboard
 func _on_player_lost(player) -> void:
+	turn_light.update_cone(player_left_count())
 	if NetworkManager.is_server:
 		leaderboard_list.push_front(player.pseudo)
 		

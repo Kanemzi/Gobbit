@@ -45,6 +45,10 @@ func enter(params := {}) -> void:
 
 	yield(Coroutines.await_all(decks, "deck_flipped_back"), "completed")
 
+	gm.turn_light.visible = true
+	gm.turn_light.update_cone(gm.player_left_count())
+	gm.turn_light.target(starter)
+
 	# Each player shuffles it's deck
 	# to prevent counting card for the first turn
 	var deck : Deck = NetworkManager.me().deck.get_ref()
