@@ -51,6 +51,8 @@ func _player_disconnected(id):
 # Host a new room
 func host_room(_pseudo: String) -> void:
 	pseudo = _pseudo
+	if get_tree().has_network_peer():
+		get_tree().network_peer.close_connection()
 	var host = NetworkedMultiplayerENet.new()
 	host.create_server(Globals.NETWORK_PORT, Globals.MAX_PLAYERS)
 	get_tree().set_network_peer(host)

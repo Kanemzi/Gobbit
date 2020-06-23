@@ -6,6 +6,8 @@ const player_colors = [Color.red,  Color.darkorange,
 		Color.lawngreen, Color.darkorange, 
 		Color.cyan, Color.deeppink]
 
+var leaderboard_list := []
+
 onready var decks_manager : DecksManager = $Decks
 onready var player_pointers : PlayerPointerUI = $PlayerPointers
 onready var graveyard : Deck = $Decks/Graveyard
@@ -48,10 +50,14 @@ master func _on_everyone_ready() -> void:
 # Executed when a player loses the games
 # Adds the player to the leaderboard
 func _on_player_lost(player) -> void:
-	leaderboard.add_entry_first(player.pseudo)
-	# We have a winner here !
-	if NetworkManager.is_server and player_left_count() == 1:
-		gamestate.rpc("transition_to", "End")
+	if NetworkManager.is_server:
+		leaderboard_list.push_front(player.pseudo)
+		
+		# We have a winner here !
+		if player_left_count() == 1:
+			var winner = NetworkManager.players[get_remaining_players()[0]]
+			leaderboard_list.append(winner.pseudo)
+			gamestate.rpc("transition_to", "End", {leaderboard = leaderboard_list})
 
 
 func init_network_checkpoints() -> void:

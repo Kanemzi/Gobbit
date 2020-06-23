@@ -7,6 +7,9 @@ func enter(params := {}) -> void:
 	gm.mouse_ray.enabled = false
 	gm.mouse_ray.set_physics_process(false)
 	
-	var winner = NetworkManager.players[gm.get_remaining_players()[0]]
-	gm.leaderboard.add_entry_first(winner.pseudo)
+	if not "leaderboard" in params:
+		return
+	
+	for pseudo in params.leaderboard:
+		gm.leaderboard.add_entry_first(pseudo)
 	gm.leaderboard.show()

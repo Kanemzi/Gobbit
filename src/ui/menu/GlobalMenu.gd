@@ -15,6 +15,7 @@ func _ready() -> void:
 
 
 func _on_AnimationPlayer_animation_finished(anim_name: String) -> void:
+	print("IS CONNECTED : " + str(NetworkManager.connected_to_server))
 	match anim_name :
 		"Opening":
 			if not NetworkManager.connected_to_server:
