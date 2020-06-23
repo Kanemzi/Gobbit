@@ -8,6 +8,10 @@ signal server_closed # Triggers when the server is closed by the host
 
 const NetworkCheckpoints := preload("res://src/networking/NetworkCheckpoints.gd")
 
+# Defines if the player is connected or is the
+# host of a server
+var connected_to_server := false
+
 var pseudo := ""
 var peer_id : int
 var is_server : bool
@@ -45,8 +49,8 @@ func _player_disconnected(id):
 
 
 # Host a new room
-func host_room(pseudo) -> void:
-	self.pseudo = pseudo
+func host_room(_pseudo: String) -> void:
+	pseudo = _pseudo
 	var host = NetworkedMultiplayerENet.new()
 	host.create_server(Globals.NETWORK_PORT, Globals.MAX_PLAYERS)
 	get_tree().set_refuse_new_network_connections(false)
@@ -54,13 +58,13 @@ func host_room(pseudo) -> void:
 	# Add the server to it's local player list
 	peer_id = get_tree().get_network_unique_id()
 #	players[peer_id] = Player.new(peer_id, pseudo)
-	register_player(pseudo)
+	register_player(_pseudo)
 	is_server = true
 
 
 # Join a room hosted on a certain ip address
-func join_room(pseudo, ip) -> void:
-	self.pseudo = pseudo
+func join_room(_pseudo, ip) -> void:
+	pseudo = _pseudo
 	var client = NetworkedMultiplayerENet.new()
 	client.create_client(ip, Globals.NETWORK_PORT)
 	get_tree().set_network_peer(client)
@@ -71,6 +75,7 @@ func join_room(pseudo, ip) -> void:
 func _connected():
 	# Add the client to it's local player list
 	peer_id = get_tree().get_network_unique_id()
+	connected_to_server = true
 	players[peer_id] = Player.new(peer_id, pseudo)
 	emit_signal("connection_succeeded")
 
@@ -88,7 +93,6 @@ remote func register_player(pseudo):
 		id = 1
 	players[id] = Player.new(id, pseudo)
 	player_count = players.size()
-	print("registred")
 	emit_signal("player_list_changed")
 
 
@@ -122,7 +126,8 @@ sync func initialize_game() -> void:
 # Reset the room and reopen the lobby for new players
 func reset_room() -> void:
 	game_started = false
-	get_tree().set_refuse_new_network_connections(false)
+	if is_server:
+		get_tree().set_refuse_new_network_connections(false)
 
 
 # Returns the current player
@@ -138,6 +143,7 @@ func self_disconnect() -> void:
 		rpc("close_server")
 	else:
 		get_tree().set_network_peer(null)
+		connected_to_server = false
 
 
 sync func close_server() -> void:
@@ -148,3 +154,4 @@ sync func close_server() -> void:
 		# HACK: Close the server after a delay to "ensure" all clients have left
 		yield(get_tree().create_timer(1000), "timeout")
 	get_tree().set_network_peer(null)
+	connected_to_server = false

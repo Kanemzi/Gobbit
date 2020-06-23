@@ -1,5 +1,7 @@
 extends VBoxContainer
 
+signal deployed # Triggers when the leaderboad list is fully deployed
+
 export(float) var initial_delay := 0.6
 export(float) var decrease_speed := 0.1
 export(float) var min_delay := 0.2
@@ -14,3 +16,4 @@ func deploy():
 		delay -= decrease_speed
 		if delay < min_delay:
 			delay = min_delay
+	emit_signal("deployed")

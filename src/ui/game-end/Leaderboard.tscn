@@ -1,118 +1,59 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://assets/textures/ui/game-end/gorilla.png" type="Texture" id=1]
+[ext_resource path="res://src/ui/button/Button.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/fonts/important-font.tres" type="DynamicFont" id=3]
 [ext_resource path="res://src/ui/game-end/LeaderboardList.gd" type="Script" id=4]
 [ext_resource path="res://src/ui/game-end/Leaderboard.gd" type="Script" id=5]
+[ext_resource path="res://src/ui/game-end/animations/Open.tres" type="Animation" id=6]
 
-[sub_resource type="StyleBoxFlat" id=2]
+[sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0, 0, 0, 0.745098 )
 
-[sub_resource type="StyleBoxLine" id=3]
+[sub_resource type="StyleBoxLine" id=2]
 resource_local_to_scene = true
 color = Color( 1, 1, 1, 1 )
-grow_begin = -180.0
-grow_end = -180.0
+grow_begin = 0.0
+grow_end = 0.0
 
-[sub_resource type="Animation" id=4]
-resource_name = "Open"
-step = 0.05
-tracks/0/type = "value"
-tracks/0/path = NodePath(".:visible")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.05 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 1,
-"values": [ false, true ]
-}
-tracks/1/type = "bezier"
-tracks/1/path = NodePath(".:rect_position:y")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"points": PoolRealArray( -1000, -0.25, 0, 0.261204, 472.8, 100, -0.0906792, -1.3214, 0.0327664, -0.101768, -50, -0.0726008, -1.24094, 0.106463, 0.600067, 0, -0.13296, 46.474, 0.11751, 0.87397 ),
-"times": PoolRealArray( 0, 0.25, 0.35, 0.6 )
-}
-tracks/2/type = "value"
-tracks/2/path = NodePath("Panel/Margin/Elements/HSeparator:custom_styles/separator:grow_begin")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/keys = {
-"times": PoolRealArray( 0, 0.6, 0.75 ),
-"transitions": PoolRealArray( 0.5, 0.5, 1 ),
-"update": 0,
-"values": [ -180.0, -180.0, 0.0 ]
-}
-tracks/3/type = "value"
-tracks/3/path = NodePath("Panel/Margin/Elements/HSeparator:custom_styles/separator:grow_end")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/keys = {
-"times": PoolRealArray( 0, 0.6, 0.75 ),
-"transitions": PoolRealArray( 0.5, 0.5, 1 ),
-"update": 0,
-"values": [ -180.0, -180.0, 0.0 ]
-}
-tracks/4/type = "method"
-tracks/4/path = NodePath("Panel/Margin/Elements/List")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/keys = {
-"times": PoolRealArray( 0.75 ),
-"transitions": PoolRealArray( 1 ),
-"values": [ {
-"args": [  ],
-"method": "deploy"
-} ]
-}
-
-[node name="Leaderboard" type="CenterContainer"]
-visible = false
+[node name="Leaderboard" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = -1000.0
-margin_bottom = -1000.0
-rect_rotation = -360.0
-mouse_filter = 2
 script = ExtResource( 5 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Panel" type="PanelContainer" parent="."]
-margin_left = 512.0
-margin_top = 300.0
-margin_right = 512.0
-margin_bottom = 300.0
+[node name="Center" type="CenterContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
 mouse_filter = 2
-custom_styles/panel = SubResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="Margin" type="MarginContainer" parent="Panel"]
+[node name="Panel" type="PanelContainer" parent="Center"]
+margin_left = 292.0
+margin_top = 156.0
+margin_right = 732.0
+margin_bottom = 444.0
+mouse_filter = 2
+custom_styles/panel = SubResource( 1 )
+
+[node name="Margin" type="MarginContainer" parent="Center/Panel"]
 margin_right = 440.0
-margin_bottom = 541.0
+margin_bottom = 288.0
 mouse_filter = 2
 custom_constants/margin_right = 40
 custom_constants/margin_top = 40
 custom_constants/margin_left = 40
 custom_constants/margin_bottom = 40
 
-[node name="Elements" type="VBoxContainer" parent="Panel/Margin"]
+[node name="Elements" type="VBoxContainer" parent="Center/Panel/Margin"]
 margin_left = 40.0
 margin_top = 40.0
 margin_right = 400.0
-margin_bottom = 501.0
+margin_bottom = 248.0
 grow_horizontal = 0
 mouse_filter = 2
 custom_constants/separation = 20
@@ -120,7 +61,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="GameEndMessage" type="Label" parent="Panel/Margin/Elements"]
+[node name="GameEndMessage" type="Label" parent="Center/Panel/Margin/Elements"]
 margin_right = 360.0
 margin_bottom = 53.0
 custom_fonts/font = ExtResource( 3 )
@@ -128,29 +69,42 @@ custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "Fin de la partie !"
 align = 1
 
-[node name="HSeparator" type="HSeparator" parent="Panel/Margin/Elements"]
+[node name="HSeparator" type="HSeparator" parent="Center/Panel/Margin/Elements"]
 margin_top = 73.0
 margin_right = 360.0
 margin_bottom = 74.0
-custom_styles/separator = SubResource( 3 )
+custom_styles/separator = SubResource( 2 )
 custom_constants/separation = 1
 
-[node name="List" type="VBoxContainer" parent="Panel/Margin/Elements"]
+[node name="List" type="VBoxContainer" parent="Center/Panel/Margin/Elements"]
 margin_top = 94.0
 margin_right = 360.0
-margin_bottom = 461.0
+margin_bottom = 94.0
 mouse_filter = 2
 custom_constants/separation = 9
 script = ExtResource( 4 )
 
-[node name="Gorilla" type="TextureRect" parent="Panel"]
+[node name="Gorilla" type="TextureRect" parent="Center/Panel"]
 modulate = Color( 1, 1, 1, 0.784314 )
 show_behind_parent = true
 margin_right = 440.0
-margin_bottom = 541.0
+margin_bottom = 288.0
 mouse_filter = 2
 texture = ExtResource( 1 )
 stretch_mode = 7
 
+[node name="Corner" type="Control" parent="."]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Return" parent="Corner" instance=ExtResource( 2 )]
+visible = false
+position = Vector2( -260, -60 )
+rotation = 1.74846e-07
+label = "Retour"
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/Open = SubResource( 4 )
+anims/Open = ExtResource( 6 )
+[connection signal="clicked" from="Corner/Return" to="." method="_on_Return_clicked"]

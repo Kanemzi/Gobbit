@@ -15,10 +15,10 @@ var played_cards : WeakRef # A reference to the deck of played cards
 var lost : bool # The player has lost the game
 var color: Color = Color.white
 
-func _init(id: int, pseudo: String) -> void:
-	self.id = id
-	self.pseudo = pseudo
-	self.lost = false
+func _init(_id: int, _pseudo: String) -> void:
+	id = _id
+	pseudo = _pseudo
+	lost = false
 
 static func compare(a: Player, b: Player) -> bool:
 	return a.id < b.id

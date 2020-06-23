@@ -1,9 +1,10 @@
-extends CenterContainer
+extends Control
 class_name Leaderboard
 
 const MEDAL_CARD_SCENE = preload("res://src/ui/game-end/MedalCard.tscn")
 
-onready var card_list = $Panel/Margin/Elements/List
+onready var card_list = $Center/Panel/Margin/Elements/List
+onready var return_button = $Corner/Return
 
 # Adds an player entry to the leaderboard
 # Each new player is put above all the other in the leaderboard
@@ -22,3 +23,12 @@ func add_entry_first(pseudo: String) -> void:
 # Opens and shows the leaderboard with a fancy animation
 func show() -> void:
 	$AnimationPlayer.play("Open")
+	yield(card_list, "deployed")
+	yield(get_tree().create_timer(0.5), "timeout")
+	return_button.visible = true
+	return_button.get_node("AnimationPlayer").play("Open")
+
+
+func _on_Return_clicked() -> void:
+	var menu_scene = load("res://src/ui/menu/Menu.tscn")
+	get_tree().change_scene_to(menu_scene)

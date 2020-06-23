@@ -51,9 +51,7 @@ func _on_player_lost(player) -> void:
 	leaderboard.add_entry_first(player.pseudo)
 	# We have a winner here !
 	if player_left_count() == 1:
-		var winner = NetworkManager.players[get_remaining_players()[0]]
-		leaderboard.add_entry_first(winner.pseudo)
-		leaderboard.show()
+		gamestate.rpc("transition_to", "End")
 
 
 func init_network_checkpoints() -> void:

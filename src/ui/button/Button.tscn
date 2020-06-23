@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://src/ui/button/ButtonStyle.tres" type="StyleBox" id=1]
 [ext_resource path="res://assets/fonts/button-font.tres" type="DynamicFont" id=2]
@@ -60,9 +60,47 @@ tracks/0/keys = {
 "values": [ Vector2( 1, 1 ), Vector2( 0.9, 0.9 ) ]
 }
 
+[sub_resource type="Animation" id=3]
+resource_name = "Open"
+length = 0.35
+step = 0.01
+tracks/0/type = "value"
+tracks/0/path = NodePath("UIElement:rect_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.07, 0.16, 0.26 ),
+"transitions": PoolRealArray( 0.5, -2, 1, -2 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( 1.2, 1.2 ), Vector2( 0.9, 0.9 ), Vector2( 1, 1 ) ]
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath("UIElement:rect_rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 0, -0.25, 0, 0.003459, -2.17892, -2.93615, -0.072328, -0.23264, 0.0579612, 0.0377998, 1.01227, -0.0644208, 0.0313008, 0.109461, 0.031301, -1.85439, -0.0553234, -0.031301, 0.0555179, 0.0626016, 0, -0.0757862, -0.00285959, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.07, 0.13, 0.23, 0.35 )
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath(".:active")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.35 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+
 [node name="Button" type="Node2D"]
 script = ExtResource( 3 )
-active = true
 
 [node name="UIElement" type="Button" parent="."]
 light_mask = 0
@@ -88,6 +126,7 @@ __meta__ = {
 anims/Bump = SubResource( 1 )
 anims/Deploy = ExtResource( 4 )
 anims/Hold = SubResource( 2 )
+anims/Open = SubResource( 3 )
 anims/Shrink = ExtResource( 5 )
 [connection signal="button_down" from="UIElement" to="." method="_on_button_down"]
 [connection signal="button_up" from="UIElement" to="." method="_on_released"]

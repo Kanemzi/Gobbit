@@ -49,7 +49,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://src/gamestates/Gobbit.gd"
 }, {
-"base": "CenterContainer",
+"base": "Control",
 "class": "Leaderboard",
 "language": "GDScript",
 "path": "res://src/ui/game-end/Leaderboard.gd"
@@ -123,6 +123,12 @@ NetworkManager="*res://src/networking/NetworkManager.gd"
 Coroutines="*res://src/utils/Coroutines.gd"
 Debug="*res://src/utils/debug/Debug.gd"
 Configuration="*res://src/utils/Configuration.gd"
+
+[debug]
+
+gdscript/warnings/unused_variable=false
+gdscript/warnings/unused_argument=false
+gdscript/warnings/unused_signal=false
 
 [display]
 

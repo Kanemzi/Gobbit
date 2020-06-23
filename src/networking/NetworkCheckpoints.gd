@@ -14,6 +14,7 @@ func _init(tree: SceneTree, n: int) -> void:
 	total_players = n
 	name = "NetworkCheckpoints"
 
+
 func create_checkpoint(name: String) -> void:
 	if not tree.is_network_server() \
 			or name in active:

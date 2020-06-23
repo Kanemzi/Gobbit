@@ -16,6 +16,8 @@ func open() -> void:
 	NetworkManager.connect("game_started", self, "_on_game_started")
 	NetworkManager.connect("server_closed", self, "_on_server_closed")
 	NetworkManager.connect("game_started", self, "_on_game_started")
+	
+	NetworkManager.reset_room()
 
 
 # Disconnects all the networking related signals
@@ -38,18 +40,18 @@ func _on_Start_clicked() -> void:
 	if not NetworkManager.is_server:
 		global_menu.popup_manager.show_message(Globals.HUB_NOT_HOST_MESSAGE)
 		return
-	# TODO : Commented for debug, uncomment for releases
 #	if NetworkManager.player_count <= 1:
 #		global_menu.popup_manager.show_message(Globals.HUB_NOT_ENOUGH_PLAYERS_MESSAGE)
 #		return
 	
 	NetworkManager.start_game()
+	close() # Disconnect all the signals
 
 
 func _on_Return_clicked() -> void:
 	global_menu.close_hub()
-	close()
 	NetworkManager.self_disconnect()
+	close()
 
 
 # Refreshs the lists of players in the room lobby

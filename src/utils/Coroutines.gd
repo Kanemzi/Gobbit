@@ -7,10 +7,10 @@ static func await_all(objects: Array, sig: String) -> void:
 	for object in objects:
 		object.connect(sig, emitter, 'emit')
 
-	for i in range(len(objects)):
+	for _i in range(len(objects)):
 		yield(emitter, 'emitted')
 
 class _Emitter:
 	signal emitted
-	func emit(params = null):
+	func emit() -> void:
 		emit_signal("emitted")

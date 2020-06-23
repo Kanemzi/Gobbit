@@ -826,7 +826,7 @@ __meta__ = {
 
 [node name="BackOccluders" type="Node2D" parent="MenuLayer/Lights"]
 light_mask = 0
-rotation = -47.5121
+rotation = -252.321
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_lock_": true
@@ -853,7 +853,7 @@ light_mask = 8
 
 [node name="BigOccluders" type="Node2D" parent="MenuLayer/Lights"]
 light_mask = 0
-rotation = -79.1911
+rotation = -420.404
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_lock_": true
@@ -916,7 +916,7 @@ light_mask = 2
 
 [node name="ThinOccluders" type="Node2D" parent="MenuLayer/Lights"]
 light_mask = 0
-rotation = -118.779
+rotation = -631.078
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_lock_": true
@@ -1009,7 +1009,7 @@ __meta__ = {
 [node name="Table" type="Sprite" parent="MenuLayer/Logo"]
 material = SubResource( 21 )
 rotation = 6.28319
-scale = Vector2( 0.1995, 0.1995 )
+scale = Vector2( 0.21, 0.21 )
 z_index = 1
 texture = ExtResource( 6 )
 
@@ -1046,7 +1046,6 @@ script = ExtResource( 14 )
 [node name="Play" parent="MenuLayer/SubMenus/Main" instance=ExtResource( 10 )]
 position = Vector2( 0, -92 )
 label = "Jouer !"
-active = false
 
 [node name="Settings" parent="MenuLayer/SubMenus/Main" instance=ExtResource( 10 )]
 position = Vector2( 0, -28 )
@@ -1055,7 +1054,6 @@ label = "Options"
 [node name="Exit" parent="MenuLayer/SubMenus/Main" instance=ExtResource( 10 )]
 position = Vector2( 0, 36 )
 label = "Quitter"
-active = false
 
 [node name="HostJoin" type="Node2D" parent="MenuLayer/SubMenus"]
 visible = false
@@ -1064,17 +1062,14 @@ script = ExtResource( 17 )
 [node name="Host" parent="MenuLayer/SubMenus/HostJoin" instance=ExtResource( 10 )]
 position = Vector2( 0, -92 )
 label = "Heberger"
-active = false
 
 [node name="Join" parent="MenuLayer/SubMenus/HostJoin" instance=ExtResource( 10 )]
 position = Vector2( 0, -28 )
 label = "Rejoindre"
-active = false
 
 [node name="Return" parent="MenuLayer/SubMenus/HostJoin" instance=ExtResource( 10 )]
 position = Vector2( 0, 36 )
 label = "Retour"
-active = false
 
 [node name="Host" type="Node2D" parent="MenuLayer/SubMenus"]
 visible = false
@@ -1088,12 +1083,10 @@ max_characters = 10
 [node name="Host" parent="MenuLayer/SubMenus/Host" instance=ExtResource( 10 )]
 position = Vector2( 0, -28 )
 label = "Heberger"
-active = false
 
 [node name="Return" parent="MenuLayer/SubMenus/Host" instance=ExtResource( 10 )]
 position = Vector2( 0, 36 )
 label = "Retour"
-active = false
 
 [node name="Join" type="Node2D" parent="MenuLayer/SubMenus"]
 visible = false
@@ -1116,10 +1109,10 @@ label = "Rejoindre"
 [node name="Return" parent="MenuLayer/SubMenus/Join" instance=ExtResource( 10 )]
 position = Vector2( 0, 60 )
 label = "Retour"
-active = false
 
 [node name="Hub" type="Node2D" parent="MenuLayer"]
 visible = false
+position = Vector2( 282, 0 )
 z_index = -1
 script = ExtResource( 23 )
 
@@ -1148,12 +1141,12 @@ __meta__ = {
 }
 
 [node name="Start" parent="MenuLayer/Hub" instance=ExtResource( 10 )]
-position = Vector2( 142, 42 )
+position = Vector2( -400, 42 )
 z_index = -1
 label = "Lancer"
 
 [node name="Return" parent="MenuLayer/Hub" instance=ExtResource( 10 )]
-position = Vector2( 114, 105 )
+position = Vector2( -400, 105 )
 z_index = -1
 label = "Retour"
 

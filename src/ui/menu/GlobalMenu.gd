@@ -17,8 +17,11 @@ func _ready() -> void:
 func _on_AnimationPlayer_animation_finished(anim_name: String) -> void:
 	match anim_name :
 		"Opening":
-			$AnimationPlayer.play("DeploySubMenu")
-			push_menu($MenuLayer/SubMenus/Main)
+			if not NetworkManager.connected_to_server:
+				$AnimationPlayer.play("DeploySubMenu")
+				push_menu($MenuLayer/SubMenus/Main)
+			else:
+				open_hub()
 		"Exit":
 			get_tree().quit()
 
@@ -81,6 +84,8 @@ func pop_menu() -> void:
 
 # Plays a start-game animation and loads the board scene after
 func start_game() -> void:
+	print("start game")
 	$AnimationPlayer.play("StartGame")
 	yield($AnimationPlayer, "animation_finished")
-	get_tree().change_scene("res://Game.tscn")
+	var game_scene = load("res://Game.tscn")
+	get_tree().change_scene_to(game_scene)
