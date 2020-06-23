@@ -1,7 +1,11 @@
 extends Node
 class_name DecksManager
 
+signal decks_replaced # The decks have been replaced
+
 const DeckScene : PackedScene = preload("res://src/deck/Deck.tscn")
+
+export(float) var replace_time := 0.5
 
 var card_list := CardFactory.generate_official_deck()
 
@@ -10,28 +14,38 @@ onready var graveyard : Deck = $Graveyard
 # Instanciates the decks for all players passed in parameter
 func create_decks() -> void:
 	var player_count = NetworkManager.turn_order.size()
-	var player_distances = 2 * PI / player_count # Angle between players
+	var angles := compute_decks_angles(player_count)
 	
 	for i in range(player_count):
-		var id : int = NetworkManager.turn_order[i].id
+		# We revert the id order to play in counter clockwise order
+		var id : int = NetworkManager.turn_order[player_count - i - 1].id
 		var deck : Deck = DeckScene.instance()
 		var played_cards : Deck = DeckScene.instance()
-		var angle : float = i * player_distances + PI
+		var angle : float = angles[i]
 		
-		deck.transform.origin = Vector3(
-				cos(angle) * Globals.DECK_DISTANCE_FROM_CENTER,
-				0,
-				sin(angle) * Globals.DECK_DISTANCE_FROM_CENTER)
+#		deck.transform.origin = Vector3(
+#				cos(angle) * Globals.DECK_DISTANCE_FROM_CENTER,
+#				0,
+#				sin(angle) * Globals.DECK_DISTANCE_FROM_CENTER)
+		deck.transform.origin = (Vector3.FORWARD * Globals.DECK_DISTANCE_FROM_CENTER) \
+				.rotated(Vector3.UP, angle)
 		deck.face_down = true
+		deck.angle = angle
 		deck.add_to_group("deck_playerdeck")
 		
-		played_cards.transform.origin = Vector3(
-				cos(angle) * Globals.PLAYED_CARDS_DISTANCE_FROM_CENTER,
-				0,
-				sin(angle) * Globals.PLAYED_CARDS_DISTANCE_FROM_CENTER)
+		
+#		played_cards.transform.origin = Vector3(
+#				cos(angle) * Globals.PLAYED_CARDS_DISTANCE_FROM_CENTER,
+#				0,
+#				sin(angle) * Globals.PLAYED_CARDS_DISTANCE_FROM_CENTER)
+		played_cards.transform.origin = (Vector3.FORWARD * Globals.PLAYED_CARDS_DISTANCE_FROM_CENTER) \
+				.rotated(Vector3.UP, angle)
 		played_cards.face_down = false
+		played_cards.angle = angle
 		played_cards.neatness = PI * 0.25
 		played_cards.add_to_group("deck_playedcard")
+		
+		print(str(NetworkManager.players[id].color) + " : " + str(angle) + " -> " + str(deck.transform.origin / Globals.DECK_DISTANCE_FROM_CENTER))
 		
 		var player : Player = NetworkManager.players[id]
 		
@@ -49,8 +63,55 @@ func create_decks() -> void:
 		
 		add_child(deck)
 		add_child(played_cards)
-		deck.look_at(Vector3.ZERO, Vector3.UP)
-		played_cards.look_at(Vector3.ZERO, Vector3.UP)
+#		deck.look_at(Vector3.ZERO, Vector3.UP)
+#		played_cards.look_at(Vector3.ZERO, Vector3.UP)
+		deck.rotation.y = angle + PI
+		played_cards.rotation.y = angle + PI
+
+
+# Recalculate decks position based on the current players
+func replace_decks(player_ids : Array) -> void:
+	# Compute all new deck positions
+	var player_count := player_ids.size()
+	var angles := compute_decks_angles(player_count)
+	var moved_decks = []
+	for i in range(player_count):
+		var player : Player = NetworkManager.players[player_ids[i]]
+		var deck : Deck = player.deck.get_ref()
+		var played_cards : Deck = player.played_cards.get_ref()
+		if deck == null || played_cards == null:
+			continue # If the player has no decks
+			
+		var angle : float = angles[i]
+		deck.angle = angle
+		played_cards.angle = angle
+		
+		var new_deck_position = (Vector3.FORWARD * Globals.DECK_DISTANCE_FROM_CENTER) \
+				.rotated(Vector3.UP, angle)
+
+		var new_played_position = (Vector3.FORWARD * Globals.PLAYED_CARDS_DISTANCE_FROM_CENTER) \
+				.rotated(Vector3.UP, angle)
+		
+		var new_deck_angle = angle + PI
+		var new_played_angle = angle + PI
+
+		deck.replace_tween.replace(new_deck_position, new_deck_angle)
+		played_cards.replace_tween.replace(new_played_position, new_played_angle)
+		moved_decks.append(deck.replace_tween)
+		moved_decks.append(played_cards.replace_tween)
+	
+	yield(Coroutines.await_all(moved_decks, "replaced"), "completed")
+	emit_signal("decks_replaced")
+
+
+# Return a list of deck angles based on player count
+func compute_decks_angles(player_count : int) -> Array:
+	var player_distances = 2 * PI / player_count # Angle between players
+	var angles := []
+	for i in range(player_count):
+		var angle : float = i * player_distances
+		angles.append(angle)
+	return angles
 
 
 # Creates the graveyard deck on the center of the table

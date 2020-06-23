@@ -12,7 +12,7 @@ _global_script_classes=[ {
 "base": "Node",
 "class": "ActionHandler",
 "language": "GDScript",
-"path": "res://src/gamestates/action-handlers/ActionHandler.gd"
+"path": "res://src/game/gamestates/action-handlers/ActionHandler.gd"
 }, {
 "base": "Spatial",
 "class": "Card",
@@ -37,7 +37,7 @@ _global_script_classes=[ {
 "base": "Node",
 "class": "GameState",
 "language": "GDScript",
-"path": "res://src/gamestates/GameState.gd"
+"path": "res://src/game/gamestates/GameState.gd"
 }, {
 "base": "Node2D",
 "class": "GlobalMenu",
@@ -47,7 +47,7 @@ _global_script_classes=[ {
 "base": "GameState",
 "class": "GobbitGameState",
 "language": "GDScript",
-"path": "res://src/gamestates/Gobbit.gd"
+"path": "res://src/game/gamestates/Gobbit.gd"
 }, {
 "base": "Control",
 "class": "Leaderboard",
@@ -87,7 +87,7 @@ _global_script_classes=[ {
 "base": "GameState",
 "class": "TurnGameState",
 "language": "GDScript",
-"path": "res://src/gamestates/Turn.gd"
+"path": "res://src/game/gamestates/Turn.gd"
 } ]
 _global_script_class_icons={
 "ActionHandler": "",

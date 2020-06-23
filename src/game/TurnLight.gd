@@ -30,7 +30,8 @@ func target(player: Player) -> void:
 	if deck == null:
 		return
 	var current_angle = target_angle
-	target_angle = deck.rotation.y - 2 * PI * turns_count - PI
+	# FIXME : angle
+	target_angle = (deck.angle) - 2 * PI * turns_count 
 	if current_angle < target_angle:
 		target_angle -= 2 * PI
 		turns_count += 1

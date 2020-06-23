@@ -53,21 +53,30 @@ master func _on_everyone_ready() -> void:
 # Executed when a player loses the games
 # Adds the player to the leaderboard
 func _on_player_lost(player) -> void:
-	turn_light.update_cone(player_left_count())
 	if NetworkManager.is_server:
+		var remaining := get_remaining_players()
 		leaderboard_list.push_front(player.pseudo)
 		
+		# TODO: Always play death anim even on 1v1
 		# We have a winner here !
 		if player_left_count() == 1:
-			var winner = NetworkManager.players[get_remaining_players()[0]]
+			var winner = NetworkManager.players[remaining[0]]
 			leaderboard_list.append(winner.pseudo)
 			gamestate.rpc("transition_to", "End", {leaderboard = leaderboard_list})
+		else:
+			# BUG: kill by gobbit rule
+			gamestate.rpc("transition_to", "PlayerDeath", 
+					{
+						back_params=gamestate.get_node("Turn").current_params,
+						remaining = remaining 
+					})
 
 
 func init_network_checkpoints() -> void:
 	var checkpoints := [
 		"cards_distributed", # The cards are successfully distributed to players 
-		"ready_for_first_turn" # All the decks are flipped back for the first turn
+		"ready_for_first_turn", # All the decks are flipped back for the first turn
+		"death_animation_done" # The death animation for a player is finished
 	]
 	
 	for cp in checkpoints:
@@ -85,13 +94,13 @@ sync func start() -> void:
 	
 	gamestate.start("Distribute")
 
-
+# BUG: Follow the count for clients (in order to simplify prediction)
 # Returns the players that haven't lost yet
 func get_remaining_players() -> Array:
 	var playing = []
-	for player_id in NetworkManager.players:
-		if not NetworkManager.players[player_id].lost:
-			playing.push_back(player_id)
+	for player in NetworkManager.turn_order:
+		if not player.lost:
+			playing.push_back(player.id)
 	return playing
 
 

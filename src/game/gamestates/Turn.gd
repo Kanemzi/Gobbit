@@ -9,6 +9,9 @@ class_name TurnGameState
 # - Protect it's own deck
 # - Play the "Gobbit !" by hitting the graveyard
 
+# The params used for the current turn
+var current_params := {}
+
 var turn_count : int = 0
 var player_turn : int
 
@@ -25,6 +28,7 @@ var top_cards := {}
 
 func enter(params := {}) -> void:
 	assert("turn" in params)
+	current_params = params
 	
 	# If the turns forces a player to play
 	if "player" in params:
@@ -90,7 +94,6 @@ func unhandled_input(event: InputEvent) -> void:
 		if is_turn_deck(collider):
 			place_handler.rpc("start_dragging")
 	elif place_handler.dragging:
-		print("dragging release from ", player_turn)
 		if is_turn_played_cards(collider):
 			var card : Card = place_handler.dragged_card.get_ref()
 			place_handler.rpc("finalize_dragging")

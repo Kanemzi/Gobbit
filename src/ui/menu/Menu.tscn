@@ -826,7 +826,7 @@ __meta__ = {
 
 [node name="BackOccluders" type="Node2D" parent="MenuLayer/Lights"]
 light_mask = 0
-rotation = -215.986
+rotation = -16.0659
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_lock_": true
@@ -853,7 +853,7 @@ light_mask = 8
 
 [node name="BigOccluders" type="Node2D" parent="MenuLayer/Lights"]
 light_mask = 0
-rotation = -359.97
+rotation = -26.7766
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_lock_": true
@@ -916,7 +916,7 @@ light_mask = 2
 
 [node name="ThinOccluders" type="Node2D" parent="MenuLayer/Lights"]
 light_mask = 0
-rotation = -540.168
+rotation = -40.165
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_lock_": true
@@ -1100,6 +1100,11 @@ position = Vector2( 0, -56 )
 placeholder = "Adresse IP"
 max_characters = 16
 
+[node name="UIElement" parent="MenuLayer/SubMenus/Join/IPAddress" index="0"]
+text = "127.0.0.1"
+max_length = 16
+placeholder_text = "Adresse IP"
+
 [node name="Join" parent="MenuLayer/SubMenus/Join" instance=ExtResource( 10 )]
 position = Vector2( 0, 2 )
 label = "Rejoindre"
@@ -1263,5 +1268,7 @@ anims/StartGame = ExtResource( 21 )
 [connection signal="clicked" from="MenuLayer/Hub/Start" to="MenuLayer/Hub" method="_on_Start_clicked"]
 [connection signal="clicked" from="MenuLayer/Hub/Return" to="MenuLayer/Hub" method="_on_Return_clicked"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
+
+[editable path="MenuLayer/SubMenus/Join/IPAddress"]
 
 [editable path="LeafLayer"]
