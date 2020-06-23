@@ -25,6 +25,7 @@ func _ready() -> void:
 	var i := 0
 	for player in NetworkManager.turn_order:
 		player.color = player_colors[i]
+		player.lost = false
 		player.connect("lost", self, "_on_player_lost")
 		i += 1
 	
