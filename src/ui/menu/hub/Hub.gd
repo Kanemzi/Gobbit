@@ -4,6 +4,8 @@ var global_menu : GlobalMenu
 
 onready var player_list := $Players/List
 
+# TODO: Add a "ready" checkbox to prevent desync when restarting a game
+
 func _ready() -> void:
 	yield(owner, "ready")
 	global_menu = _get_global_menu(self)

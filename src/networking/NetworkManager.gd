@@ -130,6 +130,9 @@ func reset_room() -> void:
 	game_started = false
 	if is_server and connected_to_server:
 		get_tree().set_refuse_new_network_connections(false)
+	
+	if net_cp != null:
+		net_cp.queue_free()
 
 
 # Returns the current player
