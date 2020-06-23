@@ -62,6 +62,7 @@ func host_room(_pseudo: String) -> void:
 #	players[peer_id] = Player.new(peer_id, pseudo)
 	register_player(_pseudo)
 	is_server = true
+	connected_to_server = true
 
 
 # Join a room hosted on a certain ip address
@@ -145,7 +146,7 @@ func self_disconnect() -> void:
 		get_tree().network_peer.close_connection()
 	else:
 		get_tree().set_network_peer(null)
-		connected_to_server = false
+	connected_to_server = false
 
 
 sync func close_server() -> void:
