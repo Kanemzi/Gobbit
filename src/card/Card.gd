@@ -3,7 +3,7 @@ class_name Card
 
 # BUG: Mesh rotation problems when animation does not finish
 
-signal move_finished(card) # Triggered when the card just finished its move
+signal move_finished # Triggered when the card just finished its move
 
 onready var move_tween : Tween = $MoveTween
 
@@ -50,7 +50,7 @@ func move_up(distance: float) -> void:
 
 
 func _on_MoveTween_tween_completed(object: Object, key: NodePath) -> void:
-	emit_signal("move_finished", self)
+	emit_signal("move_finished")
 
 
 # Returns true if the card value is higher than the other, false otherwise
