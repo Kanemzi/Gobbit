@@ -132,14 +132,14 @@ func get_turn_played_cards() -> Deck:
 
 # Returns the top cards of the played cards for all players
 func get_all_top_cards() -> Dictionary:
-	var top_cards := {}
+	var tc := {}
 	for player_id in gm.get_remaining_players():
 		var played_cards : Deck = NetworkManager.players[player_id].played_cards.get_ref()
 		if played_cards.empty():
-			top_cards[player_id] = null
+			tc[player_id] = null
 		else:
-			top_cards[player_id] = played_cards.get_card_on_top()
-	return top_cards
+			tc[player_id] = played_cards.get_card_on_top()
+	return tc
 
 
 # Returns true if the deck is that of the player whose turn it is.

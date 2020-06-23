@@ -1,8 +1,6 @@
 extends Node
 class_name Player
 
-# TODO: Add signals for other cases
-signal lost_cards # Triggered when the player lost his cards
 signal lost(player) # Triggered when the player loses the game
 
 # The player has a deck, and a reference to a face up deck where he 

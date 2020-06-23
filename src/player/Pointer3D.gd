@@ -13,7 +13,8 @@ func set_player(player: Player) -> void:
 	_set_color(player.color)
 
 
-func _set_color(color: Color) -> void:
+func _set_color(value: Color) -> void:
+	color = value
 	($Viewport/PointerUI as PlayerPointerUI).set_color(color)
 #	$Image.material_override.albedo_color = color
 #	$Light.light_color = color

@@ -15,7 +15,6 @@ func open() -> void:
 	NetworkManager.connect("player_list_changed", self, "refresh_player_list")
 	NetworkManager.connect("game_started", self, "_on_game_started")
 	NetworkManager.connect("server_closed", self, "_on_server_closed")
-	NetworkManager.connect("game_started", self, "_on_game_started")
 	
 	NetworkManager.reset_room()
 
@@ -23,10 +22,9 @@ func open() -> void:
 # Disconnects all the networking related signals
 # This method must be called when the hub is closed
 func close() -> void:
-	NetworkManager.disconnect("player_list_changed", self, "_refresh_player_list")
+	NetworkManager.disconnect("player_list_changed", self, "refresh_player_list")
 	NetworkManager.disconnect("game_started", self, "_on_game_started")
 	NetworkManager.disconnect("server_closed", self, "_on_server_closed")
-	NetworkManager.disconnect("game_started", self, "_on_game_started")
 
 
 # Recursively finds the global menu associated with the submenu
@@ -74,6 +72,8 @@ func refresh_player_list() -> void:
 
 # Called when the server is manually closed by the host
 func _on_server_closed() -> void:
+	if NetworkManager.is_server:
+		return
 	global_menu.popup_manager.show_message(Globals.HUB_SERVER_CLOSED_MESSAGE)
 	global_menu.close_hub()
 	close()

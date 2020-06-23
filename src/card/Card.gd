@@ -71,12 +71,12 @@ func eats(other: Card) -> bool:
 
 # Flips the card up or down with a 0.3s animation
 # TODO: Put the flip animations in a separate animator (prevents card from beeing stuck between two states)
-func flip(face_down : bool) -> void:
-	if face_down:
+func flip(_face_down : bool) -> void:
+	if _face_down:
 		$Animator.play("FlipFaceDown")
 	else:
 		$Animator.play("FlipFaceUp")
-	self.face_down = face_down
+	face_down = _face_down
 
 
 # Smooth rotation to an angle following the up axis
@@ -95,7 +95,7 @@ func reveal_next(reverse := false) -> void:
 # Puts the face of the card to the bottom or to the top
 # No animation
 # The mesh is rotated so that the orientation doesn't affect other animations
-func set_face_down(face_down := true) -> void:
+func set_face_down(value := true) -> void:
+	face_down = value
 	var mesh : Spatial = $Mesh as Spatial
 	mesh.transform.basis.z.angle_to( Vector3.DOWN if face_down else Vector3.UP )
-	face_down = true

@@ -826,7 +826,7 @@ __meta__ = {
 
 [node name="BackOccluders" type="Node2D" parent="MenuLayer/Lights"]
 light_mask = 0
-rotation = -252.321
+rotation = -280.503
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_lock_": true
@@ -853,7 +853,7 @@ light_mask = 8
 
 [node name="BigOccluders" type="Node2D" parent="MenuLayer/Lights"]
 light_mask = 0
-rotation = -420.404
+rotation = -467.271
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_lock_": true
@@ -916,7 +916,7 @@ light_mask = 2
 
 [node name="ThinOccluders" type="Node2D" parent="MenuLayer/Lights"]
 light_mask = 0
-rotation = -631.078
+rotation = -701.496
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_lock_": true
@@ -1078,7 +1078,6 @@ script = ExtResource( 18 )
 [node name="Pseudo" parent="MenuLayer/SubMenus/Host" instance=ExtResource( 16 )]
 position = Vector2( 0, -92 )
 placeholder = "Pseudo"
-max_characters = 10
 
 [node name="Host" parent="MenuLayer/SubMenus/Host" instance=ExtResource( 10 )]
 position = Vector2( 0, -28 )
@@ -1095,7 +1094,6 @@ script = ExtResource( 9 )
 [node name="Pseudo" parent="MenuLayer/SubMenus/Join" instance=ExtResource( 16 )]
 position = Vector2( 0, -114 )
 placeholder = "Pseudo"
-max_characters = 10
 
 [node name="IPAddress" parent="MenuLayer/SubMenus/Join" instance=ExtResource( 16 )]
 position = Vector2( 0, -56 )
@@ -1228,14 +1226,20 @@ z_index = -10
 [node name="Back" parent="LeafLayer" index="0"]
 material = SubResource( 52 )
 scale = Vector2( 1, 1 )
+scale_spread = 0.2
+new_placement = false
 
 [node name="Middle" parent="LeafLayer" index="1"]
 material = SubResource( 53 )
 scale = Vector2( 1, 1 )
+scale_spread = 0.2
+new_placement = false
 
 [node name="Front" parent="LeafLayer" index="2"]
 material = SubResource( 54 )
 scale = Vector2( 1, 1 )
+scale_spread = 0.2
+new_placement = false
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 method_call_mode = 1

@@ -53,8 +53,8 @@ func host_room(_pseudo: String) -> void:
 	pseudo = _pseudo
 	var host = NetworkedMultiplayerENet.new()
 	host.create_server(Globals.NETWORK_PORT, Globals.MAX_PLAYERS)
-	get_tree().set_refuse_new_network_connections(false)
 	get_tree().set_network_peer(host)
+	get_tree().set_refuse_new_network_connections(false)
 	# Add the server to it's local player list
 	peer_id = get_tree().get_network_unique_id()
 #	players[peer_id] = Player.new(peer_id, pseudo)
@@ -87,11 +87,11 @@ func _connection_failed():
 
 
 # Registers a new player in the room
-remote func register_player(pseudo):
+remote func register_player(_pseudo):
 	var id = get_tree().get_rpc_sender_id()
 	if id == 0: 
 		id = 1
-	players[id] = Player.new(id, pseudo)
+	players[id] = Player.new(id, _pseudo)
 	player_count = players.size()
 	emit_signal("player_list_changed")
 
@@ -105,7 +105,6 @@ func unregister_player(id):
 
 # Starts the game
 func start_game() -> void:
-	# TODO: Reset game scene
 	get_tree().set_refuse_new_network_connections(true)
 	rpc("initialize_game")
 
@@ -126,7 +125,7 @@ sync func initialize_game() -> void:
 # Reset the room and reopen the lobby for new players
 func reset_room() -> void:
 	game_started = false
-	if is_server:
+	if is_server and connected_to_server:
 		get_tree().set_refuse_new_network_connections(false)
 
 
@@ -140,7 +139,8 @@ func me() -> Player:
 func self_disconnect() -> void:
 	players.clear()
 	if is_server:
-		rpc("close_server")
+#		rpc("close_server")
+		get_tree().network_peer.close_connection()
 	else:
 		get_tree().set_network_peer(null)
 		connected_to_server = false

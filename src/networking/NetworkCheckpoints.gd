@@ -9,8 +9,8 @@ var tree : SceneTree
 var total_players : int
 var active := {}
 
-func _init(tree: SceneTree, n: int) -> void:
-	self.tree = tree
+func _init(_tree: SceneTree, n: int) -> void:
+	tree = _tree
 	total_players = n
 	name = "NetworkCheckpoints"
 

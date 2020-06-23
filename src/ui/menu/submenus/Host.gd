@@ -6,8 +6,8 @@ func _on_Host_clicked() -> void:
 	
 	var trim : String = $Pseudo.get_value().strip_edges(true, true)
 	
-	NetworkManager.connect("connection_failed", self, "_on_connection_failed")
-	NetworkManager.connect("connection_succeeded", self, "_enter_hub")
+	NetworkManager.connect("connection_failed", self, "_on_connection_failed",
+			[], CONNECT_ONESHOT)
 	NetworkManager.host_room(trim)
 	$Host.active = false
 	_enter_hub()
@@ -15,6 +15,8 @@ func _on_Host_clicked() -> void:
 
 func _on_Return_clicked() -> void:
 	global_menu.pop_menu()
+	if NetworkManager.is_connected("connection_failed", self, "_on_connection_failed"):
+		NetworkManager.disconnect("connection_failed", self, "_on_connection_failed")
 
 
 func _check_form_valid() -> bool:
@@ -27,6 +29,7 @@ func _check_form_valid() -> bool:
 
 func _enter_hub() -> void:
 	global_menu.open_hub()
+	NetworkManager.disconnect("connection_failed", self, "_on_connection_failed")
 
 
 func _on_connection_failed() -> void:
