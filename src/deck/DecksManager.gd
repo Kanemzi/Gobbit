@@ -15,10 +15,9 @@ onready var graveyard : Deck = $Graveyard
 func create_decks() -> void:
 	var player_count = NetworkManager.turn_order.size()
 	var angles := compute_decks_angles(player_count)
-	
 	for i in range(player_count):
 		# We revert the id order to play in counter clockwise order
-		var id : int = NetworkManager.turn_order[player_count - i - 1].id
+		var id : int = NetworkManager.turn_order[i].id
 		var deck : Deck = DeckScene.instance()
 		var played_cards : Deck = DeckScene.instance()
 		var angle : float = angles[i]
@@ -110,7 +109,7 @@ func compute_decks_angles(player_count : int) -> Array:
 	var angles := []
 	for i in range(player_count):
 		var angle : float = i * player_distances
-		angles.append(angle)
+		angles.push_front(angle)
 	return angles
 
 
@@ -143,8 +142,7 @@ func starter_from_the_decks(decks : Array) -> Dictionary:
 	
 	if decks.size() == 1:
 		return {starter=decks[0], draw_count=draw_count, draws=max_draws}
-	
-	# BUG: handle pure draw rare case (2 decks are the same)
+
 	while starter == null:
 		var best := remaining[0] as Deck
 		var draw := [best]
@@ -163,9 +161,14 @@ func starter_from_the_decks(decks : Array) -> Dictionary:
 			starter = best
 		else:
 			remaining = draw
+			max_draws += 1
 			for deck in remaining:
 				draw_count[deck] += 1
-			max_draws += 1
+				# Handle pure draw case
+				if draw_count[deck] == deck.size():
+					print("PURE DRAW")
+					starter = remaining[randi() % remaining.size()]
+					break
 	
 	return {starter=starter, draw_count=draw_count, draws=max_draws}
 

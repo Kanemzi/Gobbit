@@ -1,10 +1,10 @@
 extends Spatial
 class_name GameManager
 
-const player_colors = [Color.red,  Color.darkorange, 
+const player_colors = [Color.red, Color.yellow, 
 		Color.dodgerblue, Color.blueviolet,
-		Color.lawngreen, Color.darkorange, 
-		Color.cyan, Color.deeppink]
+		Color.lawngreen, Color.deeppink, 
+		Color.cyan, Color.darkorange]
 
 var leaderboard_list := []
 

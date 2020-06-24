@@ -19,7 +19,8 @@ func create_checkpoint(name: String) -> void:
 	if not tree.is_network_server():
 		return
 	active[name] = []
-	add_user_signal(name)
+	if not has_user_signal(name):
+		add_user_signal(name)
 
 
 func remove_checkpoint(name: String) -> void:
