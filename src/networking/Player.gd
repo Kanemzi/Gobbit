@@ -40,3 +40,10 @@ func loose() -> void:
 	deck.get_ref().queue_free()
 	played_cards.get_ref().queue_free()
 	emit_signal("lost", self)
+
+
+# Returns true if the player is currently able to play
+func can_play() -> bool:
+	if lost:
+		return false
+	return deck != null and not deck.get_ref().empty()

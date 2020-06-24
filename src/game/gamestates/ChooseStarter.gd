@@ -46,8 +46,10 @@ func enter(params := {}) -> void:
 	yield(Coroutines.await_all(decks, "deck_flipped_back"), "completed")
 
 	gm.turn_light.visible = true
-	gm.turn_light.update_cone(gm.player_left_count())
+	gm.turn_light.fade(true)
 	gm.turn_light.target(starter)
+	yield(gm.turn_light, "target_reached")
+	gm.turn_light.update_cone(gm.player_left_count())
 
 	# Each player shuffles it's deck
 	# to prevent counting card for the first turn

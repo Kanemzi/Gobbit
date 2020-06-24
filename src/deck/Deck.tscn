@@ -182,7 +182,4 @@ transform = Transform( 1, 0, 0, 0, -1.62921e-07, 1, 0, -1, -1.62921e-07, 0, 0, 0
 material_override = ExtResource( 2 )
 mesh = SubResource( 6 )
 material/0 = null
-
-[node name="CSGPolygon" type="CSGPolygon" parent="."]
-transform = Transform( 0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0.524, 0, 0 )
 [connection signal="tween_all_completed" from="ReplaceTween" to="ReplaceTween" method="_on_ReplaceTween_tween_all_completed"]

@@ -114,7 +114,7 @@ func player_left_count() -> int:
 
 
 # The played cards of "from" goes to the bottom of the "to" deck
-# TODO: split steal & protect functions
+# BUG : Wait card placement before death animation
 sync func steal_cards(from_id: int, to_id: int) -> void:
 	var to : Player = NetworkManager.players[to_id]
 	var from : Player = NetworkManager.players[from_id]
@@ -142,6 +142,8 @@ sync func lose_cards(target_id: int) -> void:
 	
 	decks_manager.graveyard.merge_deck_on_top(cards)
 	yield(decks_manager.graveyard, "deck_merged")
+	
+	target.emit_signal("lost_cards")
 	
 	# Check if the player loses the game
 	if target.has_just_lost():

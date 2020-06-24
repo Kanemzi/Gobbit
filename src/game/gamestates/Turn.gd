@@ -36,14 +36,13 @@ func enter(params := {}) -> void:
 		turn_count = NetworkManager.turn_order.find(player)
 	else:
 		turn_count = params.turn
-
-	var player_index : int = (turn_count) % NetworkManager.player_count
-	player_turn = NetworkManager.turn_order[player_index].id
 	
+	player_turn = get_player_turn(turn_count)
+	
+	# NOTE : Will be removed when the full rule will be complete
 	if NetworkManager.peer_id == player_turn:
 		var player : Player = NetworkManager.players[player_turn]
-		if player.lost or \
-				(player.deck != null and player.deck.get_ref().empty()):
+		if not player.can_play():
 			next_turn()
 			return
 		
@@ -111,8 +110,15 @@ func unhandled_input(event: InputEvent) -> void:
 			place_handler.rpc("cancel_dragging")
 
 
+# Go to the next turns (finds the next player who's able to play)
 func next_turn() -> void:
-	gm.gamestate.rpc("transition_to", "Turn", {turn=(turn_count + 1)})
+	var next_turn_count = turn_count + 1
+	for offset in NetworkManager.player_count: # Prevent offseting more than one complete turn
+		var player : Player = NetworkManager.players[get_player_turn(next_turn_count + offset)]
+		if player.can_play():
+			next_turn_count += offset
+			break
+	gm.gamestate.rpc("transition_to", "Turn", {turn=next_turn_count})
 
 
 # Next turn but the same player play again
@@ -122,6 +128,12 @@ func reset_turn() -> void:
 
 func exit() -> void:
 	pass
+
+
+# Returns the id of the player for the turn passed in parameter
+static func get_player_turn(turn: int) -> int:
+	var player_index : int = (turn) % NetworkManager.player_count
+	return NetworkManager.turn_order[player_index].id
 
 
 # Returns the deck of the player whose turn it is.
