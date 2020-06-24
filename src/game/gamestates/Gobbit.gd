@@ -19,6 +19,10 @@ func enter(params := {}) -> void:
 #			gm.player_pointers.get_node(str(player_id)).visible = false
 	gm.player_pointers.fade_but(gobbit_player_id)
 	
+	if NetworkManager.is_server:
+		NetworkManager.net_cp.connect("gobbit_rule_done", self, "_on_gobbit_rule_done",
+				[], CONNECT_ONESHOT)
+
 
 func physics_process(delta: float) -> void:
 	pass # Handle hover animation
@@ -54,6 +58,7 @@ func unhandled_input(event: InputEvent) -> void:
 
 # Process the choice of the gobbit winner serverside
 sync func _process_gobbit(choice: int) -> void:
+	Debug.println("Process gobbit")
 	gm.steal_cards(choice, gobbit_player_id)
 	
 	var target = NetworkManager.players[choice]
@@ -61,22 +66,30 @@ sync func _process_gobbit(choice: int) -> void:
 	
 	# List of players that have cards to take back
 	var have_cards := []
+	Debug.println("_______________________")
+	Debug.println("Remaining:")
 	for player_id in remaining_players:
 		var player : Player = NetworkManager.players[player_id]
 		var cards : Deck = player.played_cards.get_ref()
 		if not cards.empty():
 			have_cards.append(player)
+		Debug.println(str(player.pseudo) + " -> " + ("have" if not cards.empty() else "nop"))
 		gm.steal_cards(player_id, player_id)
-		
+	Debug.println("\nCards: " + str(have_cards))
+	
+	
+	Debug.println("_______________________")
 	yield(Coroutines.await_all(have_cards, "got_cards"), "completed")
+	Debug.println("      await complete")
 	
 	NetworkManager.net_cp.validate("gobbit_rule_done")
-	
-	if NetworkManager.is_server:
-		yield(NetworkManager.net_cp, "gobbit_rule_done")
-		NetworkManager.net_cp.reset_checkpoint("gobbit_rule_done")
-		gm.gamestate.rpc("transition_to", "Turn", {turn=0, player=gobbit_player_id})
+	Debug.println("      (validated gobbit rule)")
 
+
+func _on_gobbit_rule_done() -> void:
+	Debug.println(">>>>> server passed yield")
+	NetworkManager.net_cp.reset_checkpoint("gobbit_rule_done")
+	gm.gamestate.rpc("transition_to", "Turn", {turn=0, player=gobbit_player_id})
 
 func exit() -> void:
 #	for player_id in NetworkManager.players:

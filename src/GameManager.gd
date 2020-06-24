@@ -117,11 +117,16 @@ func player_left_count() -> int:
 # The played cards of "from" goes to the bottom of the "to" deck
 sync func steal_cards(from_id: int, to_id: int) -> void:
 	var checkpoint_name := "steal_" + str(from_id) + "_" + str(to_id)
-	NetworkManager.net_cp.create_checkpoint(checkpoint_name)
-	
 	var to : Player = NetworkManager.players[to_id]
 	var from : Player = NetworkManager.players[from_id]
+	
+	if NetworkManager.is_server:
+		NetworkManager.net_cp.create_checkpoint(checkpoint_name)
+		NetworkManager.net_cp.connect(checkpoint_name, self, "_steal_cards_checkpoint",
+				[checkpoint_name, from_id, to_id], CONNECT_ONESHOT)
+	
 	if to.deck == null or from.played_cards == null or from.played_cards.get_ref().empty():
+		Debug.println("\t\t\t\t\t[NOP]")
 		return
 	
 	var deck : Deck = to.deck.get_ref()
@@ -129,28 +134,40 @@ sync func steal_cards(from_id: int, to_id: int) -> void:
 	
 	deck.merge_deck_on_bottom(cards)
 	yield(deck, "deck_merged")
-	
+
 	NetworkManager.net_cp.validate(checkpoint_name)
-	
-	if NetworkManager.is_server:
-		yield(NetworkManager.net_cp, checkpoint_name)
-	
+	Debug.println("\t\t\t\t\t[VALIDATE STEAL "+ checkpoint_name + "]")
+
+# Called when all the client have validated the steal_card operation
+func _steal_cards_checkpoint(cp_name: String, from_id: int, to_id: int) -> void:
+	rpc("_steal_cards_validate", cp_name, from_id, to_id)
+
+# Called from the server after all the steal_card operation have been done
+sync func _steal_cards_validate(cp_name: String, from_id: int, to_id: int) -> void:
+	var to : Player = NetworkManager.players[to_id]
+	var from : Player = NetworkManager.players[from_id]
 	from.emit_signal("lost_cards")
 	to.emit_signal("got_cards")
+	
+	Debug.println("\t\t\t\t\t[EMITTED SIGNALS]")
 	
 	# Check if the player loses the game
 	if from.has_just_lost():
 		from.loose()
 	
-	NetworkManager.net_cp.remove_checkpoint(checkpoint_name)
-	
+	NetworkManager.net_cp.remove_checkpoint(cp_name)
+
 
 # The target player loses it's played card (they go to the graveyard)
 sync func lose_cards(target_id: int) -> void:
 	var checkpoint_name := "lost_" + str(target_id)
-	NetworkManager.net_cp.create_checkpoint(checkpoint_name)
-	
 	var target : Player = NetworkManager.players[target_id]
+	
+	if NetworkManager.is_server:
+		NetworkManager.net_cp.create_checkpoint(checkpoint_name)
+		NetworkManager.net_cp.connect(checkpoint_name, self, "_steal_cards_checkpoint",
+				[checkpoint_name, target_id], CONNECT_ONESHOT)
+	
 	if target.played_cards == null or target.played_cards.get_ref().empty():
 		return
 	var cards : Deck = target.played_cards.get_ref()
@@ -159,14 +176,18 @@ sync func lose_cards(target_id: int) -> void:
 	yield(decks_manager.graveyard, "deck_merged")
 	
 	NetworkManager.net_cp.validate(checkpoint_name)
-	
-	if NetworkManager.is_server:
-		yield(NetworkManager.net_cp, checkpoint_name)
-	
+
+# Called when all the client have validated the lose_cards operation
+func _lose_cards_checkpoint(cp_name: String, target_id: int) -> void:
+	rpc("_lose_cards_validate", cp_name, target_id)
+
+# Called from the server after all the lose_cards operation have been done
+sync func _lose_cards_validate(cp_name: String, target_id: int) -> void:
+	var target : Player = NetworkManager.players[target_id]
 	target.emit_signal("lost_cards")
 	
 	# Check if the player loses the game
 	if target.has_just_lost():
 		target.loose()
 		
-	NetworkManager.net_cp.remove_checkpoint(checkpoint_name)
+	NetworkManager.net_cp.remove_checkpoint(cp_name)
