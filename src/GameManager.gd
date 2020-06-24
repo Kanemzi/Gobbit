@@ -75,7 +75,9 @@ func init_network_checkpoints() -> void:
 	var checkpoints := [
 		"cards_distributed", # The cards are successfully distributed to players 
 		"ready_for_first_turn", # All the decks are flipped back for the first turn
-		"death_animation_done" # The death animation for a player is finished
+		"death_animation_done", # The death animation for a player is finished
+		"card_operation_done", # All the clients have performed a card operation (merge/steal...)
+		"gobbit_rule_done" # The gobbit rule animation have been performed for all clients
 	]
 	
 	for cp in checkpoints:
@@ -113,8 +115,10 @@ func player_left_count() -> int:
 
 
 # The played cards of "from" goes to the bottom of the "to" deck
-# BUG : Wait card placement before death animation
 sync func steal_cards(from_id: int, to_id: int) -> void:
+	var checkpoint_name := "steal_" + str(from_id) + "_" + str(to_id)
+	NetworkManager.net_cp.create_checkpoint(checkpoint_name)
+	
 	var to : Player = NetworkManager.players[to_id]
 	var from : Player = NetworkManager.players[from_id]
 	if to.deck == null or from.played_cards == null or from.played_cards.get_ref().empty():
@@ -126,14 +130,26 @@ sync func steal_cards(from_id: int, to_id: int) -> void:
 	deck.merge_deck_on_bottom(cards)
 	yield(deck, "deck_merged")
 	
+	NetworkManager.net_cp.validate(checkpoint_name)
+	
+	if NetworkManager.is_server:
+		yield(NetworkManager.net_cp, checkpoint_name)
+	
 	from.emit_signal("lost_cards")
+	to.emit_signal("got_cards")
 	
 	# Check if the player loses the game
 	if from.has_just_lost():
 		from.loose()
+	
+	NetworkManager.net_cp.remove_checkpoint(checkpoint_name)
+	
 
 # The target player loses it's played card (they go to the graveyard)
 sync func lose_cards(target_id: int) -> void:
+	var checkpoint_name := "lost_" + str(target_id)
+	NetworkManager.net_cp.create_checkpoint(checkpoint_name)
+	
 	var target : Player = NetworkManager.players[target_id]
 	if target.played_cards == null or target.played_cards.get_ref().empty():
 		return
@@ -142,8 +158,15 @@ sync func lose_cards(target_id: int) -> void:
 	decks_manager.graveyard.merge_deck_on_top(cards)
 	yield(decks_manager.graveyard, "deck_merged")
 	
+	NetworkManager.net_cp.validate(checkpoint_name)
+	
+	if NetworkManager.is_server:
+		yield(NetworkManager.net_cp, checkpoint_name)
+	
 	target.emit_signal("lost_cards")
 	
 	# Check if the player loses the game
 	if target.has_just_lost():
 		target.loose()
+		
+	NetworkManager.net_cp.remove_checkpoint(checkpoint_name)

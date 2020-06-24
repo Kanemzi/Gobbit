@@ -43,22 +43,39 @@ func unhandled_input(event: InputEvent) -> void:
 			# Can't choose your own deck
 			if played_cards.pid == gobbit_player_id:
 				return
+				
+			# Can't choose an empty deck
+			if played_cards.empty():
+				return
 			
 			choice_made = true
 			rpc("_process_gobbit", played_cards.pid)
 
 
 # Process the choice of the gobbit winner serverside
-master func _process_gobbit(choice: int) -> void:
-	gm.rpc("steal_cards", choice, gobbit_player_id)
+sync func _process_gobbit(choice: int) -> void:
+	gm.steal_cards(choice, gobbit_player_id)
 	
 	var target = NetworkManager.players[choice]
 	yield(target, "lost_cards")
 	
+	# List of players that have cards to take back
+	var have_cards := []
 	for player_id in remaining_players:
-		gm.rpc("steal_cards", player_id, player_id)
+		var player : Player = NetworkManager.players[player_id]
+		var cards : Deck = player.played_cards.get_ref()
+		if not cards.empty():
+			have_cards.append(player)
+		gm.steal_cards(player_id, player_id)
+		
+	yield(Coroutines.await_all(have_cards, "got_cards"), "completed")
 	
-	gm.gamestate.rpc("transition_to", "Turn", {turn=0, player=gobbit_player_id})
+	NetworkManager.net_cp.validate("gobbit_rule_done")
+	
+	if NetworkManager.is_server:
+		yield(NetworkManager.net_cp, "gobbit_rule_done")
+		NetworkManager.net_cp.reset_checkpoint("gobbit_rule_done")
+		gm.gamestate.rpc("transition_to", "Turn", {turn=0, player=gobbit_player_id})
 
 
 func exit() -> void:

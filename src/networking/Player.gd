@@ -3,6 +3,7 @@ class_name Player
 
 signal lost(player) # Triggered when the player loses the game
 signal lost_cards
+signal got_cards
 
 # The player has a deck, and a reference to a face up deck where he 
 # puts it's cards each turn

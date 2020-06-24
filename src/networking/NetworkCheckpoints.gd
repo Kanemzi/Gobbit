@@ -16,11 +16,16 @@ func _init(_tree: SceneTree, n: int) -> void:
 
 
 func create_checkpoint(name: String) -> void:
-	if not tree.is_network_server() \
-			or name in active:
+	if not tree.is_network_server():
 		return
 	active[name] = []
 	add_user_signal(name)
+
+
+func remove_checkpoint(name: String) -> void:
+	if not tree.is_network_server():
+		return
+	active.erase(name)
 
 
 func reset_checkpoint(name: String) -> void:
