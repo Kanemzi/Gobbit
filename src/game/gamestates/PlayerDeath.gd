@@ -29,13 +29,11 @@ func enter(params := {}) -> void:
 sync func play_death_animation() -> void:
 	var next_player : Player = NetworkManager.players[TurnGameState.get_player_turn(back_params.turn)]
 	
-	gm.turn_light.fade(false)
-	gm.turn_light.target(next_player, true)
+	gm.turn_light.update_cone(remaining.size())
 	gm.decks_manager.replace_decks(remaining)
+	gm.turn_light.target(next_player, true)
 	
 	yield(gm.turn_light, "target_reached")
-	gm.turn_light.fade(true)
-	gm.turn_light.update_cone(remaining.size())
 	
 	var deck : Deck = NetworkManager.me().deck.get_ref()
 	if deck != null:

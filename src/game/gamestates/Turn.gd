@@ -9,6 +9,9 @@ class_name TurnGameState
 # - Protect it's own deck
 # - Play the "Gobbit !" by hitting the graveyard
 
+# Buffered player deaths to animate
+var death_buffer := []
+
 # The params used for the current turn
 var current_params := {}
 
@@ -55,8 +58,19 @@ func enter(params := {}) -> void:
 		top_cards = get_all_top_cards()
 
 
-# NOTE: Maybe this could be moved directly to the gamemanager
+# Handle the placement of the card from the current player
+# Also processes the death buffer to perform death animations
 func physics_process(delta: float) -> void:
+	if not death_buffer.empty() and NetworkManager.is_server:
+		# BUG : Maybe there is a bug if multiple players die at the same time
+		var remaining := gm.get_remaining_players()
+		death_buffer.pop_front()
+		gm.gamestate.rpc("transition_to", "PlayerDeath", 
+				{
+					back_params=current_params,
+					remaining = remaining 
+				})
+		return
 	place_handler.update()
 
 
@@ -124,6 +138,11 @@ func next_turn() -> void:
 # Next turn but the same player play again
 func reset_turn() -> void:
 	gm.gamestate.rpc("transition_to", "Turn", {turn=(turn_count)})
+
+
+# Buffers a new death animation
+func buffer_death(player: Player) -> void:
+	death_buffer.append(player)
 
 
 func exit() -> void:

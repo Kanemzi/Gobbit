@@ -31,7 +31,7 @@ func update_cone(player_count : int) -> void:
 # Targets a specific player with the light cone
 # [force] allows to target twice the same player
 func target(player: Player, force := false) -> void:
-	if (target_player == player and force) or player.lost:
+	if (target_player == player and not force) or player.lost:
 		return
 	target_player = player
 	

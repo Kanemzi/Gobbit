@@ -54,22 +54,21 @@ master func _on_everyone_ready() -> void:
 # Adds the player to the leaderboard
 func _on_player_lost(player) -> void:
 	if NetworkManager.is_server:
-		var remaining := get_remaining_players()
+		# We keep the leaderboard serverside until the game finishes
 		leaderboard_list.push_front(player.pseudo)
 		
 		# TODO: Always play death anim even on 1v1
 		# We have a winner here !
 		if player_left_count() == 1:
+			var remaining := get_remaining_players()
 			var winner = NetworkManager.players[remaining[0]]
 			leaderboard_list.append(winner.pseudo)
 			gamestate.rpc("transition_to", "End", {leaderboard = leaderboard_list})
 		else:
-			# BUG: kill by gobbit rule
-			gamestate.rpc("transition_to", "PlayerDeath", 
-					{
-						back_params=gamestate.get_node("Turn").current_params,
-						remaining = remaining 
-					})
+			# We buffer a death animation for the next "Turn" state
+			# as it's only possible to transition to "Death" state from "Turn"
+			# in the game logic
+			gamestate.get_node("Turn").buffer_death(player)
 
 
 func init_network_checkpoints() -> void:
