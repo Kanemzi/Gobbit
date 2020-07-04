@@ -826,7 +826,7 @@ __meta__ = {
 
 [node name="BackOccluders" type="Node2D" parent="MenuLayer/Lights"]
 light_mask = 0
-rotation = -20.1841
+rotation = -2110.83
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_lock_": true
@@ -853,7 +853,7 @@ light_mask = 8
 
 [node name="BigOccluders" type="Node2D" parent="MenuLayer/Lights"]
 light_mask = 0
-rotation = -33.6403
+rotation = -3507.19
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_lock_": true
@@ -916,7 +916,7 @@ light_mask = 2
 
 [node name="ThinOccluders" type="Node2D" parent="MenuLayer/Lights"]
 light_mask = 0
-rotation = -50.4604
+rotation = -5265.17
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_lock_": true
