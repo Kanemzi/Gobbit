@@ -4,7 +4,7 @@ class_name Deck
 
 # These signals are triggered when an add/remove animation is done
 signal card_removed(card, position) # Triggered when a card is removed from the deck
-signal card_added(card) # Triggered when one or more cards are added to the deck
+signal card_added(deck, card) # Triggered when one or more cards are added to the deck
 signal deck_merged # Triggered when a deck is successfully merged into this deck
 signal deck_shuffled # Triggered when the deck is successfully shuffled
 signal deck_flipped_back # Triggered when the deck finished to show the back card
@@ -70,7 +70,7 @@ sync func add_card_on_top(card: Card) -> void:
 	height += Globals.CARD_MESH_HEIGHT
 	
 	yield(card, "move_finished")
-	emit_signal("card_added", card)
+	emit_signal("card_added", self, card)
 
 
 # Adds a card on the bottom of the deck at a certain height
@@ -101,7 +101,7 @@ sync func add_card_on_bottom(card: Card, h: float) -> void:
 	height += Globals.CARD_MESH_HEIGHT
 	
 	yield(card, "move_finished")
-	emit_signal("card_added", card)
+	emit_signal("card_added", self, card)
 
 
 # Returns the card of the top of the deck

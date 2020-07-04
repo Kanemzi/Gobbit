@@ -55,7 +55,7 @@ func enter(params := {}) -> void:
 	gm.turn_light.target(NetworkManager.players[player_turn])
 	
 	if NetworkManager.is_server:
-		top_cards = get_all_top_cards()
+		top_cards = gm.get_all_top_cards()
 
 
 # Handle the placement of the card from the current player
@@ -77,13 +77,12 @@ func physics_process(delta: float) -> void:
 # Defines what action handler should handle the input depending on
 # what player did the action and what deck he interacted with
 func unhandled_input(event: InputEvent) -> void:
+	# TODO: Prevent placing cards while there is another action to process  
 	if not event is InputEventMouseButton or event.button_index != BUTTON_LEFT:
 		# Only interact with left button
 		return
 	
 	var collider := gm.mouse_ray.get_collider()
-	
-	# TODO: detect clics on graveyard for Gobbit! rule
 	
 	if event.pressed:
 		if gm.decks_manager.is_played_cards(collider):
@@ -163,18 +162,6 @@ func get_turn_deck() -> Deck:
 # Returns the played cards of the player whose turn it is.
 func get_turn_played_cards() -> Deck:
 	return NetworkManager.players[player_turn].played_cards.get_ref()
-
-
-# Returns the top cards of the played cards for all players
-func get_all_top_cards() -> Dictionary:
-	var tc := {}
-	for player_id in gm.get_remaining_players():
-		var played_cards : Deck = NetworkManager.players[player_id].played_cards.get_ref()
-		if played_cards.empty():
-			tc[player_id] = null
-		else:
-			tc[player_id] = played_cards.get_card_on_top()
-	return tc
 
 
 # Returns true if the deck is that of the player whose turn it is.

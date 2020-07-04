@@ -7,6 +7,7 @@ const player_colors = [Color.red, Color.yellow,
 		Color.cyan, Color.darkorange]
 
 var leaderboard_list := []
+var arbitrator : Arbitrator
 
 onready var decks_manager : DecksManager = $Decks
 onready var player_pointers : PlayerPointerUI = $PlayerPointers
@@ -89,6 +90,7 @@ sync func start() -> void:
 	$Pivot.move_to_player_pov(NetworkManager.me().deck.get_ref())
 	
 	player_pointers.init()
+	arbitrator = Arbitrator.new(get_all_played_cards())
 	
 	if NetworkManager.is_server:
 		init_network_checkpoints()
@@ -98,7 +100,7 @@ sync func start() -> void:
 # BUG: Follow the count for clients (in order to simplify prediction)
 # Returns the players that haven't lost yet
 func get_remaining_players() -> Array:
-	var playing = []
+	var playing := []
 	for player in NetworkManager.turn_order:
 		if not player.lost:
 			playing.push_back(player.id)
@@ -191,3 +193,25 @@ sync func _lose_cards_validate(cp_name: String, target_id: int) -> void:
 		target.loose()
 		
 	NetworkManager.net_cp.remove_checkpoint(cp_name)
+
+
+# Returns the top cards of the played cards for all players
+func get_all_top_cards() -> Dictionary:
+	var tc := {}
+	for player_id in get_remaining_players():
+		var played_cards : Deck = NetworkManager.players[player_id].played_cards.get_ref()
+		if played_cards.empty():
+			tc[player_id] = null
+		else:
+			tc[player_id] = played_cards.get_card_on_top()
+	return tc
+
+
+# Returns all the played_cards_decks
+func get_all_played_cards() -> Array:
+	var pc := []
+	for player_id in get_remaining_players():
+		var played_cards : Deck = NetworkManager.players[player_id].played_cards.get_ref()
+		pc.append(played_cards)
+	return pc
+
