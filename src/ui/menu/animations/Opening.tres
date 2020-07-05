@@ -136,7 +136,7 @@ tracks/10/keys = {
 "values": [ Color( 0, 0, 0, 1 ), Color( 1, 1, 1, 1 ) ]
 }
 tracks/11/type = "animation"
-tracks/11/path = NodePath("LeafLayer/AnimationPlayer")
+tracks/11/path = NodePath("LeafLayers/AnimationPlayer")
 tracks/11/interp = 1
 tracks/11/loop_wrap = true
 tracks/11/imported = false

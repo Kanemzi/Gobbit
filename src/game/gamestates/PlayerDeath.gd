@@ -13,7 +13,7 @@ var remaining := []
 func enter(params := {}) -> void:
 	if not "back_params" in params \
 			or not "remaining" in params:
-		return # TODO: Throw a correct error
+		return
 		
 	back_params = params.back_params
 	remaining = params.remaining
@@ -40,7 +40,7 @@ sync func play_death_animation() -> void:
 		gm.camera.move_to_player_pov(deck, 2, false)
 		yield(gm.camera, "target_reached")
 	else:
-		gm.camera.free = true #TODO: Allow move camera using mouse
+		gm.camera.free = true
 	
 	NetworkManager.net_cp.validate("death_animation_done")
 

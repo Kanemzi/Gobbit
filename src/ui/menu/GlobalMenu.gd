@@ -50,9 +50,7 @@ func close_hub() -> void:
 	yield($AnimationPlayer, "animation_finished")
 	menu_stack.clear()
 	push_menu($MenuLayer/SubMenus/Main)
-	
 
-# TODO: Delegate these functions in a submenu manager
 
 # Push a new submenu in the stack
 func push_menu(sm: SubMenu) -> void:

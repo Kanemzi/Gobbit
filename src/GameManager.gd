@@ -42,8 +42,6 @@ func _ready() -> void:
 		NetworkManager.net_cp.connect("scene_ready", self, "_on_everyone_ready", [], CONNECT_DEFERRED)
 	
 	NetworkManager.net_cp.validate("scene_ready")
-	
-	# TODO: Start with a white overlay
 
 
 # Executed when the scene is instanced for all the players
@@ -57,8 +55,7 @@ func _on_player_lost(player) -> void:
 	if NetworkManager.is_server:
 		# We keep the leaderboard serverside until the game finishes
 		leaderboard_list.push_front(player.pseudo)
-		
-		# TODO: Always play death anim even on 1v1
+
 		# We have a winner here !
 		if player_left_count() == 1:
 			var remaining := get_remaining_players()
@@ -97,7 +94,6 @@ sync func start() -> void:
 	
 	gamestate.start("Distribute")
 
-# BUG: Follow the count for clients (in order to simplify prediction)
 # Returns the players that haven't lost yet
 func get_remaining_players() -> Array:
 	var playing := []

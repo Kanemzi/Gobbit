@@ -21,11 +21,6 @@ var angle := 0.0 # The angle of the deck relative to the center of the table
 var face_down := true # If the cards are hidden in the deck, true by default
 
 func _ready() -> void:
-#	if NetworkManager.players.has(NetworkManager.peer_id):
-#		var myself : Player = NetworkManager.me()
-#		$Viewport/Label.text = name + " " + myself.pseudo# TODO: Remove when debugging done
-#	else :
-#		$Viewport/Label.text = name# TODO: Remove when debugging done
 	reset()
 
 
@@ -139,7 +134,6 @@ sync func remove_card_on_top() -> Dictionary:
 
 
 # Removes the card from the deck
-# TODO: moves the cards down to fill the gap
 func _remove_card(card: Card):
 	cards.remove_child(card)
 	card.deck = null

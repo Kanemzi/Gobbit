@@ -1,8 +1,6 @@
 tool
 extends PopupDialog
 
-# TODO: recreate the close icon in svg
-
 signal closed # Triggered when the popup is closed
 
 onready var label := $Margin/Center/Label

@@ -3,7 +3,6 @@ extends ActionHandler
 
 # Handles an attack from the current client on the target deck
 master func handle_defense(defenser_id: int) -> void:
-	# BUG: null on spirit
 	print("def: ", defenser_id)
 	var deck : Deck = NetworkManager.players[defenser_id].played_cards.get_ref()
 	if deck.empty() or \
@@ -27,7 +26,6 @@ func check_defense_valid(defenser_id: int) -> bool:
 		Debug.println("> SPIRIT PROTECTION !")
 		return true
 	
-	# NOTE: can be refactored using is_valid_attack from AttackHandler
 	for pid in all_cards:
 		if all_cards[pid] == self_card or all_cards[pid] == null:
 			continue

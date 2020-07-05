@@ -28,7 +28,7 @@ tracks/1/keys = {
 "values": [ 0.0, 1500.0 ]
 }
 tracks/2/type = "animation"
-tracks/2/path = NodePath("LeafLayer/AnimationPlayer")
+tracks/2/path = NodePath("LeafLayers/AnimationPlayer")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false

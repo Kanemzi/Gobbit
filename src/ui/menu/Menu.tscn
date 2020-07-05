@@ -1,9 +1,9 @@
-[gd_scene load_steps=83 format=2]
+[gd_scene load_steps=54 format=2]
 
 [ext_resource path="res://src/ui/menu/Logo.gd" type="Script" id=1]
 [ext_resource path="res://src/ui/menu/OccluderGroup.gd" type="Script" id=2]
 [ext_resource path="res://src/ui/menu/GlobalMenu.gd" type="Script" id=3]
-[ext_resource path="res://src/ui/menu/leafs-overlay/LeafLayer.tscn" type="PackedScene" id=4]
+[ext_resource path="res://src/ui/menu/leafs-overlay/LeafLayers.tscn" type="PackedScene" id=4]
 [ext_resource path="res://assets/textures/environment/light-particle.png" type="Texture" id=5]
 [ext_resource path="res://assets/textures/environment/table-low.png" type="Texture" id=6]
 [ext_resource path="res://assets/textures/logo-high.png" type="Texture" id=7]
@@ -26,6 +26,7 @@
 [ext_resource path="res://src/ui/menu/animations/DeployHub.tres" type="Animation" id=24]
 [ext_resource path="res://assets/textures/ui/checkbox-check.png" type="Texture" id=25]
 [ext_resource path="res://assets/textures/ui/checkbox-background.png" type="Texture" id=26]
+[ext_resource path="res://src/ui/menu/Loader.gd" type="Script" id=27]
 
 [sub_resource type="VisualShaderNodeScalarOp" id=1]
 operator = 1
@@ -239,20 +240,6 @@ tracks/4/keys = {
 "times": PoolRealArray( 0, 2, 4 )
 }
 
-[sub_resource type="GDScript" id=24]
-script/source = "extends Sprite
-# TODO : put this script in a .gd file
-export(float) var speed := 10.0
-
-func _ready():
-	pass
-
-func _physics_process(delta: float) -> void:
-	rotation_degrees += delta * speed
-	if rotation_degrees >= 360.0: # Avoid big rotation values
-		rotation_degrees -= 360.0
-"
-
 [sub_resource type="StyleBoxTexture" id=25]
 texture = ExtResource( 13 )
 region_rect = Rect2( 0, 0, 568, 552 )
@@ -261,331 +248,7 @@ margin_right = 134.413
 margin_top = 136.361
 margin_bottom = 138.309
 
-[sub_resource type="VisualShaderNodeScalarUniform" id=26]
-uniform_name = "Blur_Samples"
-
-[sub_resource type="VisualShaderNodeScalarUniform" id=27]
-uniform_name = "Blur_Radius"
-
-[sub_resource type="VisualShaderNodeExpression" id=28]
-size = Vector2( 979.92, 771.44 )
-expression = "float scale = radius / (SAMPLES*2.0);
-
-vec4 col = vec4(0.0);
-float n = 0.0;
-	
-for(int x=-int(SAMPLES)/2; x < int(SAMPLES)/2; ++x) {
-	for(int y=-int(SAMPLES)/2; y < int(SAMPLES)/2; ++y) {
-		col += texture(TEXTURE, UV + scale * vec2(float(x), float(y)));
-		n += 1.0;
-	}
-}
-
-col /= n;
-
-color = col.rgb;
-alpha = col.a;"
-
-[sub_resource type="VisualShaderNodeVectorCompose" id=29]
-
-[sub_resource type="VisualShaderNodeScalarFunc" id=30]
-function = 1
-
-[sub_resource type="VisualShaderNodeScalarFunc" id=31]
-function = 0
-
-[sub_resource type="VisualShaderNodeVectorCompose" id=32]
-
-[sub_resource type="VisualShaderNodeScalarFunc" id=33]
-function = 1
-
-[sub_resource type="VisualShaderNodeScalarFunc" id=34]
-function = 0
-
-[sub_resource type="VisualShaderNodeScalarUniform" id=35]
-uniform_name = "Wind_Force"
-
-[sub_resource type="VisualShaderNodeScalarOp" id=36]
-default_input_values = [ 0, 0.0, 1, 1.0 ]
-operator = 2
-
-[sub_resource type="VisualShaderNodeInput" id=37]
-input_name = "time"
-
-[sub_resource type="VisualShaderNodeScalarOp" id=38]
-default_input_values = [ 0, 0.0, 1, 1.0 ]
-operator = 2
-
-[sub_resource type="VisualShaderNodeScalarFunc" id=39]
-function = 0
-
-[sub_resource type="VisualShaderNodeScalarUniform" id=40]
-uniform_name = "Wind_Speed"
-
-[sub_resource type="VisualShaderNodeScalarFunc" id=41]
-function = 0
-
-[sub_resource type="VisualShaderNodeScalarOp" id=42]
-default_input_values = [ 0, 0.0, 1, 2.0 ]
-operator = 2
-
-[sub_resource type="VisualShaderNodeScalarOp" id=43]
-
-[sub_resource type="VisualShaderNodeScalarOp" id=44]
-default_input_values = [ 0, 0.0, 1, 2.3 ]
-operator = 2
-
-[sub_resource type="VisualShaderNodeScalarUniform" id=45]
-uniform_name = "Wind_Offset"
-
-[sub_resource type="VisualShaderNodeScalarOp" id=46]
-
-[sub_resource type="VisualShaderNodeScalarFunc" id=47]
-function = 19
-
-[sub_resource type="VisualShaderNodeInput" id=48]
-input_name = "vertex"
-
-[sub_resource type="VisualShaderNodeTransformVecMult" id=49]
-
-[sub_resource type="VisualShaderNodeTransformCompose" id=50]
-default_input_values = [ 0, Vector3( 1, 0, 0 ), 1, Vector3( 0, 1, 0 ), 2, Vector3( 0, 0, 0 ), 3, Vector3( 0, 0, 0 ) ]
-
-[sub_resource type="VisualShader" id=51]
-resource_local_to_scene = true
-code = "shader_type canvas_item;
-uniform float Wind_Offset;
-uniform float Wind_Speed;
-uniform float Wind_Force;
-uniform float Blur_Radius;
-uniform float Blur_Samples;
-
-
-
-void vertex() {
-// Input:2
-	float n_out2p0 = TIME;
-
-// ScalarUniform:31
-	float n_out31p0 = Wind_Offset;
-
-// ScalarOp:32
-	float n_out32p0 = n_out2p0 + n_out31p0;
-
-// ScalarUniform:26
-	float n_out26p0 = Wind_Speed;
-
-// ScalarOp:24
-	float n_out24p0 = n_out32p0 * n_out26p0;
-
-// ScalarFunc:25
-	float n_out25p0 = sin(n_out24p0);
-
-// ScalarOp:30
-	float n_in30p1 = 2.30000;
-	float n_out30p0 = n_out26p0 * n_in30p1;
-
-// ScalarOp:28
-	float n_out28p0 = n_out32p0 * n_out30p0;
-
-// ScalarFunc:27
-	float n_out27p0 = sin(n_out28p0);
-
-// ScalarOp:29
-	float n_out29p0 = n_out25p0 + n_out27p0;
-
-// ScalarUniform:18
-	float n_out18p0 = Wind_Force;
-
-// ScalarOp:19
-	float n_out19p0 = n_out29p0 * n_out18p0;
-
-// ScalarFunc:11
-	float n_out11p0 = cos(n_out19p0);
-
-// ScalarFunc:33
-	float n_out33p0 = -(n_out19p0);
-
-// ScalarFunc:12
-	float n_out12p0 = sin(n_out33p0);
-
-// VectorCompose:10
-	float n_in10p2 = 0.00000;
-	vec3 n_out10p0 = vec3(n_out11p0, n_out12p0, n_in10p2);
-
-// ScalarFunc:16
-	float n_out16p0 = sin(n_out19p0);
-
-// ScalarFunc:15
-	float n_out15p0 = cos(n_out19p0);
-
-// VectorCompose:14
-	float n_in14p2 = 0.00000;
-	vec3 n_out14p0 = vec3(n_out16p0, n_out15p0, n_in14p2);
-
-// TransformCompose:9
-	vec3 n_in9p2 = vec3(0.00000, 0.00000, 0.00000);
-	vec3 n_in9p3 = vec3(0.00000, 0.00000, 0.00000);
-	mat4 n_out9p0 = mat4(vec4(n_out10p0, 0.0), vec4(n_out14p0, 0.0), vec4(n_in9p2, 0.0), vec4(n_in9p3, 1.0));
-
-// Input:5
-	vec3 n_out5p0 = vec3(VERTEX, 0.0);
-
-// TransformVectorMult:8
-	vec3 n_out8p0 = (n_out9p0 * vec4(n_out5p0, 1.0)).xyz;
-
-// Output:0
-	VERTEX = n_out8p0.xy;
-
-}
-
-void fragment() {
-// ScalarUniform:5
-	float n_out5p0 = Blur_Radius;
-
-// ScalarUniform:10
-	float n_out10p0 = Blur_Samples;
-
-// Expression:9
-	vec3 n_out9p0;
-	float n_out9p1;
-	n_out9p0 = vec3(0.0, 0.0, 0.0);
-	n_out9p1 = 0.0;
-	{
-		float scale = n_out5p0 / (n_out10p0*2.0);
-		
-		vec4 col = vec4(0.0);
-		float n = 0.0;
-			
-		for(int x=-int(n_out10p0)/2; x < int(n_out10p0)/2; ++x) {
-			for(int y=-int(n_out10p0)/2; y < int(n_out10p0)/2; ++y) {
-				col += texture(TEXTURE, UV + scale * vec2(float(x), float(y)));
-				n += 1.0;
-			}
-		}
-		
-		col /= n;
-		
-		n_out9p0 = col.rgb;
-		n_out9p1 = col.a;
-	}
-
-// Output:0
-	COLOR.rgb = n_out9p0;
-	COLOR.a = n_out9p1;
-
-}
-
-void light() {
-// Output:0
-
-}
-"
-graph_offset = Vector2( -334.227, 382.875 )
-mode = 1
-flags/light_only = false
-nodes/vertex/0/position = Vector2( 520, 100 )
-nodes/vertex/2/node = SubResource( 37 )
-nodes/vertex/2/position = Vector2( -2020, -80 )
-nodes/vertex/5/node = SubResource( 48 )
-nodes/vertex/5/position = Vector2( 60, 160 )
-nodes/vertex/8/node = SubResource( 49 )
-nodes/vertex/8/position = Vector2( 260, 80 )
-nodes/vertex/9/node = SubResource( 50 )
-nodes/vertex/9/position = Vector2( 0, 20 )
-nodes/vertex/10/node = SubResource( 29 )
-nodes/vertex/10/position = Vector2( -220, -80 )
-nodes/vertex/11/node = SubResource( 30 )
-nodes/vertex/11/position = Vector2( -420, -120 )
-nodes/vertex/12/node = SubResource( 31 )
-nodes/vertex/12/position = Vector2( -420, -20 )
-nodes/vertex/14/node = SubResource( 32 )
-nodes/vertex/14/position = Vector2( -220, 120 )
-nodes/vertex/15/node = SubResource( 33 )
-nodes/vertex/15/position = Vector2( -420, 180 )
-nodes/vertex/16/node = SubResource( 34 )
-nodes/vertex/16/position = Vector2( -420, 80 )
-nodes/vertex/18/node = SubResource( 35 )
-nodes/vertex/18/position = Vector2( -980, 220 )
-nodes/vertex/19/node = SubResource( 36 )
-nodes/vertex/19/position = Vector2( -860, -40 )
-nodes/vertex/24/node = SubResource( 38 )
-nodes/vertex/24/position = Vector2( -1440, -40 )
-nodes/vertex/25/node = SubResource( 39 )
-nodes/vertex/25/position = Vector2( -1260, -20 )
-nodes/vertex/26/node = SubResource( 40 )
-nodes/vertex/26/position = Vector2( -1960, 160 )
-nodes/vertex/27/node = SubResource( 41 )
-nodes/vertex/27/position = Vector2( -1260, 100 )
-nodes/vertex/28/node = SubResource( 42 )
-nodes/vertex/28/position = Vector2( -1440, 80 )
-nodes/vertex/29/node = SubResource( 43 )
-nodes/vertex/29/position = Vector2( -1080, 0 )
-nodes/vertex/30/node = SubResource( 44 )
-nodes/vertex/30/position = Vector2( -1640, 180 )
-nodes/vertex/31/node = SubResource( 45 )
-nodes/vertex/31/position = Vector2( -1960, 100 )
-nodes/vertex/32/node = SubResource( 46 )
-nodes/vertex/32/position = Vector2( -1860, -100 )
-nodes/vertex/33/node = SubResource( 47 )
-nodes/vertex/33/position = Vector2( -600, -20 )
-nodes/vertex/connections = PoolIntArray( 5, 0, 8, 1, 9, 0, 8, 0, 11, 0, 10, 0, 12, 0, 10, 1, 10, 0, 9, 0, 15, 0, 14, 1, 16, 0, 14, 0, 14, 0, 9, 1, 18, 0, 19, 1, 8, 0, 0, 0, 24, 0, 25, 0, 26, 0, 24, 1, 19, 0, 11, 0, 19, 0, 16, 0, 19, 0, 15, 0, 28, 0, 27, 0, 29, 0, 19, 0, 30, 0, 28, 1, 26, 0, 30, 0, 2, 0, 32, 0, 31, 0, 32, 1, 32, 0, 28, 0, 32, 0, 24, 0, 27, 0, 29, 1, 25, 0, 29, 0, 19, 0, 33, 0, 33, 0, 12, 0 )
-nodes/fragment/0/position = Vector2( 940, 480 )
-nodes/fragment/5/node = SubResource( 27 )
-nodes/fragment/5/position = Vector2( -300, 480 )
-nodes/fragment/9/node = SubResource( 28 )
-nodes/fragment/9/position = Vector2( -80, 440 )
-nodes/fragment/9/size = Vector2( 979.92, 771.44 )
-nodes/fragment/9/input_ports = "0,0,radius;1,0,SAMPLES;"
-nodes/fragment/9/output_ports = "0,1,color;1,0,alpha;"
-nodes/fragment/9/expression = "float scale = radius / (SAMPLES*2.0);
-
-vec4 col = vec4(0.0);
-float n = 0.0;
-	
-for(int x=-int(SAMPLES)/2; x < int(SAMPLES)/2; ++x) {
-	for(int y=-int(SAMPLES)/2; y < int(SAMPLES)/2; ++y) {
-		col += texture(TEXTURE, UV + scale * vec2(float(x), float(y)));
-		n += 1.0;
-	}
-}
-
-col /= n;
-
-color = col.rgb;
-alpha = col.a;"
-nodes/fragment/10/node = SubResource( 26 )
-nodes/fragment/10/position = Vector2( -300, 540 )
-nodes/fragment/connections = PoolIntArray( 9, 1, 0, 1, 9, 0, 0, 0, 5, 0, 9, 0, 10, 0, 9, 1 )
-
-[sub_resource type="ShaderMaterial" id=52]
-resource_local_to_scene = true
-shader = SubResource( 51 )
-shader_param/Wind_Offset = 1.0
-shader_param/Wind_Speed = 3.0
-shader_param/Wind_Force = 0.05
-shader_param/Blur_Radius = 0.0
-shader_param/Blur_Samples = 2.0
-
-[sub_resource type="ShaderMaterial" id=53]
-resource_local_to_scene = true
-shader = SubResource( 51 )
-shader_param/Wind_Offset = null
-shader_param/Wind_Speed = 0.8
-shader_param/Wind_Force = 0.1
-shader_param/Blur_Radius = 0.03
-shader_param/Blur_Samples = 3.0
-
-[sub_resource type="ShaderMaterial" id=54]
-resource_local_to_scene = true
-shader = SubResource( 51 )
-shader_param/Wind_Offset = null
-shader_param/Wind_Speed = 0.5
-shader_param/Wind_Force = 0.2
-shader_param/Blur_Radius = 0.05
-shader_param/Blur_Samples = 6.0
-
-[sub_resource type="Animation" id=55]
+[sub_resource type="Animation" id=26]
 resource_name = "CloseHub"
 length = 0.6
 step = 0.05
@@ -698,9 +361,9 @@ tracks/8/keys = {
 "values": [ Vector2( 114, 105 ), Vector2( 154, 105 ), Vector2( -46, 105 ) ]
 }
 
-[sub_resource type="Animation" id=56]
+[sub_resource type="Animation" id=27]
 tracks/0/type = "animation"
-tracks/0/path = NodePath("LeafLayer/AnimationPlayer")
+tracks/0/path = NodePath("LeafLayers/AnimationPlayer")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -760,8 +423,6 @@ __meta__ = {
 }
 
 [node name="Popup" parent="PopupLayer" instance=ExtResource( 19 )]
-margin = 50.0
-message = "[message]"
 
 [node name="MenuLayer" type="Node2D" parent="."]
 z_index = -20
@@ -826,7 +487,7 @@ __meta__ = {
 
 [node name="BackOccluders" type="Node2D" parent="MenuLayer/Lights"]
 light_mask = 0
-rotation = -2110.83
+rotation = -632.851
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_lock_": true
@@ -853,7 +514,7 @@ light_mask = 8
 
 [node name="BigOccluders" type="Node2D" parent="MenuLayer/Lights"]
 light_mask = 0
-rotation = -3507.19
+rotation = -1054.81
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_lock_": true
@@ -916,7 +577,7 @@ light_mask = 2
 
 [node name="ThinOccluders" type="Node2D" parent="MenuLayer/Lights"]
 light_mask = 0
-rotation = -5265.17
+rotation = -1582.44
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_lock_": true
@@ -1030,7 +691,7 @@ position = Vector2( -4, 4 )
 rotation = 5.75959
 scale = Vector2( 1.8, 1.8 )
 texture = ExtResource( 22 )
-script = SubResource( 24 )
+script = ExtResource( 27 )
 speed = 150.0
 
 [node name="SubMenus" type="Node2D" parent="MenuLayer"]
@@ -1224,34 +885,16 @@ __meta__ = {
 "_editor_description_": "Used for screen fade"
 }
 
-[node name="LeafLayer" parent="." instance=ExtResource( 4 )]
+[node name="LeafLayers" parent="." instance=ExtResource( 4 )]
 scale = Vector2( 1.2, 1 )
 z_index = -10
 
-[node name="Back" parent="LeafLayer" index="0"]
-material = SubResource( 52 )
-scale = Vector2( 1, 1 )
-scale_spread = 0.2
-new_placement = false
-
-[node name="Middle" parent="LeafLayer" index="1"]
-material = SubResource( 53 )
-scale = Vector2( 1, 1 )
-scale_spread = 0.2
-new_placement = false
-
-[node name="Front" parent="LeafLayer" index="2"]
-material = SubResource( 54 )
-scale = Vector2( 1, 1 )
-scale_spread = 0.2
-new_placement = false
-
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 method_call_mode = 1
-anims/CloseHub = SubResource( 55 )
+anims/CloseHub = SubResource( 26 )
 anims/DeployHub = ExtResource( 24 )
 anims/DeploySubMenu = ExtResource( 11 )
-anims/Exit = SubResource( 56 )
+anims/Exit = SubResource( 27 )
 anims/Opening = ExtResource( 12 )
 anims/ShrinkSubMenu = ExtResource( 15 )
 anims/StartGame = ExtResource( 21 )
@@ -1270,5 +913,3 @@ anims/StartGame = ExtResource( 21 )
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
 
 [editable path="MenuLayer/SubMenus/Join/IPAddress"]
-
-[editable path="LeafLayer"]

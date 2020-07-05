@@ -8,10 +8,11 @@ const game_speed := 1.2 # Debug only
 var fullscreen := false
 
 func _ready() -> void:
-	if not OS.is_debug_build(): # TODO: Check the validity of this line in release
+	if not OS.is_debug_build():
 		OS.min_window_size = Vector2(min_width, min_height)
 	else:
 		Engine.time_scale = game_speed
+
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey:

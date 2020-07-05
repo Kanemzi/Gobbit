@@ -1,8 +1,6 @@
 extends Spatial
 class_name Card
 
-# BUG: Mesh rotation problems when animation does not finish
-
 signal move_finished # Triggered when the card just finished its move
 
 onready var move_tween : Tween = $MoveTween
@@ -60,7 +58,6 @@ func beats(other: Card) -> bool:
 
 # Returns true if the card can eat the other card, false otherwise
 # Always returns true for a gorilla (even if the cards are destroyed)
-# TODO: Implementing expert rule with adapter pattern (Strategy Pattern is preferred)
 func eats(other: Card) -> bool:
 	if front_type == CardFactory.CardFrontType.GORILLA:
 		return true
@@ -70,7 +67,6 @@ func eats(other: Card) -> bool:
 	return colors[0] in other.colors
 
 # Flips the card up or down with a 0.3s animation
-# TODO: Put the flip animations in a separate animator (prevents card from beeing stuck between two states)
 func flip(_face_down : bool) -> void:
 	if _face_down:
 		$Animator.play("FlipFaceDown")

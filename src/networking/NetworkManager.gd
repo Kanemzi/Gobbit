@@ -41,9 +41,9 @@ func _player_connected(id) -> void:
 func _player_disconnected(id):
 	if game_started : # Disconnection during game
 		if is_server:
-			pass # TODO: Handler server disconnection
+			pass
 		else:
-			pass # TODO: Handler player disconnection
+			pass
 	else:
 		unregister_player(id)
 

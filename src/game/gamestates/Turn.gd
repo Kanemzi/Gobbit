@@ -26,8 +26,6 @@ onready var spirit_handler := $SpiritHandler
 
 # All the top cards at the start of the turn (used for last breath checks)
 var top_cards := {}
-	
-# BUG: When 5 or more player, mouse tracking seems to be broken
 
 func enter(params := {}) -> void:
 	assert("turn" in params)
@@ -62,7 +60,6 @@ func enter(params := {}) -> void:
 # Also processes the death buffer to perform death animations
 func physics_process(delta: float) -> void:
 	if not death_buffer.empty() and NetworkManager.is_server:
-		# BUG : Maybe there is a bug if multiple players die at the same time
 		var remaining := gm.get_remaining_players()
 		death_buffer.pop_front()
 		gm.gamestate.rpc("transition_to", "PlayerDeath", 
@@ -77,7 +74,6 @@ func physics_process(delta: float) -> void:
 # Defines what action handler should handle the input depending on
 # what player did the action and what deck he interacted with
 func unhandled_input(event: InputEvent) -> void:
-	# TODO: Prevent placing cards while there is another action to process  
 	if not event is InputEventMouseButton or event.button_index != BUTTON_LEFT:
 		# Only interact with left button
 		return
@@ -111,7 +107,6 @@ func unhandled_input(event: InputEvent) -> void:
 			place_handler.rpc("finalize_dragging")
 			# Play again if the placed card is a gorilla
 			if card.front_type != CardFactory.CardFrontType.GORILLA:
-				# BUG: Crash if the gorilla is the last card of the player
 				next_turn()
 			# NOTE: Eventual bug on this case
 			elif NetworkManager.me().deck.get_ref().empty():

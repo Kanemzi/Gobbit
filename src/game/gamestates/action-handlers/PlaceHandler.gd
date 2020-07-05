@@ -37,7 +37,6 @@ sync func start_dragging() -> void:
 
 # Cancels a dragging action by putting back the card on the top of the deck
 sync func cancel_dragging() -> void:
-	# FIXME: Don't reset the card position before replacing it
 	turn.get_turn_deck().add_card_on_top(dragged_card.get_ref())
 	dragged_card = null
 	dragging = false

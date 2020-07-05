@@ -5,7 +5,7 @@ class_name Arbitrator
 signal freed # The arbitrator was just freed form processing actions 
 signal action_arbitrated(source, target)
 
-var timeout := 0.3 # TODO: Make this equal to max ping among players
+var timeout := 0.3
 
 var update_times := {} # Last update times of the players played card clientside
 var action_buffer := {} # Buffer of pending player actions
@@ -58,7 +58,6 @@ func _on_timer_timeout(target: int) -> void:
 			fastest = action
 		elif fastest.time > action.time:
 			fastest = action
-	# BUG: Take into account faster errors from players
 	emit_signal("action_arbitrated", fastest.source, fastest.target)
 	
 	action_buffer.erase(target)

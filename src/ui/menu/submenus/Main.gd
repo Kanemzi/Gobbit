@@ -5,7 +5,7 @@ func _on_Play_clicked() -> void:
 
 
 func _on_Settings_clicked() -> void:
-	pass # TODO: Implement a settings panel
+	pass
 
 
 func _on_Exit_clicked() -> void:
