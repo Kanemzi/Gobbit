@@ -16,16 +16,11 @@ func set_player(player: Player) -> void:
 func _set_color(value: Color) -> void:
 	color = value
 	($Viewport/PointerUI as PlayerPointerUI).set_color(color)
-#	$Image.material_override.albedo_color = color
-#	$Light.light_color = value
 
 
-# TODO: simplify
-func move_to(position: Vector3, relative := false) -> void:
-	var current_position = (transform if relative else global_transform).origin
-	move_tween.interpolate_property(self, 
-			("" if relative else "global_") + "transform:origin", 
-			current_position, position,
+func move_to(position: Vector3) -> void:
+	move_tween.interpolate_property(self, "transform:origin", 
+			null, position,
 			0.1, Tween.TRANS_CUBIC, Tween.EASE_OUT)
 	move_tween.start()
 
