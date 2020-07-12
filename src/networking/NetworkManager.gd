@@ -35,7 +35,9 @@ func _ready():
 # Called when a new player connects to the room
 # Sends the client pseudo to the new player
 func _player_connected(id) -> void:
-	rpc_id(id, "register_player", pseudo)
+	var me = me()
+	var ready = me.ready if not me == null else false
+	rpc_id(id, "register_player", pseudo, ready)
 
 
 func _player_disconnected(id):
@@ -60,7 +62,7 @@ func host_room(_pseudo: String) -> void:
 	# Add the server to it's local player list
 	peer_id = get_tree().get_network_unique_id()
 #	players[peer_id] = Player.new(peer_id, pseudo)
-	register_player(_pseudo)
+	register_player(_pseudo, true)
 	is_server = true
 	connected_to_server = true
 
@@ -90,17 +92,19 @@ func _connection_failed():
 
 
 # Registers a new player in the room
-remote func register_player(_pseudo):
+remote func register_player(_pseudo : String, _ready := false) -> void:
 	var id = get_tree().get_rpc_sender_id()
 	if id == 0: 
 		id = 1
-	players[id] = Player.new(id, _pseudo)
+	var new_player = Player.new(id, _pseudo)
+	new_player.ready = _ready
+	players[id] = new_player
 	player_count = players.size()
 	emit_signal("player_list_changed")
 
 
 # Unregister a player from the room
-func unregister_player(id):
+func unregister_player(id: int) -> void:
 	players.erase(id)
 	player_count = players.size()
 	emit_signal("player_list_changed")

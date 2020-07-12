@@ -22,7 +22,7 @@ onready var mouse_ray : RayCast = $MouseRay
 onready var turn_light := $TurnLight
 
 
-# Initializes the board scene then notice the server when it's ready
+# Initializes the board scene then notify the server when it's ready
 func _ready() -> void:
 	# Attribute colors to players and setups signals
 	var i := 0

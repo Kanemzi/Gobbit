@@ -23,7 +23,7 @@ const HUB_HOST_ERROR_MESSAGE := "Impossible de creer un serveur"
 const HUB_SERVER_CLOSED_MESSAGE := "Le serveur a ete ferme par l'hebergeur\nde la partie"
 const HUB_NOT_HOST_MESSAGE := "Seul le proprietaire de la salle peut\nlancer la partie"
 const HUB_NOT_ENOUGH_PLAYERS_MESSAGE := "Il faut au moins 2 joueurs pour\nlancer la partie"
-
+const HUB_NOT_ALL_READY_MESSAGE := "Certains joueurs ne sont pas prets"
 
 
 const NETWORK_PORT := 60817

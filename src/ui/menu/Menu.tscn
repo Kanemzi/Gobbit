@@ -1,4 +1,4 @@
-[gd_scene load_steps=54 format=2]
+[gd_scene load_steps=55 format=2]
 
 [ext_resource path="res://src/ui/menu/Logo.gd" type="Script" id=1]
 [ext_resource path="res://src/ui/menu/OccluderGroup.gd" type="Script" id=2]
@@ -27,6 +27,7 @@
 [ext_resource path="res://assets/textures/ui/checkbox-check.png" type="Texture" id=25]
 [ext_resource path="res://assets/textures/ui/checkbox-background.png" type="Texture" id=26]
 [ext_resource path="res://src/ui/menu/Loader.gd" type="Script" id=27]
+[ext_resource path="res://src/ui/checkbox/Checkbox.tscn" type="PackedScene" id=28]
 
 [sub_resource type="VisualShaderNodeScalarOp" id=1]
 operator = 1
@@ -240,7 +241,7 @@ tracks/4/keys = {
 "times": PoolRealArray( 0, 2, 4 )
 }
 
-[sub_resource type="StyleBoxTexture" id=25]
+[sub_resource type="StyleBoxTexture" id=24]
 texture = ExtResource( 13 )
 region_rect = Rect2( 0, 0, 568, 552 )
 margin_left = 134.413
@@ -248,7 +249,7 @@ margin_right = 134.413
 margin_top = 136.361
 margin_bottom = 138.309
 
-[sub_resource type="Animation" id=26]
+[sub_resource type="Animation" id=25]
 resource_name = "CloseHub"
 length = 0.6
 step = 0.05
@@ -360,8 +361,20 @@ tracks/8/keys = {
 "update": 0,
 "values": [ Vector2( 114, 105 ), Vector2( 154, 105 ), Vector2( -46, 105 ) ]
 }
+tracks/9/type = "value"
+tracks/9/path = NodePath("MenuLayer/Hub/Ready:position")
+tracks/9/interp = 1
+tracks/9/loop_wrap = true
+tracks/9/imported = false
+tracks/9/enabled = true
+tracks/9/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 0.5, 0.5, 1 ),
+"update": 0,
+"values": [ Vector2( 186, 38 ), Vector2( 226, 38 ), Vector2( 26, 38 ) ]
+}
 
-[sub_resource type="Animation" id=27]
+[sub_resource type="Animation" id=26]
 tracks/0/type = "animation"
 tracks/0/path = NodePath("LeafLayers/AnimationPlayer")
 tracks/0/interp = 1
@@ -398,7 +411,6 @@ tracks/2/keys = {
 }
 
 [node name="Menu" type="Node2D"]
-modulate = Color( 0, 0, 0, 1 )
 scale = Vector2( 0.8, 0.8 )
 script = ExtResource( 3 )
 
@@ -442,7 +454,7 @@ __meta__ = {
 [node name="BackRays" type="Light2D" parent="MenuLayer/Lights"]
 light_mask = 9
 texture = ExtResource( 8 )
-texture_scale = 0.01
+texture_scale = 2.4
 color = Color( 0.592157, 1, 0, 1 )
 energy = 2.0
 shadow_enabled = true
@@ -457,7 +469,7 @@ __meta__ = {
 [node name="BigRays" type="Light2D" parent="MenuLayer/Lights"]
 light_mask = 0
 texture = ExtResource( 8 )
-texture_scale = 0.01
+texture_scale = 2.4
 color = Color( 1, 0.619608, 0.215686, 1 )
 energy = 3.0
 range_item_cull_mask = 17
@@ -473,7 +485,7 @@ __meta__ = {
 [node name="ThinRays" type="Light2D" parent="MenuLayer/Lights"]
 light_mask = 0
 texture = ExtResource( 8 )
-texture_scale = 0.01
+texture_scale = 2.4
 energy = 2.7
 range_item_cull_mask = 17
 shadow_enabled = true
@@ -487,7 +499,7 @@ __meta__ = {
 
 [node name="BackOccluders" type="Node2D" parent="MenuLayer/Lights"]
 light_mask = 0
-rotation = -632.851
+rotation = -2449.61
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_lock_": true
@@ -514,7 +526,7 @@ light_mask = 8
 
 [node name="BigOccluders" type="Node2D" parent="MenuLayer/Lights"]
 light_mask = 0
-rotation = -1054.81
+rotation = -4082.77
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_lock_": true
@@ -577,7 +589,7 @@ light_mask = 2
 
 [node name="ThinOccluders" type="Node2D" parent="MenuLayer/Lights"]
 light_mask = 0
-rotation = -1582.44
+rotation = -6110.31
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_lock_": true
@@ -635,7 +647,6 @@ light_mask = 4
 
 [node name="LightParticles" type="Particles2D" parent="MenuLayer/Lights"]
 z_index = 2
-emitting = false
 amount = 60
 lifetime = 8.0
 visibility_rect = Rect2( -300, -300, 600, 600 )
@@ -659,8 +670,6 @@ __meta__ = {
 }
 
 [node name="Logo" type="Node2D" parent="MenuLayer"]
-rotation = -26.1799
-scale = Vector2( 1e-05, 1e-05 )
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_group_": true,
@@ -701,7 +710,6 @@ __meta__ = {
 }
 
 [node name="Main" type="Node2D" parent="MenuLayer/SubMenus"]
-visible = false
 script = ExtResource( 14 )
 
 [node name="Play" parent="MenuLayer/SubMenus/Main" instance=ExtResource( 10 )]
@@ -776,7 +784,7 @@ label = "Retour"
 
 [node name="Hub" type="Node2D" parent="MenuLayer"]
 visible = false
-position = Vector2( 282, 0 )
+position = Vector2( 80, 0 )
 z_index = -1
 script = ExtResource( 23 )
 
@@ -785,7 +793,7 @@ margin_left = -420.0
 margin_top = -140.0
 margin_right = -150.0
 margin_bottom = 140.0
-custom_styles/panel = SubResource( 25 )
+custom_styles/panel = SubResource( 24 )
 __meta__ = {
 "_edit_lock_": true,
 "_edit_use_anchors_": false
@@ -805,12 +813,16 @@ __meta__ = {
 }
 
 [node name="Start" parent="MenuLayer/Hub" instance=ExtResource( 10 )]
-position = Vector2( -400, 42 )
+position = Vector2( -18, 42 )
 z_index = -1
 label = "Lancer"
 
+[node name="Ready" parent="MenuLayer/Hub" instance=ExtResource( 28 )]
+position = Vector2( 26, 38 )
+label = "Prêet"
+
 [node name="Return" parent="MenuLayer/Hub" instance=ExtResource( 10 )]
-position = Vector2( -400, 105 )
+position = Vector2( -46, 105 )
 z_index = -1
 label = "Retour"
 
@@ -891,10 +903,10 @@ z_index = -10
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 method_call_mode = 1
-anims/CloseHub = SubResource( 26 )
+anims/CloseHub = SubResource( 25 )
 anims/DeployHub = ExtResource( 24 )
 anims/DeploySubMenu = ExtResource( 11 )
-anims/Exit = SubResource( 27 )
+anims/Exit = SubResource( 26 )
 anims/Opening = ExtResource( 12 )
 anims/ShrinkSubMenu = ExtResource( 15 )
 anims/StartGame = ExtResource( 21 )
@@ -909,6 +921,8 @@ anims/StartGame = ExtResource( 21 )
 [connection signal="clicked" from="MenuLayer/SubMenus/Join/Join" to="MenuLayer/SubMenus/Join" method="_on_Join_clicked"]
 [connection signal="clicked" from="MenuLayer/SubMenus/Join/Return" to="MenuLayer/SubMenus/Join" method="_on_Return_clicked"]
 [connection signal="clicked" from="MenuLayer/Hub/Start" to="MenuLayer/Hub" method="_on_Start_clicked"]
+[connection signal="checked" from="MenuLayer/Hub/Ready" to="MenuLayer/Hub" method="_on_Ready_checked"]
+[connection signal="unchecked" from="MenuLayer/Hub/Ready" to="MenuLayer/Hub" method="_on_Ready_unchecked"]
 [connection signal="clicked" from="MenuLayer/Hub/Return" to="MenuLayer/Hub" method="_on_Return_clicked"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
 

@@ -1,12 +1,15 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://assets/fonts/normal-font.tres" type="DynamicFont" id=1]
+[ext_resource path="res://src/ui/menu/hub/PlayerCard.gd" type="Script" id=2]
 
 [node name="PlayerCard" type="Label"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 custom_fonts/font = ExtResource( 1 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
+text = "aazeeaz"
+script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }

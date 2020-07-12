@@ -60,7 +60,7 @@ func enter(params := {}) -> void:
 # Also processes the death buffer to perform death animations
 func physics_process(delta: float) -> void:
 	if not death_buffer.empty() and NetworkManager.is_server:
-		var remaining := gm.get_remaining_players()
+		var remaining = gm.get_remaining_players()
 		death_buffer.pop_front()
 		gm.gamestate.rpc("transition_to", "PlayerDeath", 
 				{
@@ -78,7 +78,7 @@ func unhandled_input(event: InputEvent) -> void:
 		# Only interact with left button
 		return
 	
-	var collider := gm.mouse_ray.get_collider()
+	var collider = gm.mouse_ray.get_collider()
 	
 	if event.pressed:
 		if gm.decks_manager.is_played_cards(collider):

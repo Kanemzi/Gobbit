@@ -135,3 +135,15 @@ tracks/10/keys = {
 "update": 1,
 "values": [ false, true ]
 }
+tracks/11/type = "value"
+tracks/11/path = NodePath("MenuLayer/Hub/Ready:position")
+tracks/11/interp = 1
+tracks/11/loop_wrap = true
+tracks/11/imported = false
+tracks/11/enabled = true
+tracks/11/keys = {
+"times": PoolRealArray( 0, 0.45, 0.75, 0.95, 1.15 ),
+"transitions": PoolRealArray( 1, 1, 0.5, 2, 1 ),
+"update": 0,
+"values": [ Vector2( -356, 38 ), Vector2( -356, 38 ), Vector2( -74, 38 ), Vector2( 196, 38 ), Vector2( 186, 38 ) ]
+}

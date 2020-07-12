@@ -5,7 +5,7 @@ class_name Arbitrator
 signal freed # The arbitrator was just freed form processing actions 
 signal action_arbitrated(source, target)
 
-var timeout := 0.3
+var timeout := 2.0 # HACK: High value for debug purpose
 
 var update_times := {} # Last update times of the players played card clientside
 var action_buffer := {} # Buffer of pending player actions
@@ -26,17 +26,18 @@ func is_free() -> bool:
 
 
 # Free the action buffer
-sync func free_action_buffer() -> void:
-	free = true
+sync func set_free(value := true) -> void:
+	free = value
 
 
 # Tells the server to buffer an action and sets the arbitrator as busy clientside
 func register_action(source: int, target: int, time: int) -> void:
+	rpc("set_free", false)
 	rpc_id(1, "_buffer_action", source, target)
-	free = false
 
 
 master func _buffer_action(source: int, target: int, time: int) -> void:
+	Debug.println("New action: " + str(source) + " -> " + str(target) + " in " + str(time))
 	var action = Action.new(source, target, time)
 	if not target in action_buffer:
 		action_buffer[target] = []
@@ -46,7 +47,6 @@ master func _buffer_action(source: int, target: int, time: int) -> void:
 	var timer := get_tree().create_timer(timeout)
 	timers[target] = timer
 	timer.connect("timeout", self, "_on_timer_timeout", [target])
-	free = false
 
 
 func _on_timer_timeout(target: int) -> void:
@@ -63,8 +63,8 @@ func _on_timer_timeout(target: int) -> void:
 	action_buffer.erase(target)
 	timers.erase(target)
 	if action_buffer.empty():
-		rpc("free_action_buffer")
-	
+		rpc("set_free")
+
 
 
 func _on_deck_updated(deck: Deck, card: Card) -> void:

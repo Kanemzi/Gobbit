@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://assets/fonts/checkbox-font.tres" type="DynamicFont" id=1]
+[ext_resource path="res://assets/textures/ui/checkbox-background.png" type="Texture" id=2]
+[ext_resource path="res://src/ui/checkbox/Checkbox.gd" type="Script" id=3]
+[ext_resource path="res://assets/textures/ui/checkbox-check.png" type="Texture" id=6]
+
+[node name="Checkbox" type="Node2D"]
+script = ExtResource( 3 )
+
+[node name="UIElement" type="CheckBox" parent="."]
+light_mask = 0
+rect_scale = Vector2( 0.25, 0.25 )
+mouse_default_cursor_shape = 2
+custom_icons/checked = ExtResource( 6 )
+custom_icons/unchecked = ExtResource( 2 )
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color_hover_pressed = Color( 0, 0, 0, 0.784314 )
+custom_colors/font_color = Color( 0, 0, 0, 0.784314 )
+custom_colors/font_color_hover = Color( 0, 0, 0, 0.784314 )
+custom_colors/font_color_pressed = Color( 0, 0, 0, 0.784314 )
+text = "..."
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="toggled" from="UIElement" to="." method="_on_UIElement_toggled"]

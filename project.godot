@@ -37,7 +37,7 @@ _global_script_classes=[ {
 "base": "Spatial",
 "class": "GameManager",
 "language": "GDScript",
-"path": "res://src/GameManager.gd"
+"path": "res://src/game/GameManager.gd"
 }, {
 "base": "Node",
 "class": "GameState",

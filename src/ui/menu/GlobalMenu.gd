@@ -43,6 +43,7 @@ func open_hub() -> void:
 	hub.open()
 	hub.refresh_player_list()
 
+
 # Closes the hub and returns to the main menu
 func close_hub() -> void:
 	in_hub = false
